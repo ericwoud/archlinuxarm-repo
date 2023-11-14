@@ -1,0 +1,29 @@
+pkgbase = bpir64-atf-git
+	pkgver = v2.8r12614.f84551673
+	pkgrel = 6
+	epoch = 2
+	url = https://github.com/mtk-openwrt/arm-trusted-firmware.git
+	arch = aarch64
+	arch = x86_64
+	license = GPL
+	makedepends = git
+	makedepends = dtc
+	makedepends = aarch64-linux-gnu-gcc
+	source = git+https://github.com/ericwoud/arm-trusted-firmware.git#branch=bpir
+	source = uboot2023.01::https://github.com/u-boot/u-boot/archive/refs/tags/v2023.01.tar.gz
+	source = 95-atf.hook
+	source = bpir-writefip
+	source = mtkimage-gpt-expand.patch
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = SKIP
+
+pkgname = bpir64-atf-git
+	pkgdesc = ATF BPI-R64 & BPI-R3 images
+	install = bpir64-atf-git.install
+	depends = linux
+	depends = dtc
+	depends = bpir64-atf-git-fiptool
+	replaces = bpir64-mkimage

@@ -1,0 +1,13 @@
+post_upgrade() {
+  bpir-writefip --atf
+}
+
+post_install() {
+  post_upgrade
+}
+
+post_remove() {
+  rm -vfr /boot/bootcfg
+  rm -vf  /boot/dtbos/*-fixed.dtb
+  rm -vf  /boot/dtbos/*-atf.dtb
+}
