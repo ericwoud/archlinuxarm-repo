@@ -143,11 +143,14 @@ _package() {
   _basekernel=${_kernver%%-*}
   _basekernel=${_basekernel%.*}
 
-  mkdir -p "${pkgdir}"/{boot,boot/dtbs,usr/lib/modules}
+  mkdir -p "${pkgdir}/usr/lib/modules"
   make ${MAKEFLAGS} $_llvm INSTALL_MOD_PATH="${pkgdir}/usr" INSTALL_MOD_STRIP=1 \
        DEPMOD=/doesnt/exist modules_install
-  cp arch/$KARCH/boot/Image{,.gz} "${pkgdir}/boot"
-  cp arch/$KARCH/boot/dts/mediatek/*.dtb "${pkgdir}/boot/dtbs"
+
+  install -d -m 0700 "${pkgdir}/boot"
+  install -d -m 0700 "${pkgdir}/boot/dtbs"
+  install -Dt "${pkgdir}/boot"      -m600 arch/$KARCH/boot/Image{,.gz}
+  install -Dt "${pkgdir}/boot/dtbs" -m600 arch/$KARCH/boot/dts/mediatek/*.dtb
 
   # make room for external modules
   local _extramodules="extramodules-${_basekernel}${_kernelname}"
