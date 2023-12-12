@@ -61,10 +61,6 @@ if [[ $@ =~ "--fip2boot" ]] && [ -L ${fipdevicel} ]; then
   mount -t vfat ${bootdevicel} /boot
   echo "Copying files from $tmp/boot to /boot"
   cp -rfT $tmp/boot /boot
-  if [ -z "$(cat /etc/fstab | grep ${fstabstr})" ]; then
-    sed -i -e '$a\' /etc/fstab # add newline
-    echo "${fstabstr} /boot vfat defaults 0 2" >>/etc/fstab
-  fi
   set +e
 fi
 
@@ -85,7 +81,6 @@ if [[ $@ =~ "--boot2fip" ]] && [ -L ${bootdevicel} ]; then
   rm -rf /boot
   echo "Moving files from $tmp/boot to /boot"
   mv -fT $tmp/boot /boot
-  sed -i '/\b'"${fstabstr}"'\b/d' /etc/fstab
   set +e
 fi
 
