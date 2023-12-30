@@ -92,12 +92,25 @@ if [[ $@ =~ "--atf" ]]; then
     if [ -f "/boot/${target}-atf-${atfdevice}-header.bin" ]; then
       headerdev="/dev/"$(lsblk -no pkname ${atfdevicel})
       echo Writing ${target}-atf-${atfdevice}-header.bin to ${headerdev}
-      dd if=/boot/${target}-atf-${atfdevice}-header.bin of="${headerdev}"
+      dd if=/boot/${target}-atf-${atfdevice}-header.bin of="${headerdev}" conv=fsync
     fi
     echo -e "Target = ${target}, ATF device = ${atfdevice}\nZeroing: ${atfdevicel}"
-    dd bs=64k if=/dev/zero of="${atfdevicel}" 2>/dev/null
+    dd bs=64k if=/dev/zero of="${atfdevicel}" conv=fsync 2>/dev/null
     echo "Writing ${target}-atf-${atfdevice}-atf.bin to ${atfdevicel}"
-    dd bs=64k if=/boot/${target}-atf-${atfdevice}-atf.bin of="${atfdevicel}"
+    dd bs=64k if=/boot/${target}-atf-${atfdevice}-atf.bin of="${atfdevicel}" conv=fsync
+    if [ -b ${headerdev}"boot0" ] && [ -b ${headerdev}"boot1" ]; then
+      bootpart="0"$(mmc extcsd read ${headerdev} | grep PARTITION_CONFIG | cut -f 2 -d'0' | cut -f 1 -d']')
+      bootpart=$(( ($bootpart & 0x38) >> 3 ))
+      echo "EXTCSD bootpart = $bootpart"
+      [ "$bootpart" -eq "1" ] && bootx="boot0"
+      [ "$bootpart" -eq "2" ] && bootx="boot1"
+      if [ ! -z "$bootx" ]; then
+        echo -e "Copying atf to ${headerdev}${bootx}"
+	echo 0 > /sys/block/${headerdev}${bootx}/force_ro
+        dd bs=4M if="${atfdevicel}" of="${headerdev}${bootx}" conv=fsync
+	echo 1 > /sys/block/${headerdev}${bootx}/force_ro
+      fi
+    fi
   fi
 fi
 
@@ -156,8 +169,8 @@ if [ -L ${fipdevicel} ]; then
   fiptool --verbose create $tmp/fip.bin $fipfiles
   fiptool info $tmp/fip.bin
   echo Writing FIP to: ${fipdevicel}
-  dd bs=1M of=${fipdevicel} if=/dev/zero 2>/dev/null
-  dd bs=1M of=${fipdevicel} if=$tmp/fip.bin
+  dd bs=1M of=${fipdevicel} if=/dev/zero conv=fsync 2>/dev/null
+  dd bs=1M of=${fipdevicel} if=$tmp/fip.bin conv=fsync
   sync
 fi
 
