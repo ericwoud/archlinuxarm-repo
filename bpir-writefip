@@ -134,7 +134,7 @@ done
 fdtoverlay -vi "/boot/dtbs/${dtb}-fixed.dtb" -o "$atfdtb" \
                 /boot/dtbos/*.dtbo
 origargs=$(fdtget -ts "$atfdtb" "/chosen" "bootargs")
-bootargs="root=PARTLABEL=${target}-${atfdevice}-root $origargs $cmdline"
+bootargs="root=PARTLABEL=${partlabelroot} $origargs $cmdline"
 echo BOOTARGS = "$bootargs"
 fdtput -ts "$atfdtb" "/chosen" "bootargs" "$bootargs"
 fdtput -ts "$atfdtb" "/memory" "device_type" "memory"
