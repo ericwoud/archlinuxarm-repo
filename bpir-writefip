@@ -76,7 +76,7 @@ if [[ $@ =~ "--boot2fip" ]] && [ -L ${bootdevicel} ]; then
   mkdir $tmp/boot
   echo "Copying files from /boot to $tmp/boot"
   cp -rfT /boot/ $tmp/boot
-  umount /boot
+  while mountpoint /boot; do umount /boot; sleep 1; done
   parted -s -- "/dev/$pkfip" name $nrfip ${target}-${atfdevice}-fip
   rm -rf /boot
   echo "Moving files from $tmp/boot to /boot"
