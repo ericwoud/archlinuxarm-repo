@@ -1,7 +1,33 @@
 #!/usr/bin/ash
 # SPDX-License-Identifier: GPL-2.0-only
 
+chainload() {
+  newroot="/dev/disk/by-partlabel/${target}-nvme-root"
+  [[ ! -b "${newroot}" ]] && return
+  echo "newroot ok"
+  mkdir -p /nvme
+  mount --source ${newroot} --target /nvme
+  [[ ! -d "/nvme/boot/bootcfg" ]] && return
+  echo "bootcfg ok"
+  linux=$( cat /nvme/boot/bootcfg/linux)
+  [[ ! -f "/nvme${linux}" ]]  && return
+  initrd=$(cat /nvme/boot/bootcfg/initrd)
+  [[ ! -f "/nvme${initrd}" ]] && return
+  atfdtb=$(cat /nvme/boot/bootcfg/atfdtb)
+  [[ ! -f "/nvme${atfdtb}" ]] && return
+  echo "files ok"
+  kexec --load --force \
+      --initrd="/nvme${initrd}" \
+      --dtb="/nvme${atfdtb}" \
+      "/nvme${linux}"
+  echo "kexec load failed!"
+}
+
 run_hook() {
+  if [[ "$(echo ${root} | cut -d'=' -f1)" == "PARTLABEL" ]]; then
+    target=$(echo ${root} | cut -d'=' -f2 | cut -d'-' -f1)
+    device=$(echo ${root} | cut -d'=' -f2 | cut -d'-' -f2)
+  fi
   read -n 1 -t 0.3 char
   if [[ "$char" == "E" ]]; then
     echo "Executing 'bpir-flash2emmc /tmp/bpir.img.xz' ..."
@@ -13,5 +39,9 @@ run_hook() {
     echo "Enter 'bpir-flash2emmc /tmp/bpir.img.xz' to flash it to the EMMC on th R3."
     echo "Enter 'exit' to continue booting."
     ash
+# Currently broken, mtk-pcie-gen3 is not kexec compatible
+#  elif [[ "${device}" == "emmc" ]] && [[ "$char" != "e" ]]; then
+#    echo "Trying to chainload..."
+#    chainload
   fi
 }
