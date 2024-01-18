@@ -1,0 +1,14 @@
+pkgbase = peekpoke-git
+	pkgdesc = Linux userland tool to read and write arbitrary memory locations
+	pkgver = r14.913be80
+	pkgrel = 1
+	url = https://github.com/apritzel/peekpoke/tree/master
+	arch = any
+	license = GPL
+	makedepends = git
+	provides = peekpoke-git
+	conflicts = peekpoke-git
+	source = peekpoke::git+https://github.com/apritzel/peekpoke.git
+	md5sums = SKIP
+
+pkgname = peekpoke-git
