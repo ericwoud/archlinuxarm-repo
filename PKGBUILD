@@ -12,8 +12,9 @@ license=('GPL')
 makedepends=('git')
 provides=("${pkgname}")
 conflicts=("${pkgname}")
-source=('peekpoke::git+https://github.com/apritzel/peekpoke.git')
-md5sums=('SKIP')
+source=('peekpoke::git+https://github.com/apritzel/peekpoke.git'
+        'pokefile.c')
+md5sums=('SKIP' 'SKIP')
 
 pkgver() {
 	cd "$srcdir/${_pkgname}"
@@ -23,9 +24,13 @@ pkgver() {
 build() {
 	cd "$srcdir/${_pkgname}"
 	make
+	cd "$srcdir"
+	gcc "pokefile.c" -o "pokefile"
 }
 
 package() {
 	cd "$srcdir/${_pkgname}"
-	install -m755 -vDt "$pkgdir/usr/bin" peekpoke
+	install -m700 -vDt "$pkgdir/usr/bin" peekpoke
+	cd "$srcdir/"
+	install -m700 -vDt "$pkgdir/usr/bin" pokefile
 }
