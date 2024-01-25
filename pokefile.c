@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 	}
 	while (bytesRead == map_size);
 
-	printf("Written %d bytes from %s to 0x%x.\n", totalbytesRead, argv[2], target);
+	printf("Written %d bytes from %s to 0x%lx.\n", totalbytesRead, argv[2], target);
 	
 	close(memfd);
 	return 0;
