@@ -88,7 +88,7 @@ elif [[ "$compatible" == *"bananapi"*"mediatek,mt7986"* ]]; then # BPI-R3
       echo "Setting up EMMC so that ${mmcblk} is the bootdevice."
       mmc bootpart enable 7 1 /dev/${mmcblk}
       echo "Writing $1 to EMMC now..."
-      xz -dcv "/tmp/tempfile" | dd of=/dev/${mmcblk} conv=fsync,notrunc
+      gzip -d -c "/tmp/tempfile" | dd of=/dev/${mmcblk} conv=fsync,notrunc
       echo "Reboot and enjoy booting from EMMC."
     fi
   elif [[ "$(get_mmctype)" == "MMC" ]]; then
