@@ -1,0 +1,68 @@
+#!/usr/lib/initcpio/busybox ash
+
+set -e
+
+if [ $# -ne 3 ]; then
+  echo "Usage $0 {image} {dtb} {initrd}"
+  linux=$(cat "/boot/bootcfg/linux")
+  dtb=$(cat "/boot/bootcfg/atfdtb")
+  initrd=$(cat "/boot/bootcfg/initrd")
+else
+  linux="$1"
+  dtb="$2"
+  initrd="$3"
+fi
+
+function read_le64 {
+  n=$(od $1 -N8 -j$(($2*8)) -tx8 -An)
+  n="${n/' '/}"
+  printf "0x%s%s%s%s%s%s%s%s" ${n:14:2} ${n:12:2} ${n:10:2} ${n:8:2} ${n:6:2} ${n:4:2} ${n:2:2} ${n:0:2}
+}
+
+function write_le64 {
+  n=$(printf "%016x" $(($2)))
+  echo -en "\x${n:14:2}\x${n:12:2}\x${n:10:2}\x${n:8:2}\x${n:6:2}\x${n:4:2}\x${n:2:2}\x${n:0:2}" >> $1
+}
+
+pagesz=$(( $(grep -i -m1 kernelpagesize /proc/self/smaps | grep -Eo "[0-9]+") * 1024))
+
+t="/tmp/atf-data.bin"
+rm -f $t
+
+linux_sz="0x$( printf '%x\n' $(( $(du -b $linux  | cut -f1) )))"
+initrd_sz="0x$(printf '%x\n' $(( $(du -b $initrd | cut -f1) )))"
+dtb_sz="0x$(   printf '%x\n' $(( $(du -b $dtb    | cut -f1) )))"
+
+linux_sz2=$((  ($linux_sz  + $pagesz-1) & -$pagesz ))
+initrd_sz2=$(( ($initrd_sz + $pagesz-1) & -$pagesz ))
+dtb_sz2=$((    ($dtb_sz    + $pagesz-1) & -$pagesz ))
+
+buf=$(      read_le64 /proc/device-tree/reserved-memory/atf-buffer@*/reg 0)
+bufsz=$(    read_le64 /proc/device-tree/reserved-memory/atf-buffer@*/reg 1)
+atfdata=$(  read_le64 /proc/device-tree/reserved-memory/atf-data@*/reg   0)
+atfdatasz=$(read_le64 /proc/device-tree/reserved-memory/atf-data@*/reg   1)
+
+bl31_s=0
+bl31_sz=0
+linux_s=$(($buf))
+initrd_s=$(($buf + $linux_sz2))
+dtb_s=$(($initrd_s + $initrd_sz2))
+
+pokefile $linux_s  $linux
+pokefile $initrd_s $initrd
+pokefile $dtb_s    $dtb
+
+write_le64 $t ${bl31_s}   ; write_le64 $t ${bl31_sz}
+write_le64 $t ${linux_s}  ; write_le64 $t ${linux_sz}
+write_le64 $t ${initrd_s} ; write_le64 $t ${initrd_sz}
+write_le64 $t ${dtb_s}    ; write_le64 $t ${dtb_sz}
+j=$(($atfdatasz/8-1))
+i=8; while [ ${i} -lt $j ]; do
+  write_le64 $t 0; let $((i++))
+done
+[ -f "/usr/lib/initcpio/busybox" ] && e="/usr/lib/initcpio/busybox" || e="busybox"
+crc="0x"$(cat $t | $e crc32)
+write_le64 $t "${crc}"
+pokefile $atfdata $t
+echo "CRC atf-data = ${crc}"
+rm -f $t

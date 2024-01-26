@@ -25,8 +25,8 @@ pkgbase=linux-bpir64-git
 _srcname=linux
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for BPI-R64 and BPI-R3"
-pkgver=6.3.9.bpi
-pkgrel=6
+pkgver=6.6.14.bpi.d82609bef
+pkgrel=1
 arch=('aarch64' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -41,8 +41,9 @@ source=('defconfig'
         'mkinitcpio.hook'
         'mkinitcpio.build'
         'bpir-flash2emmc'
+        'bpir-kexec'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -127,7 +128,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'evtest' 'parted' 'nano' 'kexec-tools')
+  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'evtest' 'parted' 'nano')
   optdepends=('mkinitcpio>=0.7')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   replaces=('linux-armv8')
@@ -196,6 +197,10 @@ _package() {
   # install R3 EMMC flash script
   sed "${_subst}" ../bpir-flash2emmc |
     install -Dm755 /dev/stdin "${pkgdir}/usr/bin/bpir-flash2emmc"
+
+  # install bpir-kexec script
+  sed "${_subst}" ../bpir-kexec |
+    install -Dm755 /dev/stdin "${pkgdir}/usr/bin/bpir-kexec"
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |

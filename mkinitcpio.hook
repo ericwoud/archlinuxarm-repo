@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 
 chainload() {
+  echo "emmc ok"
   newroot="/dev/disk/by-partlabel/${target}-nvme-root"
   [[ ! -b "${newroot}" ]] && return
   echo "newroot ok"
@@ -9,21 +10,14 @@ chainload() {
   mount --source ${newroot} --target /nvme
   [[ ! -d "/nvme/boot/bootcfg" ]] && return
   echo "bootcfg ok"
-  linux=$( cat /nvme/boot/bootcfg/linux)
-  [[ ! -f "/nvme${linux}" ]]  && return
-  initrd=$(cat /nvme/boot/bootcfg/initrd)
-  [[ ! -f "/nvme${initrd}" ]] && return
-  atfdtb=$(cat /nvme/boot/bootcfg/atfdtb)
-  [[ ! -f "/nvme${atfdtb}" ]] && return
-  echo "files ok"
-  kexec --load --force \
-      --initrd="/nvme${initrd}" \
-      --dtb="/nvme${atfdtb}" \
-      "/nvme${linux}"
-  echo "kexec load failed!"
+  ln -s /nvme/boot /boot
+  bpir-kexec
+  [[ $? == 0 ]] && reboot -f  
 }
 
 run_hook() {
+  mkdir -p /usr/lib/initcpio
+  ln -s /bin/busybox /usr/lib/initcpio/busybox
   if [[ "$(echo ${root} | cut -d'=' -f1)" == "PARTLABEL" ]]; then
     target=$(echo ${root} | cut -d'=' -f2 | cut -d'-' -f1)
     device=$(echo ${root} | cut -d'=' -f2 | cut -d'-' -f2)
@@ -39,9 +33,8 @@ run_hook() {
     echo "Enter 'bpir-flash2emmc /tmp/bpir.img.xz' to flash it to the EMMC on th R3."
     echo "Enter 'exit' to continue booting."
     ash
-# Currently broken, mtk-pcie-gen3 is not kexec compatible
-#  elif [[ "${device}" == "emmc" ]] && [[ "$char" != "e" ]]; then
-#    echo "Trying to chainload..."
-#    chainload
+  elif [[ "${device}" == "emmc" ]] && [[ "$char" != "e" ]]; then
+    echo "Trying to chainload, root=${root}"
+    chainload
   fi
 }
