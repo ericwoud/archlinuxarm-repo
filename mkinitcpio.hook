@@ -24,13 +24,13 @@ run_hook() {
   fi
   read -n 1 -t 0.3 char
   if [[ "$char" == "E" ]]; then
-    echo "Executing 'bpir-flash2emmc /tmp/bpir.img.xz' ..."
-    bpir-flash2emmc /tmp/bpir.img.xz
+    echo "Executing 'bpir-flash2emmc /tmp/bpir.img.gz' ..."
+    bpir-flash2emmc /tmp/bpir.img.gz
     echo "Entering busybox ash shell."
     ash
   elif [[ "$char" == "x" ]]; then
     echo "Entering busybox ash shell."
-    echo "Enter 'bpir-flash2emmc /tmp/bpir.img.xz' to flash it to the EMMC on th R3."
+    echo "Enter 'bpir-flash2emmc /tmp/bpir.img.gz' to flash it to the EMMC on th R3."
     echo "Enter 'exit' to continue booting."
     ash
   elif [[ "${device}" == "emmc" ]] && [[ "$char" != "e" ]]; then
