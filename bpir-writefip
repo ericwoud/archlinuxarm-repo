@@ -89,8 +89,8 @@ fi
 ########################
 if [[ $@ =~ "--atf" ]]; then
   if [ -L ${atfdevicel} ]; then
+    headerdev="/dev/"$(lsblk -no pkname ${atfdevicel})
     if [ -f "/boot/${target}-atf-${atfdevice}-header.bin" ]; then
-      headerdev="/dev/"$(lsblk -no pkname ${atfdevicel})
       echo Writing ${target}-atf-${atfdevice}-header.bin to ${headerdev}
       dd if=/boot/${target}-atf-${atfdevice}-header.bin of="${headerdev}" conv=fsync
     fi
@@ -106,9 +106,9 @@ if [[ $@ =~ "--atf" ]]; then
       [ "$bootpart" -eq "2" ] && bootx="boot1"
       if [ ! -z "$bootx" ]; then
         echo -e "Copying atf to ${headerdev}${bootx}"
-	echo 0 > /sys/block/${headerdev}${bootx}/force_ro
+	echo 0 > /sys/block/${headerdev/'/dev/'/}${bootx}/force_ro
         dd bs=4M if="${atfdevicel}" of="${headerdev}${bootx}" conv=fsync
-	echo 1 > /sys/block/${headerdev}${bootx}/force_ro
+	echo 1 > /sys/block/${headerdev/'/dev/'/}${bootx}/force_ro
       fi
     fi
   fi
@@ -171,7 +171,6 @@ if [ -L ${fipdevicel} ]; then
   echo Writing FIP to: ${fipdevicel}
   dd bs=1M of=${fipdevicel} if=/dev/zero conv=fsync 2>/dev/null
   dd bs=1M of=${fipdevicel} if=$tmp/fip.bin conv=fsync
-  sync
 fi
 
 exit 0
