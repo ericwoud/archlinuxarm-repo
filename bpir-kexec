@@ -2,6 +2,8 @@
 
 set -e
 
+[ -f "/usr/lib/initcpio/busybox" ] && bb="/usr/lib/initcpio/busybox" || bb="busybox"
+
 if [ $# -ne 3 ]; then
   echo "Usage $0 {image} {dtb} {initrd}"
   linux=$(cat "/boot/bootcfg/linux")
@@ -13,10 +15,8 @@ else
   initrd="$3"
 fi
 
-function read_le64 {
-  n=$(od $1 -N8 -j$(($2*8)) -tx8 -An)
-  n="${n/' '/}"
-  printf "0x%s%s%s%s%s%s%s%s" ${n:14:2} ${n:12:2} ${n:10:2} ${n:8:2} ${n:6:2} ${n:4:2} ${n:2:2} ${n:0:2}
+function read_64 {
+  echo "0x"$($bb hexdump -n8 -s$(($2*8)) -e'8/1 "%02x""\n"' $1)
 }
 
 function write_le64 {
@@ -37,10 +37,10 @@ linux_sz2=$((  ($linux_sz  + $pagesz-1) & -$pagesz ))
 initrd_sz2=$(( ($initrd_sz + $pagesz-1) & -$pagesz ))
 dtb_sz2=$((    ($dtb_sz    + $pagesz-1) & -$pagesz ))
 
-buf=$(      read_le64 /proc/device-tree/reserved-memory/atf-buffer@*/reg 0)
-bufsz=$(    read_le64 /proc/device-tree/reserved-memory/atf-buffer@*/reg 1)
-atfdata=$(  read_le64 /proc/device-tree/reserved-memory/atf-data@*/reg   0)
-atfdatasz=$(read_le64 /proc/device-tree/reserved-memory/atf-data@*/reg   1)
+buf=$(      read_64 /proc/device-tree/reserved-memory/atf-buffer@*/reg 0)
+bufsz=$(    read_64 /proc/device-tree/reserved-memory/atf-buffer@*/reg 1)
+atfdata=$(  read_64 /proc/device-tree/reserved-memory/atf-data@*/reg   0)
+atfdatasz=$(read_64 /proc/device-tree/reserved-memory/atf-data@*/reg   1)
 
 bl31_s=0
 bl31_sz=0
@@ -60,8 +60,7 @@ j=$(($atfdatasz/8-1))
 i=8; while [ ${i} -lt $j ]; do
   write_le64 $t 0; let $((i++))
 done
-[ -f "/usr/lib/initcpio/busybox" ] && e="/usr/lib/initcpio/busybox" || e="busybox"
-crc="0x"$(cat $t | $e crc32)
+crc="0x"$(cat $t | $bb crc32)
 write_le64 $t "${crc}"
 pokefile $atfdata $t
 echo "CRC atf-data = ${crc}"
