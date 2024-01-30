@@ -128,7 +128,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'evtest' 'parted' 'nano')
+  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'peekpoke-git' 'parted')
   optdepends=('mkinitcpio>=0.7')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   replaces=('linux-armv8')
