@@ -652,6 +652,8 @@ CONFIG_THERMAL_EMULATION=y
 #
 # Mediatek thermal drivers
 #
+CONFIG_MTK_THERMAL=y
+CONFIG_MTK_SOC_THERMAL=y
 CONFIG_MTK_LVTS_THERMAL=y
 # end of Mediatek thermal drivers
 
