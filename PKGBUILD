@@ -18,11 +18,10 @@ source=(
   "git+https://github.com/radxa/u-boot.git#branch=stable-5.10-rock5"
   "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin"
   "src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.28.elf"
-  'rockchip-write-dtbos'
   '95-boot.hook'
   'extlinux.conf'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 install=${pkgname}.install
 backup=('boot/extlinux/extlinux.conf')
 
