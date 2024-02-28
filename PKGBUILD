@@ -14,13 +14,12 @@ _binsite="https://github.com/rockchip-linux/rkbin/blob"
 _bincommit="c02d94aba0d42212bf343785f080f1fc1085f947"
 source=(
   "https://github.com/u-boot/u-boot/archive/refs/tags/v${_pkgver}.tar.gz"
-  'rockchip-write-dtbos'
   '95-boot.hook'
   '040-limit_mode_to_config_max.patch'
   '050-rk-vop-no-reset.patch'
   'extlinux.conf'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 install=${pkgname}.install
 backup=('boot/extlinux/extlinux.conf')
 
