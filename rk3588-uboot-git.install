@@ -1,6 +1,5 @@
 post_upgrade() {
-  rootpartlabel=$(lsblk -pilno partlabel,type,mountpoint | grep -G 'part +/$' |  head -n1 | cut -d " " -f1)
-  sed -i 's/root=PARTLABEL=must-replace-me/root=PARTLABEL='"$rootpartlabel"'/g' /boot/extlinux/extlinux.conf
+  rockchip-write-extlinux
   rockchip-write-dtbos --uboot@root
 }
 
@@ -9,8 +8,6 @@ post_install() {
 }
 
 post_remove() {
-  rm -vf /boot/dtbs/*-tojoin.dtb
-  rm -vf /boot/dtbs/*-joined.dtb
-  rm -vf /boot/dtbos/*.dtbo
+  rockchip-write-dtbos --remove
 }
 
