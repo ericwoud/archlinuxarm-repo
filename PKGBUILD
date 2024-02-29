@@ -84,7 +84,6 @@ package() {
   install -vDt "$pkgdir/boot/uboot" -m644 u-boot-with-spl-rk3288-*.bin.xz
 
   cd "${startdir}"
-  install -m755 -vDt $pkgdir/usr/bin rockchip-write-dtbos
   install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-boot.hook
   install -m644 -vDt "${pkgdir}/boot/extlinux/" extlinux.conf
 }
