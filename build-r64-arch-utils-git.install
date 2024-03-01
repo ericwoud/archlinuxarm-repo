@@ -1,4 +1,7 @@
 post_upgrade() {
+  sudo systemctl --force --no-pager disable setmac.service
+  echo
+  sudo systemctl --force --no-pager enable setmac.service
   echo
 }
 
@@ -7,5 +10,5 @@ post_install() {
 }
 
 pre_remove() {
-  echo
+  sudo systemctl --force --no-pager disable setmac.service
 }
