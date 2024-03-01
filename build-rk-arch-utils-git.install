@@ -4,8 +4,10 @@ post_upgrade() {
 post_install() {
   # remove locally installed from old script:
   rm -f /usr/local/bin/rockchip-postinstall
+  rockchip-toolbox --install
   post_upgrade
 }
 
-post_remove() {
+pre_remove() {
+  rockchip-toolbox --remove
 }
