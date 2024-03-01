@@ -1,0 +1,11 @@
+pkgbase = build-rk-arch-utils-git
+	pkgver = r53.9e25a90
+	pkgrel = 1
+	url = https://github.com/ericwoud/buildRKarch
+	install = build-rk-arch-utils-git.install
+	arch = any
+	license = GPL
+	source = git+https://github.com/ericwoud/buildRKarch.git
+	sha256sums = SKIP
+
+pkgname = build-rk-arch-utils-git
