@@ -1,5 +1,5 @@
 post_upgrade() {
-  bpir-writefip --atf
+  bpir-toolbox --atf
 }
 
 post_install() {
