@@ -1,6 +1,7 @@
 # Maintainer: Eric Woudstra <ericwouds AT gmail DOT com>
 
 pkgname=rk3288-uboot
+#last tested 2022.07, does not build anymore...
 _pkgver=2023.07
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
@@ -46,8 +47,7 @@ CONFIG_USB_FUNCTION_MASS_STORAGE=y
 #CONFIG_OF_LIBFDT_OVERLAY=y             ### u-boot hangs
 CONFIG_EFI_ECPT=n
 EOT
-    unset LDFLAGS
-    unset CFLAGS
+    unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
     ARCH=arm make rk3288_my_defconfig
     ARCH=arm make
