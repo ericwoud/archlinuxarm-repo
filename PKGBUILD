@@ -17,6 +17,9 @@ pkgver() {
 }
 
 package() {
+  cd "${startdir}"
+  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-rockchip-toolbox.hook
+
   cd "${srcdir}/buildRKarch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin rockchip-toolbox
   install -m755 -vDt $pkgdir/usr/bin rockchip-postinstall
@@ -24,7 +27,4 @@ package() {
   cd "${srcdir}/buildRKarch/rootfs"
   install -vDd ${pkgdir}/share/buildRKarch
   cp -vr boot  ${pkgdir}/share/buildRKarch/
-
-  cd "${startdir}"
-  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-rockchip-toolbox.hook
 }
