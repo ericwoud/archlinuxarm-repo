@@ -23,6 +23,9 @@ package() {
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
 
+  cd "${srcdir}/buildRKarch/rootfs/services"
+  install -m644 -vDt $pkgdir/etc/systemd/system setmac.service
+
   cd "${srcdir}/buildR64arch/rootfs"
   install -vDd ${pkgdir}/usr/share/buildR64arch
   cp -vr boot  ${pkgdir}/usr/share/buildR64arch/
