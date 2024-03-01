@@ -54,15 +54,15 @@ EOT
     if [ "$rkdev" == "miqi" ]; then # Miqi always gets processed before Openhour
       _DTS="arch/arm/dts"
       cp -vf $_DTS/rk3288-miqi.dtb $_DTS/rk3288-openhour.dtb
-      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 bus-width 4
-      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 cap-sd-highspeed
-      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 card-detect-delay 200
-      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 non-removable -d
-#   For newer u-boot version use this instead:
-#      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 bus-width 4
-#      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 cap-sd-highspeed
-#      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 card-detect-delay 200
-#      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 non-removable -d
+#   For older u-boot version use this instead:
+#      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 bus-width 4
+#      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 cap-sd-highspeed
+#      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 card-detect-delay 200
+#      fdtput -v $_DTS/rk3288-openhour.dtb /dwmmc@ff0f0000 non-removable -d
+      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 bus-width 4
+      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 cap-sd-highspeed
+      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 card-detect-delay 200
+      fdtput -v $_DTS/rk3288-openhour.dtb /mmc@ff0f0000 non-removable -d
     fi
     _out="u-boot-with-spl-rk3288-$rkdev.bin"
     if grep --quiet CONFIG_SPL_ROCKCHIP_BACK_TO_BROM=y ./.config; then
