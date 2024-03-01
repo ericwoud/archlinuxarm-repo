@@ -1,11 +1,14 @@
-pkgbase = ssh-fix-reboot
+pkgbase = hostapd-launch
 	pkgver = 1.0
 	pkgrel = 1
-	url = https://github.com/ericwoud/archlinuxarm-repo/tree/ssh-fix-reboot
-	install = ssh-fix-reboot.install
+	url = https://github.com/ericwoud/archlinuxarm-repo/tree/hostapd-launch
+	install = hostapd-launch.install
 	arch = any
 	license = GPL
-	source = ssh-fix-reboot.service
+	depends = systemd
+	source = hostapd-launch
+	source = override.conf
+	sha256sums = SKIP
 	sha256sums = SKIP
 
-pkgname = ssh-fix-reboot
+pkgname = hostapd-launch
