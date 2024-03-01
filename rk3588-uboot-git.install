@@ -1,14 +1,11 @@
 post_upgrade() {
-  rockchip-toolbox --extlinux
   rockchip-toolbox --uboot@root
 }
 
 post_install() {
-  rockchip-toolbox --install
   post_upgrade
 }
 
 post_remove() {
-  rockchip-toolbox --remove
 }
 
