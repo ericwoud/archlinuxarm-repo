@@ -8,4 +8,4 @@ Target = boot/dtbs/*/*.dtb
 [Action]
 Description = Updating dtbos...
 When = PostTransaction
-Exec = /usr/bin/rockchip-write-dtbos
+Exec = /usr/bin/rockchip-toolbox

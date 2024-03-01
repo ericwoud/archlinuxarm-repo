@@ -1,13 +1,14 @@
 post_upgrade() {
-  rockchip-write-extlinux
-  rockchip-write-dtbos --uboot@root
+  rockchip-toolbox --extlinux
+  rockchip-toolbox --uboot@root
 }
 
 post_install() {
+  rockchip-toolbox --install
   post_upgrade
 }
 
 post_remove() {
-  rockchip-write-dtbos --remove
+  rockchip-toolbox --remove
 }
 
