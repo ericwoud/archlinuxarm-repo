@@ -12,7 +12,7 @@ sha256sums=(SKIP SKIP)
 install=${pkgname}.install
 
 pkgver() {
-  cd "${srcdir}/buildRKarch"
+  cd "${srcdir}/buildR64arch"
   printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
@@ -20,7 +20,7 @@ package() {
   cd "${startdir}"
   install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-bpir-toolbox.hook
 
-  cd "${srcdir}/buildRKarch/rootfs/bin"
+  cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
 
   cd "${srcdir}/buildR64arch/rootfs"
