@@ -1,0 +1,11 @@
+post_upgrade() {
+  sudo systemctl reenable ssh-fix-reboot.service
+}
+
+post_install() {
+  post_upgrade
+}
+
+pre_remove() {
+  sudo systemctl disable ssh-fix-reboot.service
+}
