@@ -1,7 +1,7 @@
 # Maintainer: Eric Woudstra <ericwouds AT gmail DOT com>
 
 pkgname=rk3288-uboot
-_pkgver=2022.07
+_pkgver=2023.07
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
 pkgdesc='U-Boot for RK3288 Boards'
