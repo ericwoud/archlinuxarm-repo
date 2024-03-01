@@ -1,0 +1,11 @@
+pkgbase = ssh-fix-reboot
+	pkgver = 1.0
+	pkgrel = 1
+	url = https://github.com/ericwoud/archlinuxarm-repo/tree/ssh-fix-reboot
+	install = ssh-fix-reboot.install
+	arch = any
+	license = GPL
+	source = ssh-fix-reboot.service
+	sha256sums = SKIP
+
+pkgname = ssh-fix-reboot

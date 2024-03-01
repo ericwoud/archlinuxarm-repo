@@ -1,0 +1,6 @@
+
+post_install() {
+  # remove locally installed from old script:
+  rm -f /usr/local/sbin/hostapd-launch
+}
+
