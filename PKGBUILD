@@ -21,11 +21,9 @@ makedepends=(git dtc)
 license=(GPL)
 source=("git+${_gitroot}.git#branch=${_gitbranch}"
         "uboot${_ubootpkgver}::https://github.com/u-boot/u-boot/archive/refs/tags/v${_ubootpkgver}.tar.gz"
-        '95-atf.hook'
-        'bpir-writefip'
         'mtkimage-gpt-expand.patch'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" == "aarch64" ]]; then
@@ -120,12 +118,10 @@ build() {
  
 package_bpir64-atf-git() {
   pkgdesc='ATF BPI-R64 & BPI-R3 images'
-  depends=("linux" "dtc" "bpir64-atf-git-fiptool")
+  depends=("linux" "dtc" "bpir64-atf-git-fiptool" "build-r64-arch-utils-git")
   replaces=(bpir64-mkimage)
   install=${pkgname}.install
   cd "${srcdir}"
-  install -m755 -vDt "$pkgdir/usr/bin" bpir-writefip
-  install -Dt "${pkgdir}/usr/share/libalpm/hooks/" -m644 95-atf.hook
   for _folder in "${srcdir}/${_gitname}/build/"*; do
     cd "$_folder/release"
     install -vDt "$pkgdir/boot" -m644 *-atf-*.bin
