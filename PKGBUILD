@@ -6,8 +6,9 @@ license=('GPL')
 arch=('any')
 pkgver=r53.9e25a90
 pkgrel=1
-source=("git+https://github.com/ericwoud/buildRKarch.git")
-sha256sums=(SKIP)
+source=("git+https://github.com/ericwoud/buildRKarch.git"
+	'95-rockchip-toolbox.hook')
+sha256sums=(SKIP SKIP)
 install=${pkgname}.install
 
 pkgver() {
@@ -19,4 +20,7 @@ package() {
   cd "${srcdir}/buildRKarch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin rockchip-toolbox
   install -m755 -vDt $pkgdir/usr/bin rockchip-postinstall
+
+  cd "${startdir}"
+  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-rockchip-toolbox.hook
 }
