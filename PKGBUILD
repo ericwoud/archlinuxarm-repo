@@ -28,6 +28,8 @@ package() {
 
   cd "${srcdir}/buildR64arch/rootfs"
   install -vDd ${pkgdir}/usr/share/buildR64arch
-  cp -vr boot  ${pkgdir}/usr/share/buildR64arch/
-  cp -vr etc   ${pkgdir}/usr/share/buildR64arch/
+  cp -vr boot    ${pkgdir}/usr/share/buildR64arch/
+  cp -vr etc     ${pkgdir}/usr/share/buildR64arch/
+  cp -vr network ${pkgdir}/usr/share/buildR64arch/
+  cp -vr hostapd ${pkgdir}/usr/share/buildR64arch/
 }
