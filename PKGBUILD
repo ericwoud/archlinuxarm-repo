@@ -25,6 +25,6 @@ package() {
   install -m755 -vDt $pkgdir/usr/bin rockchip-postinstall
 
   cd "${srcdir}/buildRKarch/rootfs"
-  install -vDd ${pkgdir}/share/buildRKarch
-  cp -vr boot  ${pkgdir}/share/buildRKarch/
+  install -vDd ${pkgdir}/usr/share/buildRKarch
+  cp -vr boot  ${pkgdir}/usr/share/buildRKarch/
 }
