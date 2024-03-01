@@ -7,13 +7,15 @@ arch=('any')
 pkgver=1.0
 pkgrel=1
 source=('hostapd-launch'
-	'override.conf')
-sha256sums=(SKIP SKIP)
+	'override.conf'
+	'hostapd@.service')
+sha256sums=(SKIP SKIP SKIP)
 install=${pkgname}.install
 depends=('systemd')
 
 package() {
   cd "${startdir}"
   install -m644 -vDt $pkgdir/etc/systemd/system/hostapd.service.d override.conf
+  install -m644 -vDt $pkgdir/etc/systemd/system/ hostapd@.service
   install -m755 -vDt $pkgdir/usr/bin hostapd-launch
 }

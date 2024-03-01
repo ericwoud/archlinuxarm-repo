@@ -1,6 +1,11 @@
 
+post_upgrade() {
+  sudo systemctl daemon-reload
+  echo
+}
+
 post_install() {
   # remove locally installed from old script:
   rm -f /usr/local/sbin/hostapd-launch
+  post_upgrade
 }
-
