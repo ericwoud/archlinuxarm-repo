@@ -49,8 +49,8 @@ CONFIG_EFI_ECPT=n
 EOT
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
-    ARCH=arm make rk3288_my_defconfig
-    ARCH=arm make
+    BINMAN_ALLOW_MISSING=1 ARCH=arm make rk3288_my_defconfig
+    BINMAN_ALLOW_MISSING=1 ARCH=arm make
     if [ "$rkdev" == "miqi" ]; then # Miqi always gets processed before Openhour
       _DTS="arch/arm/dts"
       cp -vf $_DTS/rk3288-miqi.dtb $_DTS/rk3288-openhour.dtb
