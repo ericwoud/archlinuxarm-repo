@@ -9,6 +9,7 @@ pkgrel=1
 source=('ssh-fix-reboot.service')
 sha256sums=(SKIP)
 install=${pkgname}.install
+depends=('systemd')
 
 package() {
   cd "${startdir}"
