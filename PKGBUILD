@@ -8,7 +8,7 @@ pkgdesc='U-Boot for RK3588 Boards'
 arch=('aarch64')
 url='https://github.com/radxa/u-boot'
 license=(GPL3)
-depends=('build-rk-arch-utils')
+depends=('build-rk-arch-utils-git')
 makedepends=('wget' 'dtc' 'git' 'swig' 'bc' 'python3' 'python-setuptools')
 #_binsite="https://github.com/rockchip-linux/rkbin/raw"
 #_bincommit="6e4ecc820bf15d47f06e67b5ddb2eab224e485b6"
@@ -18,12 +18,9 @@ source=(
   "git+https://github.com/radxa/u-boot.git#branch=stable-5.10-rock5"
   "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin"
   "src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.28.elf"
-  '95-boot.hook'
-  'extlinux.conf'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP)
 install=${pkgname}.install
-backup=('boot/extlinux/extlinux.conf')
 
 pkgver() {
   cd "${srcdir}/u-boot"
@@ -67,8 +64,4 @@ EOT
 package() {
   cd "${srcdir}/u-boot"
   install -vDt "$pkgdir/boot/uboot" -m644 u-boot-with-spl-rk3588-*.bin.xz
-
-  cd "${startdir}"
-  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-boot.hook
-  install -m644 -vDt "${pkgdir}/boot/extlinux/" extlinux.conf
 }
