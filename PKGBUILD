@@ -8,20 +8,17 @@ pkgdesc='U-Boot for RK3288 Boards'
 arch=('armv7h')
 url='https://github.com/u-boot/u-boot'
 license=(GPL3)
-depends=('build-rk-arch-utils')
+depends=('build-rk-arch-utils-git')
 makedepends=('wget' 'dtc' 'git' 'swig' 'bc' 'python3' 'python-setuptools')
 _binsite="https://github.com/rockchip-linux/rkbin/blob"
 _bincommit="c02d94aba0d42212bf343785f080f1fc1085f947"
 source=(
   "https://github.com/u-boot/u-boot/archive/refs/tags/v${_pkgver}.tar.gz"
-  '95-boot.hook'
   '040-limit_mode_to_config_max.patch'
   '050-rk-vop-no-reset.patch'
-  'extlinux.conf'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP)
 install=${pkgname}.install
-backup=('boot/extlinux/extlinux.conf')
 
 build() {
   cd "${srcdir}/u-boot-${_pkgver}"
@@ -82,8 +79,4 @@ EOT
 package() {
   cd "${srcdir}/u-boot-${_pkgver}"
   install -vDt "$pkgdir/boot/uboot" -m644 u-boot-with-spl-rk3288-*.bin.xz
-
-  cd "${startdir}"
-  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-boot.hook
-  install -m644 -vDt "${pkgdir}/boot/extlinux/" extlinux.conf
 }
