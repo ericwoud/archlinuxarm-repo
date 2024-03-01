@@ -2,7 +2,7 @@
 
 pkgname=rk3288-uboot
 #last tested 2022.07, does not build anymore...
-_pkgver=2023.07
+_pkgver=2023.01
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
 pkgdesc='U-Boot for RK3288 Boards'
