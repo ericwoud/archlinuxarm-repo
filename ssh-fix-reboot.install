@@ -2,6 +2,7 @@ post_upgrade() {
   sudo systemctl --force --no-pager disable ssh-fix-reboot.service
   echo
   sudo systemctl --force --no-pager enable ssh-fix-reboot.service
+  echo
 }
 
 post_install() {
@@ -10,4 +11,5 @@ post_install() {
 
 pre_remove() {
   sudo systemctl --force --no-pager disable ssh-fix-reboot.service
+  echo
 }
