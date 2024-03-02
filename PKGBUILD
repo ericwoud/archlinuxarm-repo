@@ -9,7 +9,7 @@ pkgrel=1
 source=("git+https://github.com/ericwoud/buildRKarch.git"
 	'95-rockchip-toolbox-dtbs.hook'
 	'95-rockchip-toolbox-uboot.hook')
-sha256sums=(SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP)
 install=${pkgname}.install
 
 pkgver() {
