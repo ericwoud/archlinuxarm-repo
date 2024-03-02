@@ -7,7 +7,7 @@ arch=('any')
 pkgver=r1
 pkgrel=1
 source=("git+https://github.com/ericwoud/buildR64arch.git"
-	'95-bpir-toolbox-fip.hook')
+	'95-bpir-toolbox-fip.hook'
 	'95-bpir-toolbox-atf.hook')
 sha256sums=(SKIP SKIP SKIP)
 install=${pkgname}.install
