@@ -1,0 +1,10 @@
+[Trigger]
+Type = File
+Operation = Install
+Operation = Upgrade
+Target = boot/uboot/*
+
+[Action]
+Description = Updating U-Boot...
+When = PostTransaction
+Exec = /usr/bin/rockchip-toolbox --uboot@root
