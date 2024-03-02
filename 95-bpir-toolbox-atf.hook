@@ -1,0 +1,10 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Target = bpir*-atf-git
+
+[Action]
+Description = Updating fip partition...
+When = PostTransaction
+Exec = /usr/bin/bpir-toolbox --atf
