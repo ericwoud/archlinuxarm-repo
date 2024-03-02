@@ -20,7 +20,6 @@ source=(
   "src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.28.elf"
 )
 sha256sums=(SKIP SKIP SKIP)
-install=${pkgname}.install
 
 pkgver() {
   cd "${srcdir}/u-boot"
