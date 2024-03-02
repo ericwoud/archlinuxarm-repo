@@ -11,4 +11,5 @@ post_install() {
 
 pre_remove() {
   sudo systemctl --force --no-pager disable setmac.service
+  rm -vf  /boot/dtbos/*-fixed.dtb
 }
