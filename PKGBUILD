@@ -120,7 +120,6 @@ package_bpir64-atf-git() {
   pkgdesc='ATF BPI-R64 & BPI-R3 images'
   depends=("linux" "dtc" "bpir64-atf-git-fiptool" "build-r64-arch-utils-git")
   replaces=(bpir64-mkimage)
-  install=${pkgname}.install
   cd "${srcdir}"
   for _folder in "${srcdir}/${_gitname}/build/"*; do
     cd "$_folder/release"
