@@ -19,7 +19,6 @@ source=(
   '050-rk-vop-no-reset.patch'
 )
 sha256sums=(SKIP SKIP SKIP)
-install=${pkgname}.install
 
 build() {
   cd "${srcdir}/u-boot-${_pkgver}"
