@@ -55,7 +55,6 @@ build() {
 	##CONFIG_EFI_ECPT=n
 	EOT
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
-
     export KCFLAGS='-Wno-error=address'
     export ARCH=aarch64
     make $_crossc rk3588_my_defconfig
