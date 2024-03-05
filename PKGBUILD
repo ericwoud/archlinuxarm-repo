@@ -1,5 +1,8 @@
 # Maintainer: Eric Woudstra <ericwouds AT gmail DOT com>
 
+
+_openatf="true"      # Uncomment this line to build opensource atf
+
 pkgname=rk3588-uboot
 #last tested 2022.07, does not build anymore...
 _pkgver=2024.04-rc3
@@ -18,9 +21,23 @@ _bincommit="f02d10e468d8c783c45137d230ff33d42ca670b4"
 source=(
   "https://github.com/u-boot/u-boot/archive/refs/tags/v${_pkgver}.tar.gz"
   "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_eyescan_v1.11.bin"
-  "src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.45.elf"
 )
+if [[ "$_openatf" == "true" ]]; then
+  # From: https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/21840
+  source+=("atf.tar.gz::https://review.trustedfirmware.org/changes/TF-A%2Ftrusted-firmware-a~21840/revisions/7/archive?format=tgz")
+  noextract+=("atf.tar.gz")
+else
+  source+=("src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.45.elf")
+fi
 sha256sums=(SKIP SKIP SKIP)
+
+
+prepare() {
+  if [[ "$_openatf" == "true" ]]; then
+    mkdir -p "${srcdir}/atf"
+    bsdtar -x -f "${startdir}/atf.tar.gz" -C "${srcdir}/atf"
+  fi
+}
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
@@ -29,6 +46,18 @@ if [[ "$(uname -m)" != "aarch64" ]]; then
 fi
 
 build() {
+
+  if [[ "$_openatf" == "true" ]]; then
+    cd "${srcdir}/atf"
+    touch plat/rockchip/rk3588/platform.mk
+    unset CXXFLAGS CPPFLAGS LDFLAGS
+    export CFLAGS=-Wno-error
+    make $_crossc PLAT=rk3588
+    _bl31="${srcdir}/atf/build/rk3588/release/bl31/bl31.elf"
+  else
+    _bl31="${srcdir}/rk3588_bl31.elf"
+  fi
+
   cd "${srcdir}/u-boot-${_pkgver}"
 #  patch -p1 -N -r - < "${srcdir}/040-limit_mode_to_config_max.patch"
 #  patch -p1 -N -r - < "${srcdir}/050-rk-vop-no-reset.patch"
@@ -56,7 +85,7 @@ EOT
     export ARCH=aarch64
 
     make $_crossc rk3588_my_defconfig
-    make $_crossc ROCKCHIP_TPL="${srcdir}/rk3588_ddr.bin" BL31="${srcdir}/rk3588_bl31.elf"
+    make $_crossc ROCKCHIP_TPL="${srcdir}/rk3588_ddr.bin" BL31="$_bl31"
     _out="u-boot-with-spl-rk3588-$rkdev.bin"
     dd if=idbloader.img of=$_out
     dd if=u-boot.itb    of=$_out seek=$((16384 - 64))
