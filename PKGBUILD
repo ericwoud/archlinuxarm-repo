@@ -35,17 +35,17 @@ build() {
     rkdev=${rkdev/"-rk3288_defconfig"/""}
     echo ^^^ BUILDING $rkdev ^^^
     cp -vf ./configs/$rkdev-rk3288_defconfig configs/rk3288_my_defconfig
-    cat <<EOT | tee -a configs/rk3288_my_defconfig
-CONFIG_VIDEO_ROCKCHIP_MAX_XRES=1920
-CONFIG_VIDEO_ROCKCHIP_MAX_YRES=1080
-CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
-CONFIG_PREBOOT="usb start;setenv stdin usbkbd"
-CONFIG_DM_KEYBOARD=y
-CONFIG_CMD_USB_MASS_STORAGE=y
-CONFIG_USB_FUNCTION_MASS_STORAGE=y
-#CONFIG_OF_LIBFDT_OVERLAY=y             ### u-boot hangs
-CONFIG_EFI_ECPT=n
-EOT
+    cat <<-EOT | tee -a configs/rk3288_my_defconfig
+	CONFIG_VIDEO_ROCKCHIP_MAX_XRES=1920
+	CONFIG_VIDEO_ROCKCHIP_MAX_YRES=1080
+	CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
+	CONFIG_PREBOOT="usb start;setenv stdin usbkbd"
+	CONFIG_DM_KEYBOARD=y
+	CONFIG_CMD_USB_MASS_STORAGE=y
+	CONFIG_USB_FUNCTION_MASS_STORAGE=y
+	#CONFIG_OF_LIBFDT_OVERLAY=y             ### u-boot hangs
+	CONFIG_EFI_ECPT=n
+	EOT
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
     BINMAN_ALLOW_MISSING=1 ARCH=arm make rk3288_my_defconfig
