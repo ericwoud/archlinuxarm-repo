@@ -30,7 +30,6 @@ sha256sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
-  unset depends
   makedepends+=(aarch64-linux-gnu-gcc)
   export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
 fi
