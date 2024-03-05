@@ -21,6 +21,13 @@ source=(
 )
 sha256sums=(SKIP SKIP SKIP)
 
+export CARCH=aarch64
+if [[ "$(uname -m)" != "aarch64" ]]; then
+  unset depends
+  makedepends+=(aarch64-linux-gnu-gcc)
+  export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
+fi
+
 pkgver() {
   cd "${srcdir}/u-boot"
   _year=$(grep '^VERSION = ' Makefile | cut -b 11-)
@@ -49,9 +56,10 @@ build() {
 	EOT
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
-    ARCH=aarch64 make rk3588_my_defconfig
     export KCFLAGS='-Wno-error=address'
-    ARCH=aarch64 make BL31="${srcdir}/rk3588_bl31.elf" spl/u-boot-spl.bin u-boot.dtb u-boot.itb
+    export ARCH=aarch64
+    make $_crossc rk3588_my_defconfig
+    make $_crossc BL31="${srcdir}/rk3588_bl31.elf" spl/u-boot-spl.bin u-boot.dtb u-boot.itb
     tools/mkimage -n rk3588 -T rksd -d ../rk3588_ddr.bin:spl/u-boot-spl.bin idbloader.img
     _out="u-boot-with-spl-rk3588-$rkdev.bin"
     dd if=idbloader.img of=$_out
