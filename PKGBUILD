@@ -20,6 +20,13 @@ source=(
 )
 sha256sums=(SKIP SKIP SKIP)
 
+export CARCH=aarch64
+if [[ "$(uname -m)" != "aarch64" ]]; then
+  unset depends
+  makedepends+=(aarch64-linux-gnu-gcc)
+  export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
+fi
+
 build() {
   cd "${srcdir}/u-boot-${_pkgver}"
   if [ -f configs/miqi-rk3288_defconfig ]; then
@@ -47,9 +54,10 @@ build() {
 	CONFIG_EFI_ECPT=n
 	EOT
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
-
-    BINMAN_ALLOW_MISSING=1 ARCH=arm make rk3288_my_defconfig
-    BINMAN_ALLOW_MISSING=1 ARCH=arm make
+    export BINMAN_ALLOW_MISSING=1
+    export ARCH=arm
+    make $_crossc rk3288_my_defconfig
+    make $_crossc
     if [ "$rkdev" == "miqi" ]; then # Miqi always gets processed before Openhour
       _DTS="arch/arm/dts"
       cp -vf $_DTS/rk3288-miqi.dtb $_DTS/rk3288-openhour.dtb
