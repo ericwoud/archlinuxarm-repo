@@ -24,6 +24,9 @@ sha256sums=(SKIP SKIP SKIP)
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
   makedepends+=(aarch64-linux-gnu-gcc)
+  pacman -Qt "${makedepends[@]}" >/dev/null
+  [[ $? != 0 ]] && exit # Manually check for makedepends only
+  export NODEPS=1
   export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
 fi
 
