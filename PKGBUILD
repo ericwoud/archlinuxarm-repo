@@ -1,7 +1,6 @@
 # Maintainer: Eric Woudstra <ericwouds AT gmail DOT com>
 
-
-_openatf="true"      # Uncomment this line to build opensource atf
+#_openatf="true"      # Uncomment this line to build opensource atf
 
 pkgname=rk3588-uboot
 #last tested 2022.07, does not build anymore...
