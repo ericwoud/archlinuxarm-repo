@@ -37,16 +37,16 @@ build() {
     rkdev=${rkdev/"-rk3588_defconfig"/""}
     echo ^^^ BUILDING $rkdev ^^^
     cp -vf ./configs/$rkdev-rk3588_defconfig configs/rk3588_my_defconfig
-    cat <<EOT | tee -a configs/rk3588_my_defconfig
-CONFIG_DISABLE_CONSOLE=n
-##CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
-##CONFIG_PREBOOT="usb start;setenv stdin usbkbd"
-##CONFIG_DM_KEYBOARD=y
-##CONFIG_CMD_USB_MASS_STORAGE=y
-##CONFIG_USB_FUNCTION_MASS_STORAGE=y
-###CONFIG_OF_LIBFDT_OVERLAY=y
-##CONFIG_EFI_ECPT=n
-EOT
+    cat <<-EOT | tee -a configs/rk3588_my_defconfig
+	CONFIG_DISABLE_CONSOLE=n
+	##CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
+	##CONFIG_PREBOOT="usb start;setenv stdin usbkbd"
+	##CONFIG_DM_KEYBOARD=y
+	##CONFIG_CMD_USB_MASS_STORAGE=y
+	##CONFIG_USB_FUNCTION_MASS_STORAGE=y
+	###CONFIG_OF_LIBFDT_OVERLAY=y
+	##CONFIG_EFI_ECPT=n
+	EOT
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
     ARCH=aarch64 make rk3588_my_defconfig
