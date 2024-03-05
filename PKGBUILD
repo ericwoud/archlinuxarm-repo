@@ -77,7 +77,6 @@ build() {
     unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
     export KCFLAGS='-Wno-error=address'
     export ARCH=aarch64
-
     make $_crossc rk3588_my_defconfig
     make $_crossc ROCKCHIP_TPL="${srcdir}/rk3588_ddr.bin" BL31="$_bl31"
     _out="u-boot-with-spl-rk3588-$rkdev.bin"
