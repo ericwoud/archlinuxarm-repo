@@ -6,7 +6,7 @@ _pkgver=2023.01
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
 pkgdesc='U-Boot for RK3288 Boards'
-arch=('armv7h')
+arch=('armv7h' 'x86_64')
 url='https://github.com/u-boot/u-boot'
 license=(GPL3)
 depends=('build-rk-arch-utils-git')
@@ -20,11 +20,15 @@ source=(
 )
 sha256sums=(SKIP SKIP SKIP)
 
-export CARCH=aarch64
-if [[ "$(uname -m)" != "aarch64" ]]; then
-  makedepends+=(aarch64-linux-gnu-gcc)
-  export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
+export CARCH=armv7h
+if [[ ! "$(uname -m)" =~ "armv7" ]]; then
+  makedepends+=(arm-none-eabi-gcc)
+  pacman -Qt "${makedepends[@]}" >/dev/null
+  [[ $? != 0 ]] && exit # Manually check for makedepends only
+  export NODEPS=1
+  export _crossc="CROSS_COMPILE=arm-none-eabi-"
 fi
+
 
 build() {
   cd "${srcdir}/u-boot-${_pkgver}"
