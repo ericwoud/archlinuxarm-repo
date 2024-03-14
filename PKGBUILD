@@ -8,8 +8,10 @@ pkgver=r1
 pkgrel=1
 source=("git+https://github.com/ericwoud/buildR64arch.git"
 	'95-bpir-toolbox-fip.hook'
-	'95-bpir-toolbox-atf.hook')
-sha256sums=(SKIP SKIP SKIP)
+	'95-bpir-toolbox-atf.hook'
+	'95-bpir-toolbox-uboot-inst.hook'
+	'95-bpir-toolbox-uboot-rem.hook')
+sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 install=${pkgname}.install
 
 pkgver() {
@@ -21,6 +23,8 @@ package() {
   cd "${startdir}"
   install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-bpir-toolbox-fip.hook
   install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-bpir-toolbox-atf.hook
+  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-bpir-toolbox-uboot-inst.hook
+  install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-bpir-toolbox-uboot-rem.hook
 
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
