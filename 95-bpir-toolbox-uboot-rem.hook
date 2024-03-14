@@ -1,0 +1,9 @@
+[Trigger]
+Type = Package
+Operation = Remove
+Target = bpir*-uboot-git
+
+[Action]
+Description = Removing U-Boot...
+When = PostTransaction
+Exec = /usr/bin/bpir-toolbox --uboot-remove

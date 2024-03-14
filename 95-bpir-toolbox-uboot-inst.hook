@@ -1,0 +1,10 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Target = bpir*-uboot-git
+
+[Action]
+Description = Installing U-Boot...
+When = PostTransaction
+Exec = /usr/bin/bpir-toolbox --uboot-install
