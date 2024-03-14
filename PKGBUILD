@@ -24,7 +24,6 @@ source=(
   'clk-uclass-log_ret.patch'
 )
 sha256sums=(SKIP SKIP SKIP)
-install=${pkgname}.install
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
@@ -74,5 +73,5 @@ build() {
 
 package() {
   cd "${srcdir}/u-boot"
-  install -vDt "$pkgdir/boot" -m644 u-boot-bpir*.bin
+  install -vDt "$pkgdir/boot/uboot" -m644 u-boot-bpir*.bin
 }
