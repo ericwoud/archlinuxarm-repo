@@ -74,7 +74,7 @@ prepare() {
   fi	
   cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
 
-##  cat "${srcdir}/config" > ./.config
+  cat "${srcdir}/config" > ./.config
 
 #  cp -vf arch/arm64/configs/defconfig   ./arch/arm64/configs/rockchip_defconfig
 #  if [ -f "${startdir}/defconfig_merge" ]; then
