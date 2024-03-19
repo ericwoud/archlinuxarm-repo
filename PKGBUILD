@@ -107,9 +107,9 @@ build() {
   if [[ -v MENUCONFIG ]]; then
     make ${MAKEFLAGS} $_llvm menuconfig
     make ${MAKEFLAGS} $_llvm savedefconfig
-    scripts/diffconfig -m arch/arm64/configs/defconfig defconfig | \
-                  sed 's/# //g' | sed 's/ is not set/=n/g' | \
-                  tee ${startdir}/defconfig_merge
+#    scripts/diffconfig -m arch/arm64/configs/defconfig defconfig | \
+#                  sed 's/# //g' | sed 's/ is not set/=n/g' | \
+#                  tee ${startdir}/defconfig_merge
   fi
   make ${MAKEFLAGS} Image Image.gz modules
   # Generate device tree blobs with symbols to support applying device tree overlays in U-Boot
