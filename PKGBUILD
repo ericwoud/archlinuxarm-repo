@@ -23,13 +23,15 @@ source=('0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch'
         'generate_chromebook_its.sh'
         'kernel.keyblock'
         'kernel_data_key.vbprivk'
-        'linux.preset')
+        'linux.preset'
+        'rk3588-bpi-m7.dts')
 md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
          'c9d4e392555b77034e24e9f87c5ff0b3'
          SKIP
          '7c97cf141750ad810235b1ad06eb9f75'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          '584777ae88bce2c5659960151b64c7d8'
+         SKIP
          SKIP)
 
 _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
@@ -65,6 +67,12 @@ prepare() {
   # ALARM patches
   git apply ../0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch
   git apply ../0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch
+
+  if [ -z "$(grep "rk3588-bpi-m7.dtb" arch/arm64/boot/dts/rockchip/Makefile)" ]; then
+    echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-bpi-m7.dtb' \
+                >>arch/arm64/boot/dts/rockchip/Makefile
+  fi	
+  cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
 
 ##  cat "${srcdir}/config" > ./.config
 
