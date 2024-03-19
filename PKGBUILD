@@ -74,7 +74,7 @@ prepare() {
   fi	
   cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
 
-  cat "${srcdir}/config" > ./.config
+  cat "${srcdir}/config" > .config
 ##  CONFIG_REGULATOR_RK808=m
 
 #  cp -vf arch/arm64/configs/defconfig   ./arch/arm64/configs/rockchip_defconfig
@@ -84,6 +84,9 @@ prepare() {
 #  fi
 #  make ${MAKEFLAGS} rockchip_defconfig
 #  rm -vf ./arch/arm64/configs/rockchip_defconfig
+
+  # Make sure rk808 is not a module
+  sed -i 's/CONFIG_REGULATOR_RK808=m/CONFIG_REGULATOR_RK808=y/' .config
 
   # get kernel version
   make ${MAKEFLAGS} olddefconfig
