@@ -75,7 +75,6 @@ prepare() {
   cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
 
   cat "${srcdir}/config" > .config
-##  CONFIG_REGULATOR_RK808=m
 
 #  cp -vf arch/arm64/configs/defconfig   ./arch/arm64/configs/rockchip_defconfig
 #  if [ -f "${startdir}/defconfig_merge" ]; then
