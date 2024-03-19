@@ -19,7 +19,7 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' '
 options=('!strip')
 source=('0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch'
         '0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch'
-        'defconfig_merge'
+        'src/config::https://github.com/armbian/build/raw/main/config/kernel/linux-rockchip-rk3588-edge.config'
         'generate_chromebook_its.sh'
         'kernel.keyblock'
         'kernel_data_key.vbprivk'
@@ -76,13 +76,13 @@ prepare() {
 
 ##  cat "${srcdir}/config" > ./.config
 
-  cp -vf arch/arm64/configs/defconfig   ./arch/arm64/configs/rockchip_defconfig
-  if [ -f "${startdir}/defconfig_merge" ]; then
-    echo -e "\n# After this is added" >>./arch/arm64/configs/rockchip_defconfig
-    cat "${startdir}/defconfig_merge" >>./arch/arm64/configs/rockchip_defconfig
-  fi
-  make ${MAKEFLAGS} rockchip_defconfig
-  rm -vf ./arch/arm64/configs/rockchip_defconfig
+#  cp -vf arch/arm64/configs/defconfig   ./arch/arm64/configs/rockchip_defconfig
+#  if [ -f "${startdir}/defconfig_merge" ]; then
+#    echo -e "\n# After this is added" >>./arch/arm64/configs/rockchip_defconfig
+#    cat "${startdir}/defconfig_merge" >>./arch/arm64/configs/rockchip_defconfig
+#  fi
+#  make ${MAKEFLAGS} rockchip_defconfig
+#  rm -vf ./arch/arm64/configs/rockchip_defconfig
 
   # get kernel version
   make ${MAKEFLAGS} olddefconfig
