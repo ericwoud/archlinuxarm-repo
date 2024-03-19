@@ -100,7 +100,7 @@ build() {
     make ${MAKEFLAGS} $_llvm menuconfig
     make ${MAKEFLAGS} $_llvm savedefconfig
     scripts/diffconfig -m arch/arm64/configs/defconfig defconfig | \
-                  sed -i 's/# //g' | sed -i 's/ is not set/=n/g' | \
+                  sed 's/# //g' | sed 's/ is not set/=n/g' | \
                   tee ${startdir}/defconfig_merge
   fi
   make ${MAKEFLAGS} Image Image.gz modules
