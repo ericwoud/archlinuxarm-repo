@@ -85,6 +85,7 @@ prepare() {
 #  rm -vf ./arch/arm64/configs/rockchip_defconfig
 
   # Make sure rk808 is not a module
+  sed -i 's/CONFIG_MFD_RK8XX_SPI=m/CONFIG_MFD_RK8XX_SPI=y/' .config
   sed -i 's/CONFIG_REGULATOR_RK808=m/CONFIG_REGULATOR_RK808=y/' .config
 
   # get kernel version
