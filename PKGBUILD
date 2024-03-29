@@ -5,5 +5,5 @@ arch=(any)
 
 if [[ $CARCH == "armv7h" ]]; then
   provides=('gnome-boxes' 'orca')
-  replaces=('gnome-boxes' 'orca')
+  conflicts=('gnome-boxes' 'orca')
 fi
