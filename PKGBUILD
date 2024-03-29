@@ -50,7 +50,7 @@ fi
 prepare() {
 #####  _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
 #####         sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
-_tag="main"
+_tag="master"
   echo "Latest tag: $_tag"
   if [[ ! -d "${srcdir}/${_srcname}/" ]]; then
     cd "${srcdir}/"
