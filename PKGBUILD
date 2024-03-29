@@ -34,7 +34,8 @@ md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
          SKIP
          SKIP)
 
-_gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+#####_gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+_gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -47,8 +48,9 @@ else
 fi
 
 prepare() {
-  _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
-         sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
+#####  _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
+#####         sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
+_tag="main"
   echo "Latest tag: $_tag"
   if [[ ! -d "${srcdir}/${_srcname}/" ]]; then
     cd "${srcdir}/"
