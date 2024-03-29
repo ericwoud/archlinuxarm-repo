@@ -1,6 +1,6 @@
 # Maintainer: Eric Woudstra <ericwouds@gmail.com>
 pkgname=dummies
-pkgver=0.3
+pkgver=0.4
 pkgrel=1
 pkgdesc="Something to trick Arch into thinking it has packages installed."
 url="https://github.com/ericwoud/archlinuxarm-repo.git"
@@ -10,6 +10,7 @@ depends=()
 optdepends=()
 makedepends=()
 replaces=()
+groups=(gnome)
 if [[ $CARCH == "armv7h" ]]; then
   provides=('gnome-boxes' 'orca')
   conflicts=('gnome-boxes' 'orca')
