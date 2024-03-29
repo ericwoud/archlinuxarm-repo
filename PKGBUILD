@@ -186,7 +186,7 @@ build() {
     --enable-opengl \
     --enable-shared \
     --enable-version3 \
-    --enable-vulkan $CONFIG \
+    --disable-vulkan \
     \
     --arch=$CARCH \
     --enable-v4l2_m2m \
@@ -201,6 +201,7 @@ build() {
   make tools/qt-faststart
   make doc/ff{mpeg,play}.1
 }
+##### TEMPORARILY DISABLED VULKAN FOR BUILD ERROR!
 
 package() {
   cd ${_srcname}
