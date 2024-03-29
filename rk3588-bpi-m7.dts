@@ -858,4 +858,5 @@
 		};
 	};
 };
+// Another fusb at i2c4, int: gpio3-B4
 */
