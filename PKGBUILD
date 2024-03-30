@@ -37,9 +37,9 @@ md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
          SKIP
          SKIP)
 
-if [[ "$_repo" == "next" ]]; then
+if [[ "${_repo}" == "next" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
-elif [[ "$_repo" == "rc" ]]; then
+elif [[ "${_repo}" == "rc" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 fi
 
@@ -54,9 +54,9 @@ else
 fi
 
 prepare() {
-  if [[ "$_repo" == "next" ]]; then
+  if [[ "${_repo}" == "next" ]]; then
     _tag="master"
-  elif [[ "$_repo" == "rc" ]]; then
+  elif [[ "${_repo}" == "rc" ]]; then
     _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
            sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
   fi
