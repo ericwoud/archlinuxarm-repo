@@ -1,0 +1,286 @@
+From patchwork Sat Mar 16 07:10:59 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jianfeng Liu <liujianfeng1994@gmail.com>
+X-Patchwork-Id: 13594383
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com
+ [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC60DFC12;
+	Sat, 16 Mar 2024 07:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+ arc=none smtp.client-ip=209.85.210.177
+ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710573164; cv=none;
+ b=MtMdgUEx6cIyWKDtfpXxW2JGkg1RaRxlvMpOVLgdZjFZB507TWNRbyAItsbDanuFlUpVr0GieSVYxkAu33zg44tLBz4y+qYZLn5T92/1DPtssRVPUxL2dS09S1hCrdAVqMUJtsIH13xrdLhMjZtMpyTbvuUUPZOrFnv9Me4lXrQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710573164; c=relaxed/simple;
+	bh=/5ZaAmi9nAP7wFQdsTcx2bMbReW10EESIxEGYAjvzeg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version;
+ b=gSc5Q2ucCdjcL2xE85tsKVnFPO6iNdz5QSDMn5a59PEDzfR8TlzvhQW/eh552vlTppJyds7+S16j+LtYqOrtcb89F5nZVdMNuOuI3VAkSQuMLOzr6+3BzIAEtXSgZemvaXK2MRXxHRm6Qq5qBLWIrx2VkHzG/eweK6Av0dyj1/U=
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com;
+ spf=pass smtp.mailfrom=gmail.com;
+ dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com
+ header.b=ifDm0Swl; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+ spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com
+ header.b="ifDm0Swl"
+Received: by mail-pf1-f177.google.com with SMTP id
+ d2e1a72fcca58-6e6ee9e3cffso1581007b3a.1;
+        Sat, 16 Mar 2024 00:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710573161; x=1711177961;
+ darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7WfTnsIFEuG8lVPtUR0bn2tpdb2JUvvKpjMk2+P97Ks=;
+        b=ifDm0SwlXfBAvLgSSdt65j6I5tLz7UxVXGh/jBSuyNgh1EzbTlz9OOv2POdBjKXnFv
+         x7MZ9+t8Ka0NiNhKPSxwAr6enucXg4FFJT/33CBn1/vzchQtfr49bLOFvZ/tSMyAXXBA
+         gucH+9iD06cFgpGwxaCfSmiRxjRnwsfAU/Do+hJyrbrzDSYPxJOv5GiAKfXrj9nlAYTL
+         UXkNS/c9uWypUoAwbt3h887luahQ6t0Pd/ALlCJPvoxWm+Llg349IWwtJk7gJdXBk+T/
+         Ex2hkl5JZZkpMNlbCnd1FD5C8A7yAo+6w+qcUNNNpLQbG+XK9xGx5NSATQ9noBJQ8F95
+         +6FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710573161; x=1711177961;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7WfTnsIFEuG8lVPtUR0bn2tpdb2JUvvKpjMk2+P97Ks=;
+        b=BXEXef9R54nHEA1N5sxZPU3zJUVWAkV9S+84Fug2g4SxptRSdghuqWX/j0WmYBmoqh
+         9ZupmZwgJamhurIVudY4XwfMgxz15WV2Gj66RlOyGvnkaY/GvDDMV0mfxkjUTJdNtCh1
+         TDcqN+nSDu2/nyMHOfQ0IP38R7k6XprtdAuXw6gHw0qTNVAt2V3J/Gc8ilQ1yCHMoSN3
+         +Hb7b0WCy0OXf79pZPGY5Vf/phiDNepklp8NL80YXRD7badI8QGAn13D2uLbvF/pfjDc
+         MvGvjONRigc61p+vO7rQHJzUoEfRpHxQ7d/3Cofk3ImVHXXAfba+4pinjVbTg9q0hYGv
+         4Dwg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXp7hvrLhtI6SJi3DHumyctkpIL4BHdDl7l2mDQ8RSV2vschKDHUVmoQ4NPP8FfD7gAb6OX0ZD4Dz1bWAnp//n9FL4wkX/Gw5TPC5nihZ0QAyaq707hIG4v/H+dJrwSwF+faKa3C3KOkPU=
+X-Gm-Message-State: AOJu0YyDTWtzKjRaesteUZAh7R+s6XCq1mwrRGNbxjyZBAaS1IBkRckA
+	G4oFvDRE0RIOlbGEi+SjdhfHKjnaV0KiqvNUhuc+MPpjDGc0Q+gdSeW1Jms0jbeiFg==
+X-Google-Smtp-Source: 
+ AGHT+IFL5CgUsQN+Z1dVTAuRhw5i9MmY2cG5v18vyAsPVCoaLVoPGrjaT+eycv7n/u4Q483kimhe8Q==
+X-Received: by 2002:a05:6a00:23c2:b0:6e6:66b1:654f with SMTP id
+ g2-20020a056a0023c200b006e666b1654fmr8829865pfc.15.1710573161198;
+        Sat, 16 Mar 2024 00:12:41 -0700 (PDT)
+Received: from localhost.localdomain ([221.220.133.103])
+        by smtp.gmail.com with ESMTPSA id
+ x18-20020aa784d2000000b006e5a915a9e7sm4574651pfn.10.2024.03.16.00.12.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Mar 2024 00:12:40 -0700 (PDT)
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org
+Cc: robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	heiko@sntech.de,
+	ezequiel@vanguardiasur.com.ar,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	liujianfeng1994@gmail.com,
+	sfr@canb.auug.org.au
+Subject: [PATCH v4 1/2] arm64: dts: rockchip: Add Hantro G1 VPU support for
+ RK3588
+Date: Sat, 16 Mar 2024 15:10:59 +0800
+Message-Id: <20240316071100.2419369-2-liujianfeng1994@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240316071100.2419369-1-liujianfeng1994@gmail.com>
+References: <20240316071100.2419369-1-liujianfeng1994@gmail.com>
+Precedence: bulk
+X-Mailing-List: linux-media@vger.kernel.org
+List-Id: <linux-media.vger.kernel.org>
+List-Subscribe: <mailto:linux-media+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-media+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+
+Enable Hantro G1 video decoder in RK3588's devicetree.
+
+Tested with FFmpeg v4l2_request code taken from [1]
+with MPEG2, H.264 and VP8 samples.
+
+[1] https://github.com/LibreELEC/LibreELEC.tv/blob/master/packages/multimedia/ffmpeg/patches/v4l2-request/ffmpeg-001-v4l2-request.patch
+
+Signed-off-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+---
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+--
+2.34.1
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s.dtsi b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
+index 87b83c87b..2e411c80a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
+@@ -646,6 +646,26 @@ i2c0: i2c@fd880000 {
+ 		status = "disabled";
+ 	};
+
++	vpu: video-codec@fdb50000 {
++		compatible = "rockchip,rk3588-vdpu121", "rockchip,rk3568-vpu";
++		reg = <0x0 0xfdb50000 0x0 0x800>;
++		interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH 0>;
++		clocks = <&cru ACLK_VPU>, <&cru HCLK_VPU>;
++		clock-names = "aclk", "hclk";
++		iommus = <&vdpu_mmu>;
++		power-domains = <&power RK3588_PD_VDPU>;
++	};
++
++	vdpu_mmu: iommu@fdb50800 {
++		compatible = "rockchip,rk3588-iommu", "rockchip,rk3568-iommu";
++		reg = <0x0 0xfdb50800 0x0 0x40>;
++		interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH 0>;
++		clock-names = "aclk", "iface";
++		clocks = <&cru ACLK_VPU>, <&cru HCLK_VPU>;
++		power-domains = <&power RK3588_PD_VDPU>;
++		#iommu-cells = <0>;
++	};
++
+ 	vop: vop@fdd90000 {
+ 		compatible = "rockchip,rk3588-vop";
+ 		reg = <0x0 0xfdd90000 0x0 0x4200>, <0x0 0xfdd95000 0x0 0x1000>;
+
+From patchwork Sat Mar 16 07:11:00 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jianfeng Liu <liujianfeng1994@gmail.com>
+X-Patchwork-Id: 13594384
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com
+ [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535A1429B;
+	Sat, 16 Mar 2024 07:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+ arc=none smtp.client-ip=209.85.210.172
+ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710573168; cv=none;
+ b=ZVY9AEoNKvw1sFoI/ML8lG+Y8vp2Q2+xWHpTy7Q2B1sleO0OD949LbtHQQh4cj9BHF68U4LHATGZtpvvCpxds+BE6ZSbKjYMF/bUOmOCYL8wzykKQpuO8sB2VS8rfj+taEraNVYzaZHF5R6lhMsWVI2+NTsgq5hHtZJWLXgPfZw=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710573168; c=relaxed/simple;
+	bh=Ek6dyKj8WW1L3vP81KbqdCF+pb4i+hUZKKzEqkEtix0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version;
+ b=ow4z/NK2T9GnpCx62IoV1Ad82ZaRzgtqm65srkvNXQn9sOa2q/+q95xExzuu1+jzeHi5vJwiVBs2fvDcwN4ceikXsjEjHYisbUCgdssqo+iYhj/nRrU+mS7+PTqSzFKiG3emFEC+GntQLDT4C9JR6yqgpyrkWotNMlrGyx/t8Fo=
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com;
+ spf=pass smtp.mailfrom=gmail.com;
+ dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com
+ header.b=AzHvVfZD; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+ spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com
+ header.b="AzHvVfZD"
+Received: by mail-pf1-f172.google.com with SMTP id
+ d2e1a72fcca58-6e6082eab17so2556564b3a.1;
+        Sat, 16 Mar 2024 00:12:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710573166; x=1711177966;
+ darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xbRqb26QfAthS3CJVq90TpB3Bg3AO5IdQEZJltedfdA=;
+        b=AzHvVfZDnxomLjAtprgD6gmZi9nvCRnjoEqnjZlFGkGxKHTCtHbYkcus88sHW9Zt0x
+         sIgTKZetNgWsJKIYxHYpRhE8Mc3trSnESMHyOuaPto481UkSGgV3zdctnnERXRZpoh87
+         /bRpwUf4QH/wIvLQNfk/fW5k/CS4Z9jhScIFy9qY8JFG50HDydjwoEwaceGvGPpNMOjk
+         7crp+5qfJQZLFT/6cuf2a4sy5fh8qumFXZgU9azfydrKBTuMfKeGYhVX6qQZrwiKoAl8
+         NFOdFF1qY7UxZe6P+Mq9E69/H61B57HiSZzn0s81rKYatxlib6+qBPuftvtekMLp5auR
+         gjsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710573166; x=1711177966;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xbRqb26QfAthS3CJVq90TpB3Bg3AO5IdQEZJltedfdA=;
+        b=Krq2L15w+yibaybs3gPCHVb/+7ETQHKyBHCGucxjjPRaNX2jBZroOLzeFOL4llMsdE
+         ROOZrFqmyCoL1QtF/SYS0MnIF2LLN1tjm7+JPwjn85dqc0rO1N6M5AZCdEaFS0JLMy8c
+         QprYq4lMg++lLi3eLCUUnwqEeT8DUvDBzD17QMGoXJdmH1ejZWqZ6oAEyDv0lZxKGC41
+         QdMFDTFhv5W+halYb6hJ9q9Kh/vRfAe9nKNx5xzBjcGgctnewpsHavV03SMqkfbMiQnb
+         EE9azQN+3yzIjyRK0MzTuZa3NDDzYdOdgmavFvkmEio+kTLXKavPmZ2p9Eoza9Aci/18
+         Xrng==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV4pnVVsMzerAkvJ3xgb6roNCVScweI1FT6d3msCercpSYDKWiAHQqPDVlZiOZQ2e1xbSv/GpxGDyOb6CXivcMLcJ61WSOfGYU6HkBaxIbU1VKJD0Q2RrXMAFl+/fB1MBByDyxVvSIDQGg=
+X-Gm-Message-State: AOJu0YzBq8HFjrkvKWDkkfie4Om0zlfbjSTuFMZMh04jGVRlMNQjfXec
+	pvc1qhlPkKA9DDWaCzdjf6nSKtwbOGS3guPP2mT7jAN0vyKn3+7yRdptyK72WDtT8g==
+X-Google-Smtp-Source: 
+ AGHT+IF92osGMjBCD+MCHjDpfd5vqx22XGS+49u2F24YM0gP/VESBebJfFcTUfO83t7VsmWelMNYrQ==
+X-Received: by 2002:a05:6a00:9a4:b0:6e6:98e4:99a1 with SMTP id
+ u36-20020a056a0009a400b006e698e499a1mr8212531pfg.14.1710573166168;
+        Sat, 16 Mar 2024 00:12:46 -0700 (PDT)
+Received: from localhost.localdomain ([221.220.133.103])
+        by smtp.gmail.com with ESMTPSA id
+ x18-20020aa784d2000000b006e5a915a9e7sm4574651pfn.10.2024.03.16.00.12.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Mar 2024 00:12:45 -0700 (PDT)
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org
+Cc: robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	heiko@sntech.de,
+	ezequiel@vanguardiasur.com.ar,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	liujianfeng1994@gmail.com,
+	sfr@canb.auug.org.au
+Subject: [PATCH v4 2/2] dt-bindings: media: rockchip-vpu: Add rk3588 vdpu121
+ compatible string
+Date: Sat, 16 Mar 2024 15:11:00 +0800
+Message-Id: <20240316071100.2419369-3-liujianfeng1994@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240316071100.2419369-1-liujianfeng1994@gmail.com>
+References: <20240316071100.2419369-1-liujianfeng1994@gmail.com>
+Precedence: bulk
+X-Mailing-List: linux-media@vger.kernel.org
+List-Id: <linux-media.vger.kernel.org>
+List-Subscribe: <mailto:linux-media+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-media+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+
+Add Hantro G1 VPU compatible string for RK3588.
+RK3588 has the same Hantro G1 ip as RK3568, which are both
+known as VDPU121 in TRM of RK3568 and RK3588.
+
+Signed-off-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ Documentation/devicetree/bindings/media/rockchip-vpu.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+--
+2.34.1
+
+diff --git a/Documentation/devicetree/bindings/media/rockchip-vpu.yaml b/Documentation/devicetree/bindings/media/rockchip-vpu.yaml
+index c57e1f488..4f667db91 100644
+--- a/Documentation/devicetree/bindings/media/rockchip-vpu.yaml
++++ b/Documentation/devicetree/bindings/media/rockchip-vpu.yaml
+@@ -31,6 +31,9 @@ properties:
+       - items:
+           - const: rockchip,rk3228-vpu
+           - const: rockchip,rk3399-vpu
++      - items:
++          - const: rockchip,rk3588-vdpu121
++          - const: rockchip,rk3568-vpu
+
+   reg:
+     maxItems: 1

@@ -78,6 +78,7 @@ prepare() {
   # ALARM patches
   git apply ../0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch
   git apply ../0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch
+  git apply ../0003-Add-hantro-g1-video-decoder-support-for-RK3588.patch
 
   if [ -z "$(grep "rk3588-bpi-m7.dtb" arch/arm64/boot/dts/rockchip/Makefile)" ]; then
     echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-bpi-m7.dtb' \
