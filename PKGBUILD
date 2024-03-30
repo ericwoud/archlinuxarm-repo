@@ -22,6 +22,7 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' '
 options=('!strip')
 source=('0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch'
         '0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch'
+        '0003-Add-hantro-g1-video-decoder-support-for-RK3588.patch'
         'src/config::https://github.com/armbian/build/raw/main/config/kernel/linux-rockchip-rk3588-edge.config'
         'generate_chromebook_its.sh'
         'kernel.keyblock'
@@ -30,6 +31,7 @@ source=('0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch'
         'rk3588-bpi-m7.dts')
 md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
          'c9d4e392555b77034e24e9f87c5ff0b3'
+         SKIP
          SKIP
          '7c97cf141750ad810235b1ad06eb9f75'
          '61c5ff73c136ed07a7aadbf58db3d96a'
