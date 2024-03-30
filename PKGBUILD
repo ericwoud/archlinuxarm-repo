@@ -3,6 +3,9 @@
 
 #NOEXTRACT="1"
 
+#_repo="rc"
+_repo="next"
+
 buildarch=8
 
 pkgbase=linux-aarch64-rk-rc
@@ -15,7 +18,7 @@ _srcname=linux
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'dtc')
+makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'dtc' 'rsync')
 options=('!strip')
 source=('0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch'
         '0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch'
@@ -34,8 +37,11 @@ md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
          SKIP
          SKIP)
 
-#####_gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
-_gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
+if [[ "$_repo" == "next" ]]; then
+  _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
+elif [[ "$_repo" == "rc" ]]; then
+  _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+fi
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -44,13 +50,16 @@ if [[ "$(uname -m)" == "aarch64" ]]; then
   makedepends+=('vboot-utils')
 else
   makedepends+=('aarch64-linux-gnu-gcc')
-  export MAKEFLAGS+=" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-"
+  export MAKEFLAGS+=' ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-'
 fi
 
 prepare() {
-#####  _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
-#####         sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
-_tag="master"
+  if [[ "$_repo" == "next" ]]; then
+    _tag="master"
+  elif [[ "$_repo" == "rc" ]]; then
+    _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
+           sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
+  fi
   echo "Latest tag: $_tag"
   if [[ ! -d "${srcdir}/${_srcname}/" ]]; then
     cd "${srcdir}/"
