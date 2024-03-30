@@ -6,7 +6,7 @@
 buildarch=8
 
 pkgbase=linux-aarch64-rk-rc
-pkgname=("${pkgbase}" "${pkgbase}-headers")
+pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-api-headers")
 _kernelname=${pkgbase#linux}
 _desc="AArch64 multi-platform"
 pkgver=6.8.r20240310
@@ -134,10 +134,10 @@ _package() {
   local modulesdir="$pkgdir/usr/lib/modules/$kernver"
 
   # install dtbs
-  make INSTALL_DTBS_PATH="${pkgdir}/boot/dtbs/${pkgbase}" dtbs_install
+  make ${MAKEFLAGS} INSTALL_DTBS_PATH="${pkgdir}/boot/dtbs/${pkgbase}" dtbs_install
 
   echo "Installing modules..."
-  make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 modules_install
+  make ${MAKEFLAGS} INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 modules_install
 
   # copy kernel
   local _dir_module="${pkgdir}/usr/lib/modules/$(<version)"
@@ -240,6 +240,14 @@ _package-headers() {
   echo "Adding symlink..."
   mkdir -p "$pkgdir/usr/src"
   ln -sr "$builddir" "$pkgdir/usr/src/$pkgbase"
+}
+
+_package-api-headers() {
+  cd "${srcdir}/${_srcname}/"
+  echo "Installing api-headers..."
+  make ${MAKEFLAGS} INSTALL_HDR_PATH="$pkgdir/usr" headers_install
+  # use headers from libdrm
+  rm -r "$pkgdir/usr/include/drm"
 }
 
 _package-chromebook() {
