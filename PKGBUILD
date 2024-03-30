@@ -8,13 +8,13 @@ _repo="next"
 
 buildarch=8
 
-pkgbase=linux-aarch64-rk-rc
+pkgbase="linux-aarch64-rk-rc
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-api-headers")
 _kernelname=${pkgbase#linux}
 _desc="AArch64 multi-platform"
 pkgver=6.8.r20240310
 pkgrel=1
-_srcname=linux
+_srcname="linux-${_repo}"
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -37,9 +37,9 @@ md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
          SKIP
          SKIP)
 
-if [[ "$_repo" == "next" ]]; then
+if [[ "${_repo}" == "next" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
-elif [[ "$_repo" == "rc" ]]; then
+elif [[ "${_repo}" == "rc" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 fi
 
@@ -54,9 +54,9 @@ else
 fi
 
 prepare() {
-  if [[ "$_repo" == "next" ]]; then
+  if [[ "${_repo}" == "next" ]]; then
     _tag="master"
-  elif [[ "$_repo" == "rc" ]]; then
+  elif [[ "${_repo}" == "rc" ]]; then
     _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
            sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
   fi
