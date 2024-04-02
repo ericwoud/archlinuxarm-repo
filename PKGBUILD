@@ -34,7 +34,7 @@ md5sums=(SKIP
          SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
-  md5sums+-(SKIP)
+  md5sums+=(SKIP)
 done
 
 if [[ "${_repo}" == "next" ]]; then
