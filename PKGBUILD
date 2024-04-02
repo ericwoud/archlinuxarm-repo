@@ -4,7 +4,8 @@
 #NOEXTRACT="1"
 
 #_repo="rc"
-_repo="next"
+#_repo="next"
+_repo="cb"
 
 buildarch=8
 
@@ -41,6 +42,8 @@ if [[ "${_repo}" == "next" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
 elif [[ "${_repo}" == "rc" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
+elif [[ "${_repo}" == "cb" ]]; then
+  _gitroot="git://gitlab.collabora.com:hardware-enablement/rockchip-3588/linux.git"
 fi
 
 export CARCH=aarch64
@@ -54,11 +57,13 @@ else
 fi
 
 prepare() {
-  if [[ "${_repo}" == "next" ]]; then
-    _tag="master"
-  elif [[ "${_repo}" == "rc" ]]; then
+  if [[ "${_repo}" == "rc" ]]; then
     _tag=$(git ls-remote --tags --refs --exit-code "${_gitroot}" | \
            sed -e 's/$/-x/' | sort -k2 | tail -n1 | sed 's/..$//' | cut -d$'/' -f3)
+  elif [[ "${_repo}" == "next" ]]; then
+    _tag="master"
+  elif [[ "${_repo}" == "cb" ]]; then
+    _tag="rk3588"
   fi
   echo "Latest tag: $_tag"
   if [[ ! -d "${srcdir}/${_srcname}/" ]]; then
