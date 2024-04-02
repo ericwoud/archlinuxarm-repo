@@ -156,9 +156,9 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	vcc15v_dcin: vcc15v-dcin-regulator {
+	vcc20v_dcin: vcc20v-dcin-regulator {
 		compatible = "regulator-fixed";
-		regulator-name = "vcc15v_dcin";
+		regulator-name = "vcc20v_dcin";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <15000000>;
@@ -848,7 +848,7 @@
 		interrupts = <RK_PC4 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&usbc_dcin_int>;
 		pinctrl-names = "default";
-		vbus-supply = <&vcc15v_dcin>;
+		vbus-supply = <&vcc20v_dcin>;
 
 		connector {
 			compatible = "usb-c-connector";
@@ -858,7 +858,8 @@
 			sink-pdos = <PDO_FIXED(5000, 2000, PDO_FIXED_USB_COMM)
 				     PDO_FIXED(9000, 2000, PDO_FIXED_USB_COMM)
 				     PDO_FIXED(12000, 2000, PDO_FIXED_USB_COMM)
-				     PDO_FIXED(15000, 2000, PDO_FIXED_USB_COMM)>;
+				     PDO_FIXED(15000, 2000, PDO_FIXED_USB_COMM)
+				     PDO_FIXED(20000, 2000, PDO_FIXED_USB_COMM)>;
 			op-sink-microwatt = <1000000>;
 		};
 	};
