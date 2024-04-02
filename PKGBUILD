@@ -43,7 +43,7 @@ if [[ "${_repo}" == "next" ]]; then
 elif [[ "${_repo}" == "rc" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 elif [[ "${_repo}" == "cb" ]]; then
-  _gitroot="git://gitlab.collabora.com:hardware-enablement/rockchip-3588/linux.git"
+  _gitroot="https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git"
 fi
 
 export CARCH=aarch64
