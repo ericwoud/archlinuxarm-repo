@@ -20,24 +20,22 @@ url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'dtc' 'rsync')
 options=('!strip')
-source=('0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch'
-        '0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch'
-        '0003-Add-hantro-g1-video-decoder-support-for-RK3588.patch'
-        'src/config::https://github.com/armbian/build/raw/main/config/kernel/linux-rockchip-rk3588-edge.config'
+source=('src/config::https://github.com/armbian/build/raw/main/config/kernel/linux-rockchip-rk3588-edge.config'
         'generate_chromebook_its.sh'
         'kernel.keyblock'
         'kernel_data_key.vbprivk'
         'linux.preset'
         'rk3588-bpi-m7.dts')
-md5sums=('7b08a199a97e3e2288e5c03d8e8ded2d'
-         'c9d4e392555b77034e24e9f87c5ff0b3'
-         SKIP
-         SKIP
+md5sums=(SKIP
          '7c97cf141750ad810235b1ad06eb9f75'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          '584777ae88bce2c5659960151b64c7d8'
          SKIP
          SKIP)
+for p in $(shopt -s nullglob; echo *.patch) ; do
+  source+=($p)
+  md5sums+-(SKIP)
+done
 
 if [[ "${_repo}" == "next" ]]; then
   _gitroot="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
@@ -78,9 +76,7 @@ prepare() {
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
   # ALARM patches
-  git apply ../0001-net-smsc95xx-Allow-mac-address-to-be-set-as-a-parame.patch
-  git apply ../0002-arm64-dts-rockchip-disable-pwm0-on-rk3399-firefly.patch
-  git apply ../0003-Add-hantro-g1-video-decoder-support-for-RK3588.patch
+  git apply ../*.patch
 
   if [ -z "$(grep "rk3588-bpi-m7.dtb" arch/arm64/boot/dts/rockchip/Makefile)" ]; then
     echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-bpi-m7.dtb' \
@@ -101,7 +97,6 @@ prepare() {
   # Make sure rk808 is not a module
   sed -i 's/CONFIG_MFD_RK8XX_SPI=m/CONFIG_MFD_RK8XX_SPI=y/' .config
   sed -i 's/CONFIG_REGULATOR_RK808=m/CONFIG_REGULATOR_RK808=y/' .config
-  sed -i 's/CONFIG_PHY_ROCKCHIP_SAMSUNG_HDPTX=m/CONFIG_PHY_ROCKCHIP_SAMSUNG_HDPTX=y/' .config
 
   # get kernel version
   make ${MAKEFLAGS} olddefconfig
