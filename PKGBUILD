@@ -101,6 +101,7 @@ prepare() {
   # Make sure rk808 is not a module
   sed -i 's/CONFIG_MFD_RK8XX_SPI=m/CONFIG_MFD_RK8XX_SPI=y/' .config
   sed -i 's/CONFIG_REGULATOR_RK808=m/CONFIG_REGULATOR_RK808=y/' .config
+  sed -i 's/CONFIG_PHY_ROCKCHIP_SAMSUNG_HDPTX=m/CONFIG_PHY_ROCKCHIP_SAMSUNG_HDPTX=y/' .config
 
   # get kernel version
   make ${MAKEFLAGS} olddefconfig
