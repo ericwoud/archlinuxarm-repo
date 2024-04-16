@@ -1,0 +1,1175 @@
+From patchwork Tue Apr 16 03:46:24 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jianfeng Liu <liujianfeng1994@gmail.com>
+X-Patchwork-Id: 13631168
+Return-Path: 
+ <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15CABC4345F
+	for <linux-rockchip@archiver.kernel.org>;
+ Tue, 16 Apr 2024 03:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=dc6hByEfrGO6q4wwqSZAN9BHMj15R4UsdL890Ft3Kv4=; b=SGUgWdjodrSRR0
+	/cIxF6yp+3r0Snl6WtPlOEOYu5TNtfVuozhJDxvVcbEB9lMhx09JW9/k3DmnbX1PDru8/dJVnDw10
+	43o5RaHUYvWFFIzUzC38QLSKd7gjYriPlf8tmn0FaWiRBeUme9u2fQPKOqBSHHkzab8xo97cS5S1u
+	J+U6UDOGHE3PqTu8jQNJGk4Vv0yo2KBG9qOKSkHYad2+RTPyKC6OEVQYHTOzs6R+YOqHG5mBUtI6R
+	5WPKXl7v+OZC7TOnL2pyIgvX0L/CZCFBMnMCuhIR8SyFuNMLiAoazLzRmSbj9ovg8KP03LzRUglYO
+	YiG5l/D1ooNc1Hem7kNQ==;
+Received: from localhost ([::1] helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwZnS-0000000AhWo-2a5B;
+	Tue, 16 Apr 2024 03:47:50 +0000
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwZnK-0000000AhT1-2TZJ;
+	Tue, 16 Apr 2024 03:47:44 +0000
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2aa67da7a1dso701507a91.3;
+        Mon, 15 Apr 2024 20:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713239261; x=1713844061;
+ darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JxqWvddsK3MTcsP5PP2zajM9rLezNvqOsmF2usnJs6U=;
+        b=JP/Qt58tB7vLsu4298SABsPc1fTxizLipNIahO1YNHftsZ3dEMAeQAB1V/CL7T89x2
+         MPWe91JqGoZr/XS+97zSopDIRjESPdqQ3njs218XeYi9V7NPgujFtoH6PeWNDac4FMu/
+         0CCilu0Hz7JUOMYLVjuF8nhCGoLt94DU1/wQPmoxDgc56Wd5pbetsYDTpAdhsXYZvat1
+         bNiVRTlm8Zl8z+UclY3nDtVcf1bwpN9TYXV9O8Zxg7Z8SskJ+ObOQ/woPTTVlhLqw6z+
+         vnmEAFCLsPA7bMKV3hHbuxu2wErOgr6vVp3gZj0IDKk2GsKNRzfBHsS7kQVOz/Uf9oHN
+         Lz1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713239261; x=1713844061;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JxqWvddsK3MTcsP5PP2zajM9rLezNvqOsmF2usnJs6U=;
+        b=boyg13bojEi9ExBzTC21kQsx2e7ixK5FaYRbx/Q2UdzxliZ0ycwmyS4sYPqEBNz3UF
+         Q3ggCDghy3LGs3ykSaGHQ2ZpzWPrS8VM9yc5iG7/zw8t6N9iSVsYk27so5B5y8UKkcEs
+         DcupiiNhWpG6bSfzruYg89+XXHRVBMHs8tj89kgvZJcn/ZUQz8yXjBBBFudJoVzFjeMN
+         kizrJyHc2Vt7+2bO2YaxqOERdtO8KMPF/v1+x6WJ5inbS601Gpwv28TliJxSdJ6egcKs
+         tv/1zHs+X/Tt7OM869aNnTQlGQ3EwwW03TfsP7ltREEkLt5Ud3tSex92eqvEY242ucqx
+         bVDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVQmxgCPQY5rBk0dJWF41Ed5hh4byX/Zm44DRnH8zSnA2t1GO0pJADijnhV8f7Qm9V0bhA9Cd95N/c61k+m6RL/vwVp7IMhlmFogPy1Wm3iKR8/d8ci5mRVtF3t0WzTj4HE5hrq4f/hmISyXp9aP4KBM3H91a6eTbU=
+X-Gm-Message-State: AOJu0Yz+DiGaTkGQCzYfuklbK4CHCvhPftE83Z0cKOM0itbZsyD0cVIw
+	pDySzKPkECGSajKqAE1IJx0kshdkGf8y+thfaBr87Nq6g568tn9L
+X-Google-Smtp-Source: 
+ AGHT+IFSAyh/H7N2ICssOfQ2GAq52mPe+DM5mYfpzUlOiwseqH3p2hzoggxEx5ubCtHWFUkP0rvWIg==
+X-Received: by 2002:a17:90a:de92:b0:2a5:52c3:4ca9 with SMTP id
+ n18-20020a17090ade9200b002a552c34ca9mr11313420pjv.29.1713239261470;
+        Mon, 15 Apr 2024 20:47:41 -0700 (PDT)
+Received: from localhost.localdomain ([221.220.135.251])
+        by smtp.gmail.com with ESMTPSA id
+ u6-20020a17090adb4600b002a51dcecc49sm7748815pjx.38.2024.04.15.20.47.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 20:47:41 -0700 (PDT)
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	heiko@sntech.de,
+	liujianfeng1994@gmail.com,
+	sfr@canb.auug.org.au,
+	weizhao.ouyang@arm.com
+Subject: [PATCH v4 1/3] dt-bindings: vendor-prefixes: add ArmSoM
+Date: Tue, 16 Apr 2024 11:46:24 +0800
+Message-Id: <20240416034626.317823-2-liujianfeng1994@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240416034626.317823-1-liujianfeng1994@gmail.com>
+References: <20240416034626.317823-1-liujianfeng1994@gmail.com>
+MIME-Version: 1.0
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20240415_204742_641766_0BADF101 
+X-CRM114-Status: UNSURE (   8.43  )
+X-CRM114-Notice: Please train this message.
+X-BeenThere: linux-rockchip@lists.infradead.org
+X-Mailman-Version: 2.1.34
+Precedence: list
+List-Id: Upstream kernel work for Rockchip platforms
+ <linux-rockchip.lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip@lists.infradead.org>
+List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
+Errors-To: 
+ linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+
+Add vendor prefix for ArmSoM (https://www.armsom.org)
+
+Signed-off-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index e4aeeb5fe..e47405535 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -151,6 +151,8 @@ patternProperties:
+     description: ARM Ltd.
+   "^armadeus,.*":
+     description: ARMadeus Systems SARL
++  "^armsom,.*":
++    description: ArmSoM Technology Co., Ltd.
+   "^arrow,.*":
+     description: Arrow Electronics
+   "^artesyn,.*":
+
+From patchwork Tue Apr 16 03:46:25 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Jianfeng Liu <liujianfeng1994@gmail.com>
+X-Patchwork-Id: 13631169
+Return-Path: 
+ <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A7D9C4345F
+	for <linux-rockchip@archiver.kernel.org>;
+ Tue, 16 Apr 2024 03:48:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=1r7aZokqKyXJg7HC+eI9kHN7YlUIt7IdMlyqkBNR1vU=; b=niz1mzIVC4YQwl
+	rfnec/3mgwd/ZtMouv8boZau2eaB5SVvhELGehSz/ueHU4v3YovOHb92c3+klJGaoqZOF7T4An/l3
+	dUHXQnkvjG3zRQg7G7VCJ7hrDd/Y/JVul78JQR4Gg2ZbSGiESkXk43I3TxzGfnOTf5ZdRbCtLmBsr
+	FyJk3NIR9mDfFkE4vJCedgcji9Hxw4pM/HofBF4g0Zy+CV4ohIgVJ6FdZHKhv8qTs88LUSmscNES1
+	DLJ4boiBxlSDHfRmWveCeo4wZbSIjMl32qln5f9x0WqmmAsVqlqThkhAgc4kWgfSHTeRitoHK+gLz
+	v03Qskx/EL8vHaiuo9WA==;
+Received: from localhost ([::1] helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwZnZ-0000000Ahbn-0A8A;
+	Tue, 16 Apr 2024 03:47:57 +0000
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwZnR-0000000AhVw-370R;
+	Tue, 16 Apr 2024 03:47:51 +0000
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-5d3912c9a83so2423564a12.3;
+        Mon, 15 Apr 2024 20:47:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713239268; x=1713844068;
+ darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ST7IBP1G+OA+O25mvhaCDcJ5UjWGi92SIHIsGwEi/5k=;
+        b=QcfjWDEjREj78lhE34jgclvfjrPnHjpof9uZTUO14FKNzf853uU1N4XrUlePT9YKeZ
+         YPFqISVLFevavaIBBtZAXz0ea57RgP9LMvFGpvt9x5JtwOJWsCJ66uFdE8jmm8jxiLp7
+         ndkyy7b/8ohg1AjHKrXpDWSM2d0dxJYS3L9zh5GFWhRTVVWl7MQUVjytYQ1y2TXLbGL8
+         dch4H/Njkh9A4P/2qzaIRU1+FIfZE2J6hfIbRYGB1n5XSqnJ52Y09i+BZ7ZyFBCIbQu0
+         LoASh7y45k4BtPVItxWNcJL12W2ndXlceBBIdzZaMHaNUl2b0fUj+4k4gREMoxAg/oFL
+         rqGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713239268; x=1713844068;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ST7IBP1G+OA+O25mvhaCDcJ5UjWGi92SIHIsGwEi/5k=;
+        b=YztnRqTYOeiRzIr8FquvjNiswbTWwakte/Tn9R7zbDfFtnhxEW2bTI4ETOa7316Z/T
+         PuADA4awcwHjTgk152FfyqSrmobYvhf+ikCTF3gqvHOgGljvvN4G/l3iGrP2Ny5eJARn
+         F3sbN4yzQWaaE2ELm5QkmdseSkvJMwpyswkp7N2Faq0i8Tz5mEs7JpEo4zZNKCi+BDnr
+         1rWlxGVSkG0HTRLxUtUrFdnHb1PGWWsOHvELduNYdhOUz9AtWP2yjfW6oHfGJKs6/91L
+         jR36oj9HPlkcrZNkOXeGcoA4nL8o7p3S/WPnvOod5BRaI4/4hLeaFWsEgUs9i4mIh529
+         sKwA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU12wxRiLTOW5nf6pLjA8TpQsXBpCL2KCLwmV1J6GZ3ncev9lNsSIIecLPGPl8IvzcuL3RLMu0NLfE5R4g1dOWObZ7xNVZeqcymqdmy23CM8IGFPHpQwTtU7L7yfOjG9e0e3J55XtNBxl62e3RG4uJ4wtr1fJAZ1vQ=
+X-Gm-Message-State: AOJu0YyG5WhwOWuIaPCGMRTxkizy5le8FDps0uTGOXCFXQ9UoafHhZXi
+	nO9FFYlfrM1LULghq1Ru6/OQqpo6n5YG8StCs+K9Y/R2ok2FPJ3tqGUzmnrmZ4o=
+X-Google-Smtp-Source: 
+ AGHT+IGny5bC7Y3tJQxKz4CiTcluG91UQ9fL39+yhBEESmg70qqMHWQqyIoMaVHKhBiTyoXGquRchw==
+X-Received: by 2002:a17:90b:4b4e:b0:29c:582d:bade with SMTP id
+ mi14-20020a17090b4b4e00b0029c582dbademr9322115pjb.2.1713239268281;
+        Mon, 15 Apr 2024 20:47:48 -0700 (PDT)
+Received: from localhost.localdomain ([221.220.135.251])
+        by smtp.gmail.com with ESMTPSA id
+ u6-20020a17090adb4600b002a51dcecc49sm7748815pjx.38.2024.04.15.20.47.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 20:47:47 -0700 (PDT)
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	heiko@sntech.de,
+	liujianfeng1994@gmail.com,
+	sfr@canb.auug.org.au,
+	weizhao.ouyang@arm.com,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH v4 2/3] dt-bindings: arm: rockchip: Add ArmSoM Sige7
+Date: Tue, 16 Apr 2024 11:46:25 +0800
+Message-Id: <20240416034626.317823-3-liujianfeng1994@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240416034626.317823-1-liujianfeng1994@gmail.com>
+References: <20240416034626.317823-1-liujianfeng1994@gmail.com>
+MIME-Version: 1.0
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20240415_204750_452312_4B87F746 
+X-CRM114-Status: UNSURE (   8.78  )
+X-CRM114-Notice: Please train this message.
+X-BeenThere: linux-rockchip@lists.infradead.org
+X-Mailman-Version: 2.1.34
+Precedence: list
+List-Id: Upstream kernel work for Rockchip platforms
+ <linux-rockchip.lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip@lists.infradead.org>
+List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
+Errors-To: 
+ linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+
+Add devicetree binding for ArmSoM Sige7 board
+
+Signed-off-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ Documentation/devicetree/bindings/arm/rockchip.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
+index 4bd033ade..fd644e32c 100644
+--- a/Documentation/devicetree/bindings/arm/rockchip.yaml
++++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
+@@ -49,6 +49,11 @@ properties:
+               - anbernic,rg-arc-s
+           - const: rockchip,rk3566
+ 
++      - description: ArmSoM Sige7 board
++        items:
++          - const: armsom,sige7
++          - const: rockchip,rk3588
++
+       - description: Asus Tinker board
+         items:
+           - const: asus,rk3288-tinker
+
+From patchwork Tue Apr 16 03:46:26 2024
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Patchwork-Submitter: Jianfeng Liu <liujianfeng1994@gmail.com>
+X-Patchwork-Id: 13631170
+Return-Path: 
+ <linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 732D1C04FF6
+	for <linux-rockchip@archiver.kernel.org>;
+ Tue, 16 Apr 2024 03:48:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:
+	Content-Transfer-Encoding:Content-Type:List-Subscribe:List-Help:List-Post:
+	List-Archive:List-Unsubscribe:List-Id:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=nRUfTEuueGljYI9oXH77WC540Nzukp7u+yco2O4LZk4=; b=4rkxyqlAqKDyHo
+	0IZ4CBpWIxv4VjLRGZtRkpig4JpVTOUg9s/1lhOwqM7/YtgUOKpz0iCH7U5lyH1C6C4grxZg5nN0E
+	DtuV6pdxIbY2DamJhOsLZ+yaEGpnYJnOfjdviRsEeEYvWolyxhxOWksWztBBKBb8nlt/fjmI3gXHt
+	MWrE+2nrSOoPDm0P9rCnkjmayVKL8GFc3Ice4t9jB9m7btfUjQt1bp/c5HPAhIGOYf9xkUHFXP0Hz
+	a29fb7OvcKdmsHNxNeWNMDRfuaee//YJxq2eEh0jOW5UnrhC818zJ9HDp/brds2N/8oi8XiVFgWPA
+	OqJquB4bHOG0yECSsKPw==;
+Received: from localhost ([::1] helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwZnm-0000000AhlF-0WuB;
+	Tue, 16 Apr 2024 03:48:10 +0000
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwZnX-0000000AhaE-2GSm;
+	Tue, 16 Apr 2024 03:47:59 +0000
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6eddff25e4eso3287919b3a.3;
+        Mon, 15 Apr 2024 20:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713239274; x=1713844074;
+ darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Aq3VITpGPvQlTpwQv0CoL5LnWtorVm5fs+P//6dQMcE=;
+        b=Jeis9t138cYHRZv0VizLr6xOevaqfVV9DDCCpVvhUf3EA8sKk8X9S8rI8kGtws8ccg
+         ropO9SB6OFOqFkvSzNBuI5uOC/COEfDCN8+QE0yUbVD/6eymZDVJppImmqYU5+QyoWpy
+         D+BinNIRj9C2ldUB9Hm9UPiHQlrJ4jBJkodAWXFgRddSB913T/7fa5ad4DdHcmZxBklq
+         YjMfSAwmI5AwhD9q69gD6qKLBgG7Lc1gOX6x7GPIKSpKQv1ZBBMIjJ/2vg+LiCcA21p/
+         XQ7k6FBQ/9fkcFv6JsOAhhrfmQxouGUf1SO96nNPhWPAoN4+Qk7FIIRzyfBvIRVQ5AIg
+         j+BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713239274; x=1713844074;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Aq3VITpGPvQlTpwQv0CoL5LnWtorVm5fs+P//6dQMcE=;
+        b=Mab3dXdWpghL9voaoNuDtK4DvfERy8Bf6CufykK45mJh+xlKi8YDJM8FjXf8V3E3F4
+         DofD2ccokRWwpv/LAIJ427bfJ+AlRRNdNMaU4slRu/yWdFzzfDAw6OF9B/7ytwsJ0oo/
+         eifuex/TOmIMqOc3p5yqQv7hlWdpoMFp2W6IU437ycccP+niHD4vEEh/ME6j3dmrauq1
+         Mq5727T+NEhcWEuThYl2mZclJ5sF/EVy55831+miYpmyqwCTJHcCvM2GX9sxMMhlVEK7
+         qKgEjkhunU5US3tW83ak/1vuYjHJzcMQMLFbJrvo3HAj+mGRa0BDUAM4k4Z8Fut+mx85
+         UBKA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCURaYjJW90bpW4CG2MsCy5+HiYYeZvsYEP9tX5TCRbFV24NPs+oWH0lqlVcIKA+6BcCiC9TMFGYjns6VwrN++57MWJdpgfVmtOFeTtupKN6YY/cfF0PEe2HHiXwhMx4uZMQP3oQYa/JKJdSyZ4BO5BZSyzdY3w0dTU=
+X-Gm-Message-State: AOJu0YxNis2zLOmnKWAqoeqLkxR7GmDtNfQwYtX7M9IjMNI7yCRBovAY
+	g/2nSzHYXOvd/Fi5VVJj2Kp9toelMbC2hwF+Zq3HTCeMQg/utoWI
+X-Google-Smtp-Source: 
+ AGHT+IG1vR2RN+4DOE4B2HLc93T5qsv2Dg1j3MeFW6vNGys6BlsySxYnMb5pi9wJIgfl6y12gWogGA==
+X-Received: by 2002:a05:6a20:d487:b0:1a9:c3ac:be77 with SMTP id
+ im7-20020a056a20d48700b001a9c3acbe77mr10276967pzb.1.1713239274396;
+        Mon, 15 Apr 2024 20:47:54 -0700 (PDT)
+Received: from localhost.localdomain ([221.220.135.251])
+        by smtp.gmail.com with ESMTPSA id
+ u6-20020a17090adb4600b002a51dcecc49sm7748815pjx.38.2024.04.15.20.47.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 20:47:54 -0700 (PDT)
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	heiko@sntech.de,
+	liujianfeng1994@gmail.com,
+	sfr@canb.auug.org.au,
+	weizhao.ouyang@arm.com
+Subject: [PATCH v4 3/3] arm64: dts: rockchip: Add ArmSom Sige7 board
+Date: Tue, 16 Apr 2024 11:46:26 +0800
+Message-Id: <20240416034626.317823-4-liujianfeng1994@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240416034626.317823-1-liujianfeng1994@gmail.com>
+References: <20240416034626.317823-1-liujianfeng1994@gmail.com>
+MIME-Version: 1.0
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20240415_204755_716464_4112444D 
+X-CRM114-Status: GOOD (  14.07  )
+X-BeenThere: linux-rockchip@lists.infradead.org
+X-Mailman-Version: 2.1.34
+Precedence: list
+List-Id: Upstream kernel work for Rockchip platforms
+ <linux-rockchip.lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip@lists.infradead.org>
+List-Help: <mailto:linux-rockchip-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request@lists.infradead.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces@lists.infradead.org>
+Errors-To: 
+ linux-rockchip-bounces+linux-rockchip=archiver.kernel.org@lists.infradead.org
+
+Specification:
+        Rockchip Rk3588 SoC
+        4x ARM Cortex-A76, 4x ARM Cortex-A55
+        8/16/32GB Memory LPDDR4/LPDDR4x
+        Mali G610MP4 GPU
+        2× MIPI-CSI Connector
+        1× MIPI-DSI Connector
+        1x M.2 Key M (PCIe 3.0 4-lanes)
+        2x RTL8125 2.5G Ethernet
+        Onboard AP6275P for WIFI6/BT5
+        32GB/64GB/128GB eMMC
+        MicroSD card slot
+        1x USB2.0, 1x USB3.0 Type-A, 1x US3.0 Type-C
+        1x HDMI Output, 1x type-C DP Output
+
+Functions work normally:
+        USB2.0 Host
+        USB3.0 Type-A Host
+        M.2 Key M (PCIe 3.0 4-lanes)
+        2x RTL8125 2.5G Ethernet
+        eMMC
+        MicroSD card
+
+More information can be obtained from the following website
+        https://docs.armsom.org/armsom-sige7
+
+Signed-off-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+---
+ arch/arm64/boot/dts/rockchip/Makefile         |   1 +
+ .../boot/dts/rockchip/rk3588-armsom-sige7.dts | 724 ++++++++++++++++++
+ 2 files changed, 725 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts
+
+diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
+index 7da198be8..0624c7284 100644
+--- a/arch/arm64/boot/dts/rockchip/Makefile
++++ b/arch/arm64/boot/dts/rockchip/Makefile
+@@ -111,6 +111,7 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3568-roc-pc.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3568-rock-3a.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3568-wolfvision-pf5.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3568-wolfvision-pf5-io-expander.dtbo
++dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-armsom-sige7.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-coolpi-cm5-evb.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-edgeble-neu6a-io.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-edgeble-neu6a-wifi.dtbo
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts b/arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts
+new file mode 100644
+index 000000000..f1fc7cc48
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts
+@@ -0,0 +1,724 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++/dts-v1/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/leds/common.h>
++#include "rk3588.dtsi"
++
++/ {
++	model = "ArmSoM Sige7";
++	compatible = "armsom,sige7", "rockchip,rk3588";
++
++	aliases {
++		mmc0 = &sdhci;
++		mmc1 = &sdmmc;
++	};
++
++	chosen {
++		stdout-path = "serial2:1500000n8";
++	};
++
++	analog-sound {
++		compatible = "audio-graph-card";
++		label = "rk3588-es8316";
++
++		widgets = "Microphone", "Mic Jack",
++			  "Headphone", "Headphones";
++
++		routing = "MIC2", "Mic Jack",
++			  "Headphones", "HPOL",
++			  "Headphones", "HPOR";
++
++		dais = <&i2s0_8ch_p0>;
++		hp-det-gpio = <&gpio1 RK_PD5 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&hp_detect>;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&led_rgb_b>;
++
++		led_blue: led-0 {
++			function = LED_FUNCTION_STATUS;
++			color = <LED_COLOR_ID_BLUE>;
++			gpios = <&gpio0 RK_PB7 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++		};
++
++		led_red: led-1 {
++			function = LED_FUNCTION_STATUS;
++			color = <LED_COLOR_ID_RED>;
++			gpios = <&gpio4 RK_PC5 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "none";
++		};
++	};
++
++	fan: pwm-fan {
++		compatible = "pwm-fan";
++		cooling-levels = <0 95 145 195 255>;
++		fan-supply = <&vcc5v0_sys>;
++		pwms = <&pwm1 0 50000 0>;
++		#cooling-cells = <2>;
++	};
++
++	vcc3v3_pcie2x1l2: vcc3v3-pcie2x1l2-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc3v3_pcie2x1l2";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		startup-delay-us = <5000>;
++		vin-supply = <&vcc_3v3_s3>;
++	};
++
++	vcc3v3_pcie30: vcc3v3-pcie30-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpios = <&gpio1 RK_PA4 GPIO_ACTIVE_HIGH>;
++		regulator-name = "vcc3v3_pcie30";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		startup-delay-us = <5000>;
++		vin-supply = <&vcc5v0_sys>;
++	};
++
++	vcc5v0_host: vcc5v0-host-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0_host";
++		regulator-boot-on;
++		regulator-always-on;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		enable-active-high;
++		gpio = <&gpio4 RK_PB0 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc5v0_host_en>;
++		vin-supply = <&vcc5v0_sys>;
++	};
++
++	vcc5v0_sys: vcc5v0-sys-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0_sys";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++	};
++
++	vcc_1v1_nldo_s3: vcc-1v1-nldo-s3-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc_1v1_nldo_s3";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <1100000>;
++		regulator-max-microvolt = <1100000>;
++		vin-supply = <&vcc5v0_sys>;
++	};
++};
++
++&combphy0_ps {
++	status = "okay";
++};
++
++&combphy1_ps {
++	status = "okay";
++};
++
++&combphy2_psu {
++	status = "okay";
++};
++
++&cpu_b0 {
++	cpu-supply = <&vdd_cpu_big0_s0>;
++};
++
++&cpu_b1 {
++	cpu-supply = <&vdd_cpu_big0_s0>;
++};
++
++&cpu_b2 {
++	cpu-supply = <&vdd_cpu_big1_s0>;
++};
++
++&cpu_b3 {
++	cpu-supply = <&vdd_cpu_big1_s0>;
++};
++
++&cpu_l0 {
++	cpu-supply = <&vdd_cpu_lit_s0>;
++};
++
++&cpu_l1 {
++	cpu-supply = <&vdd_cpu_lit_s0>;
++};
++
++&cpu_l2 {
++	cpu-supply = <&vdd_cpu_lit_s0>;
++};
++
++&cpu_l3 {
++	cpu-supply = <&vdd_cpu_lit_s0>;
++};
++
++&gpu {
++	mali-supply = <&vdd_gpu_s0>;
++	status = "okay";
++};
++
++&i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c0m2_xfer>;
++	status = "okay";
++
++	vdd_cpu_big0_s0: regulator@42 {
++		compatible = "rockchip,rk8602";
++		reg = <0x42>;
++		fcs,suspend-voltage-selector = <1>;
++		regulator-name = "vdd_cpu_big0_s0";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <550000>;
++		regulator-max-microvolt = <1050000>;
++		regulator-ramp-delay = <2300>;
++		vin-supply = <&vcc5v0_sys>;
++
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++
++	vdd_cpu_big1_s0: regulator@43 {
++		compatible = "rockchip,rk8603", "rockchip,rk8602";
++		reg = <0x43>;
++		fcs,suspend-voltage-selector = <1>;
++		regulator-name = "vdd_cpu_big1_s0";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <550000>;
++		regulator-max-microvolt = <1050000>;
++		regulator-ramp-delay = <2300>;
++		vin-supply = <&vcc5v0_sys>;
++
++		regulator-state-mem {
++			regulator-off-in-suspend;
++		};
++	};
++};
++
++&i2c6 {
++	status = "okay";
++
++	hym8563: rtc@51 {
++		compatible = "haoyu,hym8563";
++		reg = <0x51>;
++		#clock-cells = <0>;
++		clock-output-names = "hym8563";
++		pinctrl-names = "default";
++		pinctrl-0 = <&hym8563_int>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PB0 IRQ_TYPE_LEVEL_LOW>;
++		wakeup-source;
++	};
++};
++
++&i2c7 {
++	status = "okay";
++
++	es8316: audio-codec@11 {
++		compatible = "everest,es8316";
++		reg = <0x11>;
++		clocks = <&cru I2S0_8CH_MCLKOUT>;
++		clock-names = "mclk";
++		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
++		assigned-clock-rates = <12288000>;
++		#sound-dai-cells = <0>;
++
++		port {
++			es8316_p0_0: endpoint {
++				remote-endpoint = <&i2s0_8ch_p0_0>;
++			};
++		};
++	};
++};
++
++&i2s0_8ch {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2s0_lrck
++		     &i2s0_mclk
++		     &i2s0_sclk
++		     &i2s0_sdi0
++		     &i2s0_sdo0>;
++	status = "okay";
++
++	i2s0_8ch_p0: port {
++		i2s0_8ch_p0_0: endpoint {
++			dai-format = "i2s";
++			mclk-fs = <256>;
++			remote-endpoint = <&es8316_p0_0>;
++		};
++	};
++};
++
++/* phy1 - right ethernet port */
++&pcie2x1l0 {
++	reset-gpios = <&gpio4 RK_PA5 GPIO_ACTIVE_HIGH>;
++	status = "okay";
++};
++
++/* phy2 - WiFi */
++&pcie2x1l1 {
++	reset-gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
++	status = "okay";
++};
++
++/* phy0 - left ethernet port */
++&pcie2x1l2 {
++	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
++	status = "okay";
++};
++
++&pcie30phy {
++	status = "okay";
++};
++
++&pcie3x4 {
++	reset-gpios = <&gpio4 RK_PB6 GPIO_ACTIVE_HIGH>;
++	vpcie3v3-supply = <&vcc3v3_pcie30>;
++	status = "okay";
++};
++
++&pinctrl {
++	hym8563 {
++		hym8563_int: hym8563-int {
++			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	leds {
++		led_rgb_b: led-rgb-b {
++			rockchip,pins = <0 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++		led_rgb_r: led-rgb-r {
++			rockchip,pins = <0 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	sound {
++		hp_detect: hp-detect {
++			rockchip,pins = <1 RK_PD5 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	usb {
++		vcc5v0_host_en: vcc5v0-host-en {
++			rockchip,pins = <4 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++};
++
++&pwm1 {
++	status = "okay";
++};
++
++&saradc {
++	vref-supply = <&avcc_1v8_s0>;
++	status = "okay";
++};
++
++&sdhci {
++	bus-width = <8>;
++	no-sdio;
++	no-sd;
++	non-removable;
++	mmc-hs200-1_8v;
++	status = "okay";
++};
++
++&sdmmc {
++	max-frequency = <200000000>;
++	no-sdio;
++	no-mmc;
++	bus-width = <4>;
++	cap-mmc-highspeed;
++	cap-sd-highspeed;
++	disable-wp;
++	sd-uhs-sdr104;
++	vmmc-supply = <&vcc_3v3_s3>;
++	vqmmc-supply = <&vccio_sd_s0>;
++	status = "okay";
++};
++
++&spi2 {
++	status = "okay";
++	assigned-clocks = <&cru CLK_SPI2>;
++	assigned-clock-rates = <200000000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi2m2_cs0 &spi2m2_pins>;
++	num-cs = <1>;
++
++	pmic@0 {
++		compatible = "rockchip,rk806";
++		spi-max-frequency = <1000000>;
++		reg = <0x0>;
++
++		interrupt-parent = <&gpio0>;
++		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&pmic_pins>, <&rk806_dvs1_null>,
++			    <&rk806_dvs2_null>, <&rk806_dvs3_null>;
++
++		system-power-controller;
++
++		vcc1-supply = <&vcc5v0_sys>;
++		vcc2-supply = <&vcc5v0_sys>;
++		vcc3-supply = <&vcc5v0_sys>;
++		vcc4-supply = <&vcc5v0_sys>;
++		vcc5-supply = <&vcc5v0_sys>;
++		vcc6-supply = <&vcc5v0_sys>;
++		vcc7-supply = <&vcc5v0_sys>;
++		vcc8-supply = <&vcc5v0_sys>;
++		vcc9-supply = <&vcc5v0_sys>;
++		vcc10-supply = <&vcc5v0_sys>;
++		vcc11-supply = <&vcc_2v0_pldo_s3>;
++		vcc12-supply = <&vcc5v0_sys>;
++		vcc13-supply = <&vcc_1v1_nldo_s3>;
++		vcc14-supply = <&vcc_1v1_nldo_s3>;
++		vcca-supply = <&vcc5v0_sys>;
++
++		gpio-controller;
++		#gpio-cells = <2>;
++
++		rk806_dvs1_null: dvs1-null-pins {
++			pins = "gpio_pwrctrl1";
++			function = "pin_fun0";
++		};
++
++		rk806_dvs2_null: dvs2-null-pins {
++			pins = "gpio_pwrctrl2";
++			function = "pin_fun0";
++		};
++
++		rk806_dvs3_null: dvs3-null-pins {
++			pins = "gpio_pwrctrl3";
++			function = "pin_fun0";
++		};
++
++		regulators {
++			vdd_gpu_s0: vdd_gpu_mem_s0: dcdc-reg1 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <550000>;
++				regulator-max-microvolt = <950000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vdd_gpu_s0";
++				regulator-enable-ramp-delay = <400>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_cpu_lit_s0: vdd_cpu_lit_mem_s0: dcdc-reg2 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <550000>;
++				regulator-max-microvolt = <950000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vdd_cpu_lit_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_log_s0: dcdc-reg3 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <675000>;
++				regulator-max-microvolt = <750000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vdd_log_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++					regulator-suspend-microvolt = <750000>;
++				};
++			};
++
++			vdd_vdenc_s0: vdd_vdenc_mem_s0: dcdc-reg4 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <550000>;
++				regulator-max-microvolt = <950000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vdd_vdenc_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_ddr_s0: dcdc-reg5 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <675000>;
++				regulator-max-microvolt = <900000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vdd_ddr_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++					regulator-suspend-microvolt = <850000>;
++				};
++			};
++
++			vdd2_ddr_s3: dcdc-reg6 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-name = "vdd2_ddr_s3";
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++				};
++			};
++
++			vcc_2v0_pldo_s3: dcdc-reg7 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <2000000>;
++				regulator-max-microvolt = <2000000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vdd_2v0_pldo_s3";
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <2000000>;
++				};
++			};
++
++			vcc_3v3_s3: dcdc-reg8 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc_3v3_s3";
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <3300000>;
++				};
++			};
++
++			vddq_ddr_s0: dcdc-reg9 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-name = "vddq_ddr_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_1v8_s3: dcdc-reg10 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc_1v8_s3";
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <1800000>;
++				};
++			};
++
++			avcc_1v8_s0: pldo-reg1 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "avcc_1v8_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_1v8_s0: pldo-reg2 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc_1v8_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++					regulator-suspend-microvolt = <1800000>;
++				};
++			};
++
++			avdd_1v2_s0: pldo-reg3 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1200000>;
++				regulator-name = "avdd_1v2_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_3v3_s0: pldo-reg4 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vcc_3v3_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vccio_sd_s0: pldo-reg5 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-ramp-delay = <12500>;
++				regulator-name = "vccio_sd_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			pldo6_s3: pldo-reg6 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "pldo6_s3";
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <1800000>;
++				};
++			};
++
++			vdd_0v75_s3: nldo-reg1 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <750000>;
++				regulator-name = "vdd_0v75_s3";
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <750000>;
++				};
++			};
++
++			vdd_ddr_pll_s0: nldo-reg2 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <850000>;
++				regulator-max-microvolt = <850000>;
++				regulator-name = "vdd_ddr_pll_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++					regulator-suspend-microvolt = <850000>;
++				};
++			};
++
++			avdd_0v75_s0: nldo-reg3 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <750000>;
++				regulator-name = "avdd_0v75_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_0v85_s0: nldo-reg4 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <850000>;
++				regulator-max-microvolt = <850000>;
++				regulator-name = "vdd_0v85_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_0v75_s0: nldo-reg5 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <750000>;
++				regulator-name = "vdd_0v75_s0";
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++		};
++	};
++};
++
++&uart2 {
++	pinctrl-0 = <&uart2m0_xfer>;
++	status = "okay";
++};
++
++&u2phy0 {
++	status = "okay";
++};
++
++&u2phy0_otg {
++	status = "okay";
++};
++
++&u2phy1 {
++	status = "okay";
++};
++
++&u2phy1_otg {
++	status = "okay";
++};
++
++&u2phy3 {
++	status = "okay";
++};
++
++&u2phy3_host {
++	phy-supply = <&vcc5v0_host>;
++	status = "okay";
++};
++
++&usbdp_phy1 {
++	status = "okay";
++};
++
++&usb_host1_ehci {
++	status = "okay";
++};
++
++&usb_host1_ohci {
++	status = "okay";
++};
++
++&usb_host1_xhci {
++	dr_mode = "host";
++	status = "okay";
++};
