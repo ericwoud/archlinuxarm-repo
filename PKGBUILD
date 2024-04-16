@@ -4,7 +4,7 @@
 
 pkgname=rk3588-uboot
 #last tested 2022.07, does not build anymore...
-_pkgver=2024.04-rc3
+_pkgver=2024.04
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
 pkgdesc='U-Boot for RK3588 Boards'
@@ -18,8 +18,8 @@ _bincommit="f02d10e468d8c783c45137d230ff33d42ca670b4"
 source=(
   "https://github.com/u-boot/u-boot/archive/refs/tags/v${_pkgver}.tar.gz"
   "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_eyescan_v1.11.bin"
-  "src/rk3588-bpi-m7.dts::https://raw.githubusercontent.com/ericwoud/archlinuxarm-repo/linux-aarch64-rk-rc/rk3588-bpi-m7.dts"
-  "rk3588-bpi-m7-u-boot.dtsi"
+  "rk3588-armsom-sige7.dts"
+  "rk3588-armsom-sige7-u-boot.dtsi"
 )
 if [[ "$_openatf" == "true" ]]; then
   # From: https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/21840
@@ -61,22 +61,22 @@ build() {
   cd "${srcdir}/u-boot-${_pkgver}"
 #  patch -p1 -N -r - < "${srcdir}/040-blabla.patch"
 
-  if [ -z "$(grep "rk3588-bpi-m7.dtb" arch/arm/dts/Makefile)" ]; then
-    sed -i 's/dtb-$(CONFIG_ROCKCHIP_RK3588) +=.*/dtb-$(CONFIG_ROCKCHIP_RK3588) += \\\n\trk3588-bpi-m7.dtb \\/' \
+  if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm/dts/Makefile)" ]; then
+    sed -i 's/dtb-$(CONFIG_ROCKCHIP_RK3588) +=.*/dtb-$(CONFIG_ROCKCHIP_RK3588) += \\\n\trk3588-armsom-sige7.dtb \\/' \
                arch/arm/dts/Makefile
   fi	
-  cp -vf ../rk3588-bpi-m7.dts arch/arm/dts
-  cp -vf ../rk3588-bpi-m7-u-boot.dtsi arch/arm/dts
+  cp -vf ../rk3588-armsom-sige7.dts arch/arm/dts
+  cp -vf ../rk3588-armsom-sige7-u-boot.dtsi arch/arm/dts
 
-  cp -vf configs/rock5b-rk3588_defconfig configs/bpi-m7-rk3588_defconfig
+  cp -vf configs/rock5b-rk3588_defconfig configs/armsom-sige7-rk3588_defconfig
   sed -i 's/CONFIG_TARGET_ROCK5B_RK3588=y/CONFIG_TARGET_EVB_RK3588=y/g' \
-             configs/bpi-m7-rk3588_defconfig
-  sed -i 's/rock-5b/bpi-m7/g' \
-             configs/bpi-m7-rk3588_defconfig
+             configs/armsom-sige7-rk3588_defconfig
+  sed -i 's/rock-5b/armsom-sige7/g' \
+             configs/armsom-sige7-rk3588_defconfig
 
   #for rkdev in firefly miqi openhour phycore popmetal rock-pi-n8 tinker tinker-s vyasa; do
   #for rkdev_conf in configs/rock5b-rk3588_defconfig; do
-  for rkdev_conf in configs/bpi-m7-rk3588_defconfig configs/rock5b-rk3588_defconfig; do
+  for rkdev_conf in configs/armsom-sige7-rk3588_defconfig configs/rock5b-rk3588_defconfig; do
   #for rkdev_conf in configs/*-rk3588_defconfig; do
     rkdev=$(basename $rkdev_conf)
     rkdev=${rkdev/"-rk3588_defconfig"/""}
