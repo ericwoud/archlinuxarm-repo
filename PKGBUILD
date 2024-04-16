@@ -13,6 +13,8 @@
 
 _gitroot="https://github.com/ericwoud/linux.git"
 _gitbranch="bpir-rolling-stable"
+#_gitbranch="bpir-net-next"
+#_gitbranch="mt7988-for-next"
 #_gitroot="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux"
 #_gitbranch="linux-rolling-stable"
 #_gitbranch="linux-rolling-lts"
