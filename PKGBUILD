@@ -13,7 +13,7 @@ pkgbase=linux-aarch64-rk-rc
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-api-headers")
 _kernelname=${pkgbase#linux}
 _desc="AArch64 multi-platform"
-pkgver=6.8.r20240310
+pkgver=6.9_rc1.r20240328
 pkgrel=1
 _srcname="linux-${_repo}"
 arch=('aarch64')
@@ -25,13 +25,11 @@ source=('src/config::https://github.com/armbian/build/raw/main/config/kernel/lin
         'generate_chromebook_its.sh'
         'kernel.keyblock'
         'kernel_data_key.vbprivk'
-        'linux.preset'
-        'rk3588-bpi-m7.dts')
+        'linux.preset')
 md5sums=(SKIP
          '7c97cf141750ad810235b1ad06eb9f75'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          '584777ae88bce2c5659960151b64c7d8'
-         SKIP
          SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
@@ -80,14 +78,17 @@ prepare() {
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
+  # Remove untracked file:
+  rm -f arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts
+
   # ALARM patches
   git apply --verbose ../*.patch
 
-  if [ -z "$(grep "rk3588-bpi-m7.dtb" arch/arm64/boot/dts/rockchip/Makefile)" ]; then
-    echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-bpi-m7.dtb' \
+  if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm64/boot/dts/rockchip/Makefile)" ]; then
+    echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-armsom-sige7.dtb' \
                 >>arch/arm64/boot/dts/rockchip/Makefile
   fi	
-  cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
+#  cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
 
   cat "${srcdir}/config" > .config
 
