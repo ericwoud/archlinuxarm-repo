@@ -21,14 +21,6 @@ fi
 
 _gitroot="https://github.com/ericwoud/linux.git"
 #_gitbranch="bpir-net-next"
-#_gitbranch="mt7988-for-next"
-#_gitroot="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux"
-#_gitbranch="linux-rolling-stable"
-#_gitbranch="linux-rolling-lts"
-#_gitroot="https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next"
-#_gitbranch="main"
-#_gitroot="https://github.com/frank-w/BPI-Router-Linux.git"
-#_gitbranch="6.6-r3mini"
 
 pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
