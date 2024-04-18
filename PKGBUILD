@@ -116,7 +116,7 @@ build() {
   _buildimage mt7988 bpir4  emmc  nostretch DRAM_USE_COMB=1
 }
  
-package_bpir64-atf-git() {
+package_bpir-atf-git() {
   pkgdesc='ATF BPI-R64/R3/R4 images'
   depends=("linux" "dtc" "bpir-atf-git-fiptool" "build-r64-arch-utils-git")
   replaces=(bpir64-mkimage)
