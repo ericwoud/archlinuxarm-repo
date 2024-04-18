@@ -11,8 +11,15 @@
 # Optional settings:
 #_lto="true"      # Uncomment this line to enable CLANG-LTO
 
+if [[ "$TARGET" == "bpir4" ]]; then
+  _target="bpir4"
+  _gitbranch="mt7988-for-next"
+else
+  _target="bpir"
+  _gitbranch="bpir-rolling-stable"
+fi
+
 _gitroot="https://github.com/ericwoud/linux.git"
-_gitbranch="bpir-rolling-stable"
 #_gitbranch="bpir-net-next"
 #_gitbranch="mt7988-for-next"
 #_gitroot="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux"
@@ -23,10 +30,10 @@ _gitbranch="bpir-rolling-stable"
 #_gitroot="https://github.com/frank-w/BPI-Router-Linux.git"
 #_gitbranch="6.6-r3mini"
 
-pkgbase=linux-bpir64-git
-_srcname=linux
+pkgbase=linux-${_target}-git
+_srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
-_desc="AArch64 kernel for BPI-R64 and BPI-R3"
+_desc="AArch64 kernel for BPI-R64/R3/R4"
 pkgver=6.6.14.bpi.d82609bef
 pkgrel=1
 arch=('aarch64' 'x86_64')
@@ -133,10 +140,10 @@ _package() {
   depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'peekpoke-git' 'parted')
   optdepends=('mkinitcpio>=0.7')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
-  replaces=('linux-armv8')
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install=${pkgname}.install
+  [[ "$_target" == "bpir" ]] replaces=('linux-bpir64-git' 'linux-bpir3-git')
 
   cd ${_srcname}
 
@@ -215,6 +222,7 @@ _package-headers() {
   pkgdesc="Header files and scripts for building modules for linux kernel - ${_desc}"
   provides=("linux-headers=${pkgver}")
   conflicts=('linux-headers')
+  [[ "$_target" == "bpir" ]] replaces=('linux-bpir64-git-headers' 'linux-bpir3-git-headers')
 
   cd ${_srcname}
   local _builddir="${pkgdir}/usr/lib/modules/${_kernver}/build"
