@@ -9,7 +9,7 @@ _gitroot=https://github.com/ericwoud/${_gitname}
 _gitbranch="bpir"
 #_gitbranch="master"
 #_gitbranch="mtksoc"
-pkgbase=bpir64-atf-git
+pkgbase=bpir-atf-git
 pkgname=("$pkgbase")
 epoch=2
 pkgver=v2.8r12614.f84551673
@@ -117,8 +117,8 @@ build() {
 }
  
 package_bpir64-atf-git() {
-  pkgdesc='ATF BPI-R64 & BPI-R3 images'
-  depends=("linux" "dtc" "bpir64-atf-git-fiptool" "build-r64-arch-utils-git")
+  pkgdesc='ATF BPI-R64/R3/R4 images'
+  depends=("linux" "dtc" "bpir-atf-git-fiptool" "build-r64-arch-utils-git")
   replaces=(bpir64-mkimage)
   cd "${srcdir}"
   for _folder in "${srcdir}/${_gitname}/build/"*; do
@@ -127,8 +127,8 @@ package_bpir64-atf-git() {
   done
 }
 
-package_bpir64-atf-git-fiptool() {
-  pkgdesc='ATF BPI-R64 & BPI-R3 fiptool'
+package_bpir-atf-git-fiptool() {
+  pkgdesc='ATF BPI-R64/R3/R4 fiptool'
   depends=()
   cd "${srcdir}/${_gitname}/tools/fiptool"
   install -m755 -vDt "$pkgdir/usr/bin" fiptool
