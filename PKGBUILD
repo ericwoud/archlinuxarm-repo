@@ -134,7 +134,7 @@ _package() {
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install=${pkgname}.install
+  install=linux-bpir-git.install
   [[ "$_target" == "bpir" ]] && replaces=('linux-bpir64-git' 'linux-bpir3-git')
 
   cd ${_srcname}
