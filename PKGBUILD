@@ -136,6 +136,7 @@ _package() {
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install=linux-bpir-git.install
   [[ "$_target" == "bpir" ]] && replaces=('linux-bpir64-git' 'linux-bpir3-git')
+  provides+=(${replaces[@]})
 
   cd ${_srcname}
 
