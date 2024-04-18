@@ -135,8 +135,12 @@ _package() {
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install=linux-bpir-git.install
-  [[ "$_target" == "bpir" ]] && replaces=('linux-bpir64-git' 'linux-bpir3-git')
-  provides+=(${replaces[@]})
+  if [[ "$_target" == "bpir" ]]; then
+    replaces=('linux-bpir64-git'
+              'linux-bpir3-git'
+              'linux-bpir3m-git')
+    provides+=(${replaces[@]})
+  fi
 
   cd ${_srcname}
 
@@ -215,7 +219,12 @@ _package-headers() {
   pkgdesc="Header files and scripts for building modules for linux kernel - ${_desc}"
   provides=("linux-headers=${pkgver}")
   conflicts=('linux-headers')
-  [[ "$_target" == "bpir" ]] && replaces=('linux-bpir64-git-headers' 'linux-bpir3-git-headers')
+  if [[ "$_target" == "bpir" ]]; then
+    replaces=('linux-bpir64-git-headers'
+              'linux-bpir3-git-headers'
+              'linux-bpir3m-git-headers')
+    provides+=(${replaces[@]})
+  fi
 
   cd ${_srcname}
   local _builddir="${pkgdir}/usr/lib/modules/${_kernver}/build"
