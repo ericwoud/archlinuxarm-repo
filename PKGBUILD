@@ -14,6 +14,9 @@
 if [[ "$TARGET" == "bpir4" ]]; then
   _target="bpir4"
   _gitbranch="mt7988-for-next"
+elif [[ "$TARGET" == "bpirnn" ]]; then
+  _target="bpirnn"
+  _gitbranch="bpir-net-next"
 else
   _target="bpir"
   _gitbranch="bpir-rolling-stable"
