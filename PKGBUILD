@@ -23,7 +23,6 @@ else
 fi
 
 _gitroot="https://github.com/ericwoud/linux.git"
-#_gitbranch="bpir-net-next"
 
 pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
