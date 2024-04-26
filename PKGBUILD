@@ -51,19 +51,6 @@ prepare() {
 
   cd "${srcdir}/u-boot-${_pkgver}"
   git apply --verbose ../*.patch
-}
-
-build() {
-  if [[ "$_openatf" == "true" ]]; then
-    cd "${srcdir}/atf"
-    touch plat/rockchip/rk3588/platform.mk
-    unset CXXFLAGS CPPFLAGS LDFLAGS
-    export CFLAGS=-Wno-error
-    make $_crossc PLAT=rk3588
-    _bl31="${srcdir}/atf/build/rk3588/release/bl31/bl31.elf"
-  else
-    _bl31="${srcdir}/rk3588_bl31.elf"
-  fi
 
   if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm/dts/Makefile)" ]; then
     sed -i 's/dtb-$(CONFIG_ROCKCHIP_RK3588) +=.*/dtb-$(CONFIG_ROCKCHIP_RK3588) += \\\n\trk3588-armsom-sige7.dtb \\/' \
@@ -77,6 +64,19 @@ build() {
              configs/armsom-sige7-rk3588_defconfig
   sed -i 's/rock-5b/armsom-sige7/g' \
              configs/armsom-sige7-rk3588_defconfig
+}
+
+build() {
+  if [[ "$_openatf" == "true" ]]; then
+    cd "${srcdir}/atf"
+    touch plat/rockchip/rk3588/platform.mk
+    unset CXXFLAGS CPPFLAGS LDFLAGS
+    export CFLAGS=-Wno-error
+    make $_crossc PLAT=rk3588
+    _bl31="${srcdir}/atf/build/rk3588/release/bl31/bl31.elf"
+  else
+    _bl31="${srcdir}/rk3588_bl31.elf"
+  fi
 
   #for rkdev in firefly miqi openhour phycore popmetal rock-pi-n8 tinker tinker-s vyasa; do
   #for rkdev_conf in configs/rock5b-rk3588_defconfig; do
