@@ -1,17 +1,7 @@
-From f3cb17fc8f73dc840fec8d7d39e9f511a18a6b5e Mon Sep 17 00:00:00 2001
-From: Eric Woudstra <ericwouds@gmail.com>
-Date: Fri, 26 Apr 2024 09:45:13 +0200
-Subject: [PATCH] rk3588-rock-5b add flash
-
----
- arch/arm/dts/rk3588-rock-5b.dts | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/arch/arm/dts/rk3588-rock-5b.dts b/arch/arm/dts/rk3588-rock-5b.dts
-index 1fe8b2a0ed75ee..2a698923d22ebe 100644
+diff -Naur a/arch/arm/dts/rk3588-rock-5b.dts b/arch/arm/dts/rk3588-rock-5b.dts
 --- a/arch/arm/dts/rk3588-rock-5b.dts
 +++ b/arch/arm/dts/rk3588-rock-5b.dts
-@@ -361,6 +361,20 @@
+@@ -354,6 +354,20 @@
  	status = "okay";
  };
  

@@ -50,7 +50,9 @@ prepare() {
   fi
 
   cd "${srcdir}/u-boot-${_pkgver}"
-  git apply --verbose ../*-uboot-*.patch
+  for p in $(shopt -s nullglob; echo ../*-uboot-*.patch) ; do
+    patch -p1 -N -r - < "$p"
+  done
 
   if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm/dts/Makefile)" ]; then
     sed -i 's/dtb-$(CONFIG_ROCKCHIP_RK3588) +=.*/dtb-$(CONFIG_ROCKCHIP_RK3588) += \\\n\trk3588-armsom-sige7.dtb \\/' \
