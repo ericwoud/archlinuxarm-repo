@@ -48,6 +48,9 @@ prepare() {
     mkdir -p "${srcdir}/atf"
     bsdtar -x -f "${startdir}/atf.tar.gz" -C "${srcdir}/atf"
   fi
+
+  cd "${srcdir}/u-boot-${_pkgver}"
+  git apply --verbose ../*.patch
 }
 
 build() {
@@ -61,9 +64,6 @@ build() {
   else
     _bl31="${srcdir}/rk3588_bl31.elf"
   fi
-
-  cd "${srcdir}/u-boot-${_pkgver}"
-#  patch -p1 -N -r - < "${srcdir}/040-blabla.patch"
 
   if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm/dts/Makefile)" ]; then
     sed -i 's/dtb-$(CONFIG_ROCKCHIP_RK3588) +=.*/dtb-$(CONFIG_ROCKCHIP_RK3588) += \\\n\trk3588-armsom-sige7.dtb \\/' \
