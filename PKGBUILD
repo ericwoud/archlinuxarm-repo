@@ -78,6 +78,8 @@ build() {
     _bl31="${srcdir}/rk3588_bl31.elf"
   fi
 
+  cd "${srcdir}/u-boot-${_pkgver}"
+
   #for rkdev in firefly miqi openhour phycore popmetal rock-pi-n8 tinker tinker-s vyasa; do
   #for rkdev_conf in configs/rock5b-rk3588_defconfig; do
   for rkdev_conf in configs/armsom-sige7-rk3588_defconfig configs/rock5b-rk3588_defconfig; do
