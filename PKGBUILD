@@ -29,6 +29,10 @@ else
   source+=("src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.45.elf")
 fi
 sha256sums=(SKIP SKIP SKIP SKIP SKIP)
+for p in $(shopt -s nullglob; echo *.patch) ; do
+  source+=($p)
+  sha256sums+=(SKIP)
+done
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
