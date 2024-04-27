@@ -13,7 +13,7 @@ pkgbase=linux-aarch64-rk-rc
 pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-api-headers")
 _kernelname=${pkgbase#linux}
 _desc="AArch64 multi-platform"
-pkgver=6.9_rc1.r20240328
+pkgver=6.9_rc1.r20240410
 pkgrel=1
 _srcname="linux-${_repo}"
 arch=('aarch64')
@@ -100,9 +100,10 @@ prepare() {
 #  make ${MAKEFLAGS} rockchip_defconfig
 #  rm -vf ./arch/arm64/configs/rockchip_defconfig
 
-  # Make sure rk808 is not a module
+  # Make sure these are not a module
   sed -i 's/CONFIG_MFD_RK8XX_SPI=m/CONFIG_MFD_RK8XX_SPI=y/' .config
   sed -i 's/CONFIG_REGULATOR_RK808=m/CONFIG_REGULATOR_RK808=y/' .config
+  sed -i 's/CONFIG_PHY_ROCKCHIP_SNPS_PCIE3=m/CONFIG_PHY_ROCKCHIP_SNPS_PCIE3=y/' .config
 
   # get kernel version
   make ${MAKEFLAGS} olddefconfig
