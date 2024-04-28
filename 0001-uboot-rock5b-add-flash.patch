@@ -1,19 +1,22 @@
 diff -Naur a/arch/arm/dts/rk3588-rock-5b.dts b/arch/arm/dts/rk3588-rock-5b.dts
 --- a/arch/arm/dts/rk3588-rock-5b.dts
 +++ b/arch/arm/dts/rk3588-rock-5b.dts
-@@ -354,6 +354,20 @@
+@@ -354,6 +354,23 @@
  	status = "okay";
  };
  
 +&sfc {
++	bootph-pre-ram;
++	u-boot,spl-sfc-no-dma;
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&fspim2_pins>;
 +	status = "okay";
 +
 +	spi_flash: flash@0 {
++		bootph-pre-ram;
 +		compatible = "jedec,spi-nor";
 +		reg = <0x0>;
-+		spi-max-frequency = <50000000>;
++		spi-max-frequency = <24000000>;
 +		spi-rx-bus-width = <4>;
 +		spi-tx-bus-width = <1>;
 +	};

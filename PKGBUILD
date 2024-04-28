@@ -3,8 +3,8 @@
 #_openatf="true"      # Uncomment this line to build opensource atf
 
 pkgname=rk3588-uboot
-#last tested 2022.07, does not build anymore...
 _pkgver=2024.04
+_pkgver=2024.07-rc1
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
 pkgdesc='U-Boot for RK3588 Boards'
@@ -79,6 +79,7 @@ build() {
   else
     _bl31="${srcdir}/rk3588_bl31.elf"
   fi
+  _tpl="${srcdir}/rk3588_ddr.bin"
 
   cd "${srcdir}/u-boot-${_pkgver}"
 
@@ -99,7 +100,7 @@ build() {
     export KCFLAGS='-Wno-error=address'
     export ARCH=aarch64
     make $_crossc rk3588_my_defconfig
-    make $_crossc ROCKCHIP_TPL="${srcdir}/rk3588_ddr.bin" BL31="$_bl31"
+    make $_crossc ROCKCHIP_TPL="$_tpl" BL31="$_bl31"
     _out="u-boot-with-spl-rk3588-$rkdev.bin"
     dd if=idbloader.img of=$_out
     dd if=u-boot.itb    of=$_out seek=$((16384 - 64))

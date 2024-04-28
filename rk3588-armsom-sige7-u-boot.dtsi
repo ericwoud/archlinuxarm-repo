@@ -11,11 +11,3 @@
 	mmc-hs200-1_8v;
 };
 
-&sfc {
-	bootph-pre-ram;
-	u-boot,spl-sfc-no-dma;
-
-	flash@0 {
-		bootph-pre-ram;
-	};
-};
