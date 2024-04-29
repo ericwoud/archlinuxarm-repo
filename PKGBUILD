@@ -25,11 +25,13 @@ source=('src/config::https://github.com/armbian/build/raw/main/config/kernel/lin
         'generate_chromebook_its.sh'
         'kernel.keyblock'
         'kernel_data_key.vbprivk'
-        'linux.preset')
+        'linux.preset'
+        'rk3588-armsom-sige7.dts')
 md5sums=(SKIP
          '7c97cf141750ad810235b1ad06eb9f75'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          '584777ae88bce2c5659960151b64c7d8'
+         SKIP
          SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
@@ -78,9 +80,6 @@ prepare() {
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
-  # Remove untracked file:
-  rm -f arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts
-
   # ALARM patches
   git apply --verbose ../*.patch
 
@@ -88,7 +87,7 @@ prepare() {
     echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-armsom-sige7.dtb' \
                 >>arch/arm64/boot/dts/rockchip/Makefile
   fi	
-#  cp -vf ../rk3588-bpi-m7.dts arch/arm64/boot/dts/rockchip
+  cp -vf ../rk3588-armsom-sige7.dts arch/arm64/boot/dts/rockchip
 
   cat "${srcdir}/config" > .config
 
