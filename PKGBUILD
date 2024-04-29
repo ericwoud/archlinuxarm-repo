@@ -83,6 +83,8 @@ build() {
 
   cd "${srcdir}/u-boot-${_pkgver}"
 
+  rm -vf *.bin.xz
+
   #for rkdev in firefly miqi openhour phycore popmetal rock-pi-n8 tinker tinker-s vyasa; do
   #for rkdev_conf in configs/rock5b-rk3588_defconfig; do
   for rkdev_conf in configs/armsom-sige7-rk3588_defconfig configs/rock5b-rk3588_defconfig; do
@@ -101,14 +103,31 @@ build() {
     export ARCH=aarch64
     make $_crossc rk3588_my_defconfig
     make $_crossc ROCKCHIP_TPL="$_tpl" BL31="$_bl31"
-    _out="u-boot-with-spl-rk3588-$rkdev.bin"
-    dd if=idbloader.img of=$_out
-    dd if=u-boot.itb    of=$_out seek=$((16384 - 64))
-    xz --keep --force --verbose $_out
+    if [ -f "idbloader.img" ] && [ -f "u-boot.itb" ]; then
+      _out="u-boot-with-spl-rk3588-$rkdev.bin"
+      dd if=idbloader.img of=$_out
+      dd if=u-boot.itb    of=$_out seek=$((16384 - 64))
+      xz --keep --force --verbose $_out
+      rm -vf "idbloader.img" "u-boot.itb"
+    fi
+    if [ -f "u-boot-rockchip.bin" ]; then
+      _out="u-boot-rockchip-rk3588-$rkdev.bin"
+      cp -vf u-boot-rockchip.bin $_out
+      xz --keep --force --verbose $_out
+      rm -vf "u-boot-rockchip.bin"
+    fi
+    if [ -f "u-boot-rockchip-spi.bin" ]; then
+      _out="u-boot-rockchip-spi-rk3588-$rkdev.bin"
+      cp -vf u-boot-rockchip-spi.bin $_out
+      xz --keep --force --verbose $_out
+      rm -vf "u-boot-rockchip-spi.bin"
+    fi
   done
 }
 
 package() {
   cd "${srcdir}/u-boot-${_pkgver}"
   install -vDt "$pkgdir/boot/uboot" -m644 u-boot-with-spl-rk3588-*.bin.xz
+  install -vDt "$pkgdir/boot/uboot" -m644 u-boot-rockchip-rk3588-*.bin.xz
+  install -vDt "$pkgdir/boot/uboot" -m644 u-boot-rockchip-spi-rk3588-*.bin.xz
 }
