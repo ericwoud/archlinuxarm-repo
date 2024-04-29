@@ -50,7 +50,7 @@ prepare() {
   fi
 
   cd "${srcdir}/u-boot-${_pkgver}"
-  for p in $(shopt -s nullglob; echo ../*-uboot-*.patch) ; do
+  for p in $(shopt -s nullglob; echo ../../*-uboot-*.patch) ; do
     patch -p1 -N -r - < "$p"
   done
 
