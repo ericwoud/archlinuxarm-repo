@@ -81,7 +81,7 @@ prepare() {
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
   # ALARM patches
-  git apply --verbose ../*.patch
+  git apply --verbose ../../*.patch
 
   if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm64/boot/dts/rockchip/Makefile)" ]; then
     echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-armsom-sige7.dtb' \
