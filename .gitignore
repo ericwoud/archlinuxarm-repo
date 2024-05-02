@@ -3,4 +3,5 @@ pkg/
 *.xz
 *.zst
 *.bin
+*.elf
 *.gz
