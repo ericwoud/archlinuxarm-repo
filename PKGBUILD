@@ -19,7 +19,7 @@ _srcname="linux-${_repo}"
 arch=('aarch64')
 url="http://www.kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'dtc' 'rsync')
+makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' 'dtc' 'rsync' 'cpio')
 options=('!strip')
 source=('config::https://github.com/armbian/build/raw/main/config/kernel/linux-rockchip-rk3588-edge.config'
         'generate_chromebook_its.sh'
