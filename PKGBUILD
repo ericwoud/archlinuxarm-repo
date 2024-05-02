@@ -17,7 +17,7 @@ _binsite="https://github.com/rockchip-linux/rkbin/raw"
 _bincommit="f02d10e468d8c783c45137d230ff33d42ca670b4"
 source=(
   "https://github.com/u-boot/u-boot/archive/refs/tags/v${_pkgver}.tar.gz"
-  "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.16.bin"
+  "rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.16.bin"
   "rk3588-armsom-sige7.dts"
   "rk3588-armsom-sige7-u-boot.dtsi"
 )
