@@ -16,8 +16,8 @@ _binsite="https://github.com/radxa/rkbin/raw"
 _bincommit="9840e87723eef7c41235b89af8c049c1bcd3d133"
 source=(
   "git+https://github.com/radxa/u-boot.git#branch=stable-5.10-rock5"
-  "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin"
-  "src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.28.elf"
+  "rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.08.bin"
+  "rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.28.elf"
 )
 sha256sums=(SKIP SKIP SKIP)
 
