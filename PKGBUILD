@@ -37,4 +37,5 @@ package() {
   sed -i s,--prefix='$(prefix)',--root="$pkgdir", bindings/python/Makefile.am  
   make DESTDIR="$pkgdir/" install
   install -Dm644 "dbus/data/gpio-manager.service" -t "$pkgdir"/usr/lib/systemd/system
+  mv -vf "$pkgdir"/usr/etc/dbus-1 "$pkgdir"/usr/share
 }
