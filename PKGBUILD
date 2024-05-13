@@ -7,7 +7,7 @@ pkgdesc="C library and tools for interacting with the linux GPIO character devic
 url="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h' 'aarch64')
 license=('LGPL2.1')
-depends=('linux-api-headers>=5.5')
+depends=('linux-api-headers>=5.5' 'libgudev')
 conflicts=('libgpiod')
 provides=('libgpiod')
 makedepends=('git' 'autoconf-archive' 'help2man' 'python-setuptools' 'python-build' 'python-pip')
