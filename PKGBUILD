@@ -10,7 +10,7 @@ license=('LGPL2.1')
 depends=('linux-api-headers>=5.5')
 conflicts=('libgpiod')
 provides=('libgpiod')
-makedepends=('git' 'autoconf-archive' 'help2man' 'python-setuptools' 'python-build')
+makedepends=('git' 'autoconf-archive' 'help2man' 'python-setuptools' 'python-build' 'python-pip')
 source=('libgpiod::git+https://github.com/brgl/libgpiod-private.git#branch=topic/dbus')
 sha1sums=('SKIP')
 
