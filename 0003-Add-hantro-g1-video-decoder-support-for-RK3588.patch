@@ -124,9 +124,9 @@ index 87b83c87b..2e411c80a 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
 @@ -646,6 +646,26 @@ i2c0: i2c@fd880000 {
- 		status = "disabled";
+ 		resets = <&cru SRST_A_AV1>, <&cru SRST_P_AV1>, <&cru SRST_A_AV1_BIU>, <&cru SRST_P_AV1_BIU>;
  	};
-
+ 
 +	vpu: video-codec@fdb50000 {
 +		compatible = "rockchip,rk3588-vdpu121", "rockchip,rk3568-vpu";
 +		reg = <0x0 0xfdb50000 0x0 0x800>;
