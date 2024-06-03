@@ -23,7 +23,7 @@ source=(
 )
 if [[ "$_openatf" == "true" ]]; then
   # From: https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/21840
-  source+=("atf.tar.gz::https://review.trustedfirmware.org/changes/TF-A%2Ftrusted-firmware-a~21840/revisions/7/archive?format=tgz")
+  source+=("atf.tar.gz::https://review.trustedfirmware.org/changes/TF-A%2Ftrusted-firmware-a~21840/revisions/8/archive?format=tgz")
   noextract+=("atf.tar.gz")
 else
   source+=("src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.45.elf")
