@@ -258,7 +258,8 @@ _package-headers() {
 
 _package-api-headers() {
   provides=('linux-api-headers')
-  
+  conflicts=('linux-api-headers')
+
   cd "${srcdir}/${_srcname}/"
   echo "Installing api-headers..."
   make ${MAKEFLAGS} INSTALL_HDR_PATH="$pkgdir/usr" headers_install
