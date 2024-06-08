@@ -53,6 +53,7 @@ depends=(
   libpulse
   libraw1394
   librsvg-2.so
+  libsndio.so
   libsoxr
   libssh
   libtheora
