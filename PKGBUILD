@@ -13,6 +13,13 @@ conflicts=('libcrossguid')
 source=('libcrossguid::git+https://github.com/graeme-hill/crossguid.git')
 md5sums=('SKIP')
 
+prepare() {
+  cd "$srcdir"/libcrossguid
+  # Add #include <cstdint> to guid.hpp
+  sed -i '/#include <functional>/a #include <cstdint>' \
+      include/crossguid/guid.hpp
+}
+
 pkgver() {
   cd "$srcdir"/libcrossguid
   git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
