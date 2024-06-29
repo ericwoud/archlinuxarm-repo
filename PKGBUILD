@@ -143,7 +143,7 @@ build() {
 
    # libavutil/hwcontext_vaapi.c:1238:34: error: assignment to 'uintptr_t *' {aka 'unsigned int *'}
    # from incompatible pointer type 'long unsigned int *' [-Wincompatible-pointer-types]
-   [[ $CARCH == "armv7h" && CONFIG+=' --disable-vaapi'
+   [[ $CARCH == "armv7h" ]] && CONFIG+=' --disable-vaapi'
 
   ./configure \
     --prefix=/usr \
