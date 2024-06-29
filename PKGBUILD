@@ -162,8 +162,6 @@ build() {
     --enable-libbs2b \
     --enable-libdav1d \
     --enable-libdrm \
-    --enable-libdvdnav \
-    --enable-libdvdread \
     --enable-libfreetype \
     --enable-libfribidi \
     --enable-libgsm \
@@ -216,6 +214,10 @@ build() {
   make tools/qt-faststart
   make doc/ff{mpeg,play}.1
 }
+
+# These are not enabled in 7.0, because of errors in kodi-ext-git build
+#    --enable-libdvdnav \
+#    --enable-libdvdread \
 
 package() {
   cd ${_srcname}
