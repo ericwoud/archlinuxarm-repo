@@ -215,7 +215,7 @@ build() {
   make doc/ff{mpeg,play}.1
 }
 
-# These are not enabled in 7.0, because of errors in kodi-ext-git build
+# These are not enabled in 7.0, because of errors in kodi-ext-git build ???
 #    --enable-libdvdnav \
 #    --enable-libdvdread \
 
