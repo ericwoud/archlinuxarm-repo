@@ -20,8 +20,8 @@
 pkgname=ffmpeg-v4l2-request-git
 # pkgname=ffmpeg
 _srcname=FFmpeg
-_version='6.1.1'
-pkgver=6.1.1.r112629.71a1f3f
+_version='7.0'
+pkgver=7.0.r114527.1a69a73
 pkgrel=1
 epoch=2
 pkgdesc='FFmpeg with v4l2-request and drmprime'
@@ -44,6 +44,8 @@ depends=(
   libbs2b.so
   libdav1d.so
   libdrm
+  libdvdnav
+  libdvdread
   libfreetype.so
   libgl
   libiec61883
@@ -76,6 +78,7 @@ depends=(
   libxv
   libxvidcore.so
   libzimg.so
+  mbedtls2
   ocl-icd
   opencore-amr
   openjpeg2
@@ -84,6 +87,7 @@ depends=(
   speex
   srt
   v4l-utils
+  vapoursynth
   xz
   zlib
 )
@@ -129,10 +133,13 @@ pkgver() {
 }
 
 build() {
-  cd ${_srcname}
+   export PKG_CONFIG_PATH='/usr/lib/mbedtls2/pkgconfig'
+   cd ${_srcname}
 
-  [[ $CARCH == "armv7h" || $CARCH == "aarch64" ]] && CONFIG='--host-cflags="-fPIC"'
-  [[ $CARCH == "armv6h" || $CARCH == 'arm' ]] && CONFIG='--extra-libs="-latomic"'
+#  Skip this because of error: Host compiler lacks C11 support
+#  [[ $CARCH == "armv7h" || $CARCH == "aarch64" ]] && CONFIG='--host-cflags="-fPIC"'
+
+   [[ $CARCH == "armv6h" || $CARCH == 'arm' ]] && CONFIG='--extra-libs="-latomic"'
 
   ./configure \
     --prefix=/usr \
@@ -144,7 +151,6 @@ build() {
     --enable-cuda-llvm \
     --enable-fontconfig \
     --enable-gmp \
-    --enable-gnutls \
     --enable-gpl \
     --enable-ladspa \
     --enable-libass \
@@ -152,6 +158,8 @@ build() {
     --enable-libbs2b \
     --enable-libdav1d \
     --enable-libdrm \
+    --enable-libdvdnav \
+    --enable-libdvdread \
     --enable-libfreetype \
     --enable-libfribidi \
     --enable-libgsm \
@@ -186,8 +194,10 @@ build() {
     --enable-opencl \
     --enable-opengl \
     --enable-shared \
+    --enable-mbedtls \
+    --enable-vapoursynth \
     --enable-version3 \
-    --disable-vulkan \
+    --enable-vulkan \
     \
     --arch=$CARCH \
     --enable-v4l2_m2m \
@@ -196,13 +206,12 @@ build() {
     --enable-omx \
     --enable-pic \
     --enable-neon \
-    $CONFIG
+    ${CONFIG}
 
   make
   make tools/qt-faststart
   make doc/ff{mpeg,play}.1
 }
-##### TEMPORARILY DISABLED VULKAN FOR BUILD ERROR!
 
 package() {
   cd ${_srcname}
