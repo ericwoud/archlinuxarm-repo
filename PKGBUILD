@@ -61,13 +61,7 @@ prepare() {
     cd "${srcdir}/${_srcname}/"
     git remote set-branches origin '*'
     git fetch --all -v --depth=1
-    git reset --hard
-    git checkout ${_gitbranch}
-    echo "LOCAL  HEAD: $(git rev-parse HEAD)"
-    echo "REMOTE HEAD: $(git rev-parse @{u})"
-    if [ "$(git rev-parse HEAD)" != "$(git rev-parse @{u})" ]; then
-      git reset --hard "origin/${_gitbranch}"
-    fi
+    git reset --hard "origin/${_gitbranch}"
   else
     cd "${srcdir}/"
     git clone --branch "${_gitbranch}" --depth=1 "${_gitroot}" "${srcdir}/${_srcname}/"
