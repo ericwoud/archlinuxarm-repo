@@ -61,6 +61,7 @@ prepare() {
     cd "${srcdir}/${_srcname}/"
     git remote set-branches origin '*'
     git fetch --all -v --depth=1
+    git switch "${_gitbranch}"
     git reset --hard "origin/${_gitbranch}"
   else
     cd "${srcdir}/"
