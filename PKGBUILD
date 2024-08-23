@@ -19,7 +19,8 @@ elif [[ "$TARGET" == "bpirnn" ]]; then
   _gitbranch="bpir-net-next"
 else
   _target="bpir"
-  _gitbranch="bpir-rolling-stable"
+  _gitbranch="bpir-stable-6.9.11"
+#  _gitbranch="bpir-rolling-stable" is broken (sfp 2.5G rtl8221)
 fi
 
 _gitroot="https://github.com/ericwoud/linux.git"
