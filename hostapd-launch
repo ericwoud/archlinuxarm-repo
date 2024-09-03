@@ -47,9 +47,11 @@ do
   line=${line@P}             # Expand variables mentioned in the line
   declare "$line"            # declare and take care of spaces
   case $line in 
-    bridge=*) 
+    bridge_vlan=*)           # Should be in .conf before bridge=
+      ;;
+    bridge=*)
       [[ $bss == "" ]] && bss=$interface
-      execpost[post]="addvlan "$bss" "${line/"bridge="/}
+      execpost[post]="addvlan "$bss" "${line/"bridge="/}" "$bridge_vlan
       ((post++))
       echo $line >>$outfile
       ;;
@@ -68,12 +70,17 @@ echo Running: $HOSTAPD -B -P $pidfile $DAEMON_OPTS $outfile
 $HOSTAPD -B -P $pidfile $DAEMON_OPTS $outfile
 
 function addvlan { 
-  echo $1 $2
+  echo "Adding $1 $2 $3"
   while [ ! -d /sys/class/net/$1/brport ]; do sleep 0.1; done
   vlanfilt=$(cat /sys/class/net/$2/bridge/vlan_filtering)
   if [ $vlanfilt == 1 ]; then
-    vlanid=($(bridge vlan show dev $2 | grep $2 | grep PVID))
-    bridge vlan add dev $1 vid ${vlanid[1]} pvid untagged
+    if [ -z "$3" ]; then
+      vlanid=($(bridge vlan show dev $2 | grep $2 | grep PVID))
+      vlanid=${vlanid[1]}
+    else
+      vlanid=$3
+    fi
+    bridge vlan add dev $1 vid $vlanid pvid untagged
   fi
 };
 
