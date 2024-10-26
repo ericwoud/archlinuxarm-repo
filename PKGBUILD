@@ -63,10 +63,8 @@ prepare() {
 
   (
     cd ./arch/arm/boot/dts/ti/omap/
-    if [ ! -f "am335x-olimex-som-evb.dts" ]; then
-      cp -v ${srcdir}/am335x-olimex-som-evb.dts ./
-      sed -i 's/am335x-pdu001/am335x-olimex-som-evb/g' ./Makefile
-    fi
+    cp -vf ${srcdir}/am335x-olimex-som-evb.dts ./
+    sed -i 's/am335x-pdu001/am335x-olimex-som-evb/g' ./Makefile
   )
 
   make ${MAKEFLAGS} $_llvm omap2plus_defconfig
