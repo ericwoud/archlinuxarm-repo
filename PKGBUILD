@@ -1,4 +1,4 @@
-# Arch64 kernel for BananaPi R64
+# Arch64 kernel for OLIMEX AM335x EVB board
 # Maintainer: Eric Woudstra <ericwouds AT gmail DOT com>
 
 #NOEXTRACT="1"
@@ -16,8 +16,7 @@ if [[ "$TARGET" == "stable" ]]; then
   _gitbranch="bpir-rolling-stable"
 else
   _target="am335x"
-  _gitbranch="bpir-rolling-stable"
-#  _gitbranch="bpir-nftflow-net-next"
+  _gitbranch="bpir-nftflow-net-next"
 fi
 
 _gitroot="https://github.com/ericwoud/linux.git"
@@ -26,7 +25,7 @@ pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for BPI-R64/R3/R4"
-pkgver=r6.11.5.10ec9dcaa819.dirty.10ec9dcaa
+pkgver=6.12.0.rrc3.f5d168ba54b6.dirty.f5d168ba5
 pkgrel=1
 arch=('armv7h' 'x86_64')
 url="http://www.kernel.org/"
