@@ -25,7 +25,7 @@ pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for BPI-R64/R3/R4"
-pkgver=6.12.0.rrc3.f5d168ba54b6.dirty.f5d168ba5
+pkgver=6.12.0.rrc3.669b4487c72b.dirty.669b4487c
 pkgrel=1
 arch=('armv7h' 'x86_64')
 url="http://www.kernel.org/"
@@ -33,8 +33,8 @@ license=('GPL2')
 makedepends=('kmod' 'inetutils' 'bc' 'git')
 [[ "$_lto" == "true" ]] &&  makedepends+=('clang' 'llvm' 'lld')
 options=('!strip')
-source=('60-linux.hook' 'am335x-olimex-som-evb.dts')
-md5sums=(SKIP SKIP)
+source=('60-linux.hook' 'am335x-olimex-som-evb.dts' 'defconfig')
+md5sums=(SKIP SKIP SKIP)
 
 export CARCH=armv7h
 export LOCALVERSION=""
@@ -67,7 +67,10 @@ prepare() {
     sed -i 's/am335x-pdu001/am335x-olimex-som-evb/g' ./Makefile
   )
 
-  make ${MAKEFLAGS} $_llvm omap2plus_defconfig
+  cp -vf ./arch/arm/configs/omap2plus_defconfig ./arch/arm/configs/am_defconfig
+  cat ${startdir}/defconfig >>./arch/arm/configs/am_defconfig
+  make ${MAKEFLAGS} $_llvm am_defconfig
+  rm -vf ./arch/arm/configs/am_defconfig
 
   # get kernel version
   make ${MAKEFLAGS} $_llvm prepare
