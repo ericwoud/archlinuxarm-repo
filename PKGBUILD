@@ -126,10 +126,19 @@ source=(
 sha256sums=(
   SKIP
 )
+for p in $(shopt -s nullglob; echo *.patch) ; do
+  source+=($p)
+  md5sums+=(SKIP)
+done
 
 pkgver() {
   cd ${_srcname}
   printf '%s.r%s.%s' "$_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+prepare() {
+  cd ${_srcname}
+  git apply --verbose ../*.patch
 }
 
 build() {
