@@ -128,7 +128,7 @@ sha256sums=(
 )
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
-  md5sums+=(SKIP)
+  sha256sums+=(SKIP)
 done
 
 pkgver() {
