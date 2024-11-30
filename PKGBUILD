@@ -138,7 +138,7 @@ pkgver() {
 
 prepare() {
   cd ${_srcname}
-  git apply --verbose ../*.patch
+  git apply --verbose ../../*.patch
 }
 
 build() {
