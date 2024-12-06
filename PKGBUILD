@@ -10,7 +10,7 @@ license=('LGPL2.1')
 depends=('linux-api-headers>=5.5' 'libgudev')
 conflicts=('libgpiod')
 provides=('libgpiod')
-makedepends=('git' 'autoconf-archive' 'help2man' 'python-setuptools' 'python-build' 'python-pip')
+makedepends=('git' 'autoconf-archive' 'help2man' 'python-setuptools' 'python-build' 'python-pip' 'glib2-devel')
 source=('libgpiod::git+https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git')
 sha1sums=('SKIP')
 
