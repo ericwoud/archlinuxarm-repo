@@ -11,7 +11,7 @@ depends=('linux-api-headers>=5.5' 'libgudev')
 conflicts=('libgpiod')
 provides=('libgpiod')
 makedepends=('git' 'autoconf-archive' 'help2man' 'python-setuptools' 'python-build' 'python-pip')
-source=('libgpiod::git+https://github.com/brgl/libgpiod-private.git#branch=b4/dbus')
+source=('libgpiod::git+https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git')
 sha1sums=('SKIP')
 
 pkgver() {
