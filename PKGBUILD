@@ -16,7 +16,7 @@ pkgver() {
 
 package() {
   cd "${srcdir}/firmware/ap6275p"
-  _bcrm="$pkgdir/lib/firmware/brcm"
+  _bcrm="$pkgdir/usr/lib/firmware/brcm"
   install -m755 -vDT fw_bcm43752a2_pcie_ag.bin   $_bcrm/brcmfmac43752-pcie.bin
   install -m755 -vDT clm_bcm43752a2_pcie_ag.blob $_bcrm/brcmfmac43752-pcie.clm_blob
   install -m755 -vDT nvram_AP6275P.txt           $_bcrm/brcmfmac43752-pcie.txt
