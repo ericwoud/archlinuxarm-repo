@@ -3,8 +3,7 @@
 #_openatf="true"      # Uncomment this line to build opensource atf
 
 pkgname=rk3588-uboot
-_pkgver=2024.04
-_pkgver=2024.07-rc1
+_pkgver=2025.01
 pkgver=${_pkgver/"-"/"."}
 pkgrel=1
 pkgdesc='U-Boot for RK3588 Boards'
@@ -14,21 +13,19 @@ license=(GPL3)
 depends=('build-rk-arch-utils-git')
 makedepends=('wget' 'dtc' 'git' 'swig' 'bc' 'python3' 'python-setuptools' 'python-pyelftools')
 _binsite="https://github.com/rockchip-linux/rkbin/raw"
-_bincommit="f02d10e468d8c783c45137d230ff33d42ca670b4"
+_bincommit="b9183559cabebed120ad431a614b291fee04c498"
 source=(
   "https://github.com/u-boot/u-boot/archive/refs/tags/v${_pkgver}.tar.gz"
-  "rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.16.bin"
-  "rk3588-armsom-sige7.dts"
-  "rk3588-armsom-sige7-u-boot.dtsi"
+  "src/rk3588_ddr.bin::$_binsite/$_bincommit/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.18.bin"
 )
 if [[ "$_openatf" == "true" ]]; then
   # From: https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/21840
-  source+=("atf.tar.gz::https://review.trustedfirmware.org/changes/TF-A%2Ftrusted-firmware-a~21840/revisions/8/archive?format=tgz")
+  source+=("atf.tar.gz::https://github.com/ARM-software/arm-trusted-firmware/archive/9244331f354af870a2f38775aaaddb47bbec7b39.tar.gz")
   noextract+=("atf.tar.gz")
 else
-  source+=("src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.45.elf")
+  source+=("src/rk3588_bl31.elf::$_binsite/$_bincommit/bin/rk35/rk3588_bl31_v1.47.elf")
 fi
-sha256sums=(SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
   sha256sums+=(SKIP)
@@ -53,24 +50,11 @@ prepare() {
   for p in $(shopt -s nullglob; echo ../../*-uboot-*.patch) ; do
     patch -p1 -N -r - < "$p"
   done
-
-  if [ -z "$(grep "rk3588-armsom-sige7.dtb" arch/arm/dts/Makefile)" ]; then
-    sed -i 's/dtb-$(CONFIG_ROCKCHIP_RK3588) +=.*/dtb-$(CONFIG_ROCKCHIP_RK3588) += \\\n\trk3588-armsom-sige7.dtb \\/' \
-               arch/arm/dts/Makefile
-  fi	
-  cp -vf ../rk3588-armsom-sige7.dts arch/arm/dts
-  cp -vf ../rk3588-armsom-sige7-u-boot.dtsi arch/arm/dts
-
-  cp -vf configs/rock5b-rk3588_defconfig configs/armsom-sige7-rk3588_defconfig
-  sed -i 's/CONFIG_TARGET_ROCK5B_RK3588=y/CONFIG_TARGET_EVB_RK3588=y/g' \
-             configs/armsom-sige7-rk3588_defconfig
-  sed -i 's/rock-5b/armsom-sige7/g' \
-             configs/armsom-sige7-rk3588_defconfig
 }
 
 build() {
   if [[ "$_openatf" == "true" ]]; then
-    cd "${srcdir}/atf"
+    cd "${srcdir}/atf/"*
     touch plat/rockchip/rk3588/platform.mk
     unset CXXFLAGS CPPFLAGS LDFLAGS
     export CFLAGS=-Wno-error
@@ -85,14 +69,14 @@ build() {
 
   rm -vf *.bin.xz
 
-  #for rkdev in firefly miqi openhour phycore popmetal rock-pi-n8 tinker tinker-s vyasa; do
   #for rkdev_conf in configs/rock5b-rk3588_defconfig; do
-  for rkdev_conf in configs/armsom-sige7-rk3588_defconfig configs/rock5b-rk3588_defconfig; do
+  for rkdev_conf in configs/sige7-rk3588_defconfig configs/rock5b-rk3588_defconfig; do
   #for rkdev_conf in configs/*-rk3588_defconfig; do
     rkdev=$(basename $rkdev_conf)
     rkdev=${rkdev/"-rk3588_defconfig"/""}
+    [[ ${rkdev} == sige* ]] && rkdev="armsom-"${rkdev}
     echo ^^^ BUILDING $rkdev ^^^
-    cp -vf ./configs/$rkdev-rk3588_defconfig configs/rk3588_my_defconfig
+    cp -vf ${rkdev_conf} configs/rk3588_my_defconfig
     cat <<-EOF | tee -a configs/rk3588_my_defconfig
 	#CONFIG_DISABLE_CONSOLE=n
 	#CONFIG_VIDEO_ROCKCHIP_MAX_XRES=1920
