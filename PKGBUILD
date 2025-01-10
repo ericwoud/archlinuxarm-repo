@@ -87,17 +87,9 @@ prepare() {
     echo -e '\ndtb-$(CONFIG_ARCH_ROCKCHIP) += rk3588-armsom-sige7.dtb' \
                 >>arch/arm64/boot/dts/rockchip/Makefile
   fi	
-  cp -vf ../rk3588-armsom-sige7.dts arch/arm64/boot/dts/rockchip
+  cat ../rk3588-armsom-sige7.dts >>arch/arm64/boot/dts/rockchip/rk3588-armsom-sige7.dts
 
   cat "${srcdir}/config" > .config
-
-#  cp -vf arch/arm64/configs/defconfig   ./arch/arm64/configs/rockchip_defconfig
-#  if [ -f "${startdir}/defconfig_merge" ]; then
-#    echo -e "\n# After this is added" >>./arch/arm64/configs/rockchip_defconfig
-#    cat "${startdir}/defconfig_merge" >>./arch/arm64/configs/rockchip_defconfig
-#  fi
-#  make ${MAKEFLAGS} rockchip_defconfig
-#  rm -vf ./arch/arm64/configs/rockchip_defconfig
 
   # Make sure these are not a module
   sed -i 's/CONFIG_MFD_RK8XX_SPI=m/CONFIG_MFD_RK8XX_SPI=y/' .config
@@ -127,9 +119,6 @@ build() {
   if [[ -v MENUCONFIG ]]; then
     make ${MAKEFLAGS} $_llvm menuconfig
     make ${MAKEFLAGS} $_llvm savedefconfig
-#    scripts/diffconfig -m arch/arm64/configs/defconfig defconfig | \
-#                  sed 's/# //g' | sed 's/ is not set/=n/g' | \
-#                  tee ${startdir}/defconfig_merge
   fi
   make ${MAKEFLAGS} Image Image.gz modules
   # Generate device tree blobs with symbols to support applying device tree overlays in U-Boot
