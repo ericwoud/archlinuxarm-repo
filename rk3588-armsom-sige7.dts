@@ -158,8 +158,8 @@
 	};
 };
 
-ADDED WIFI:
-===========
+// ADDED WIFI:
+// ===========
 
 &pcie2x1l1 {
 	pcie@0,0 {
