@@ -162,6 +162,7 @@
 // ===========
 
 &pcie2x1l1 {
+	status = "disabled"; // Do not start without antenna
 	pcie@0,0 {
 		reg = <0x400000 0 0 0 0>;
 		#address-cells = <3>;
