@@ -43,9 +43,8 @@ source=('defconfig'
         'mkinitcpio.conf'
         'mkinitcpio.hook'
         'mkinitcpio.build'
-        'bpir-flash2emmc'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -195,10 +194,6 @@ _package() {
   # install mkinitcpio build hook
   sed "${_subst}" ../mkinitcpio.build |
     install -Dm644 /dev/stdin "${pkgdir}/etc/initcpio/install/${pkgbase}"
-
-  # install R3 EMMC flash script
-  sed "${_subst}" ../bpir-flash2emmc |
-    install -Dm755 /dev/stdin "${pkgdir}/usr/bin/bpir-flash2emmc"
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
