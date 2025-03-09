@@ -28,6 +28,7 @@ package() {
 
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
+  install -m755 -vDt $pkgdir/usr/bin bpir-flash2emmc
 
   cd "${srcdir}/buildR64arch/rootfs/services"
   install -m644 -vDt $pkgdir/etc/systemd/system setmac.service
