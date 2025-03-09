@@ -44,9 +44,8 @@ source=('defconfig'
         'mkinitcpio.hook'
         'mkinitcpio.build'
         'bpir-flash2emmc'
-        'bpir-kexec'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -126,7 +125,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'peekpoke-git' 'parted')
+  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'parted')
   optdepends=('mkinitcpio>=0.7')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
@@ -200,10 +199,6 @@ _package() {
   # install R3 EMMC flash script
   sed "${_subst}" ../bpir-flash2emmc |
     install -Dm755 /dev/stdin "${pkgdir}/usr/bin/bpir-flash2emmc"
-
-  # install bpir-kexec script
-  sed "${_subst}" ../bpir-kexec |
-    install -Dm755 /dev/stdin "${pkgdir}/usr/bin/bpir-kexec"
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |

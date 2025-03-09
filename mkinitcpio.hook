@@ -1,20 +1,6 @@
 #!/usr/bin/ash
 # SPDX-License-Identifier: GPL-2.0-only
 
-chainload() {
-  echo "emmc ok"
-  newroot="/dev/disk/by-partlabel/${target}-nvme-root"
-  [[ ! -b "${newroot}" ]] && return
-  echo "newroot ok"
-  mkdir -p /nvme
-  mount --source ${newroot} --target /nvme
-  [[ ! -d "/nvme/boot/bootcfg" ]] && return
-  echo "bootcfg ok"
-  ln -s /nvme/boot /boot
-  bpir-kexec
-  [[ $? == 0 ]] && reboot -f  
-}
-
 run_hook() {
   mkdir -p /usr/lib/initcpio
   ln -s /bin/busybox /usr/lib/initcpio/busybox
@@ -33,8 +19,5 @@ run_hook() {
     echo "Enter 'bpir-flash2emmc /tmp/bpir.img.gz' to flash it to the EMMC on th R3."
     echo "Enter 'exit' to continue booting."
     ash
-  elif [[ "${device}" == "emmc" ]] && [[ "$char" != "e" ]]; then
-    echo "Trying to chainload, root=${root}"
-    chainload
   fi
 }
