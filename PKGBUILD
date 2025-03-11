@@ -16,6 +16,6 @@ depends=('systemd')
 package() {
   cd "${startdir}"
   install -m644 -vDt $pkgdir/etc/systemd/system/hostapd.service.d override.conf
-  install -m644 -vDt $pkgdir/etc/systemd/system/hostapd.service.d override@.conf
+  install -m644 -vDt $pkgdir/etc/systemd/system/hostapd@.service.d override@.conf
   install -m755 -vDt $pkgdir/usr/bin hostapd-launch
 }
