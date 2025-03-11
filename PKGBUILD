@@ -4,7 +4,7 @@ pkgname=("hostapd-launch")
 url="https://github.com/ericwoud/archlinuxarm-repo/tree/hostapd-launch"
 license=('GPL')
 arch=('any')
-pkgver=1.0
+pkgver=1.1
 pkgrel=1
 source=('hostapd-launch'
 	'override.conf'
