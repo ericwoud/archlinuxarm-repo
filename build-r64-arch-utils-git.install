@@ -4,7 +4,7 @@ post_upgrade() {
   sudo systemctl --force --no-pager enable setmac.service
   echo
   mkdir -p "/etc/systemd/networkd.conf.d"
-  if [ ! -e "/etc/systemd/networkd.conf.d/networkd.conf" ]; then
+  if [ ! -L "/etc/systemd/networkd.conf.d/networkd.conf" ]; then
     ln -srT ../network/networkd.conf /etc/systemd/networkd.conf.d/networkd.conf
   fi
 }
