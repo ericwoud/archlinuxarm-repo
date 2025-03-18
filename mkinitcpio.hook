@@ -3,7 +3,7 @@
 
 run_hook() {
   mkdir -p /usr/lib/initcpio
-  ln -s /bin/bash /bin/ash
+  ln -s /bin/ash /bin/bash
   read -n 1 -t 0.3 char
   if [[ "$char" == "E" ]]; then
     echo "Executing 'bpir-flash2emmc /tmp/bpir.img.gz' ..."
