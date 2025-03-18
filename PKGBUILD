@@ -27,8 +27,9 @@ package() {
   install -m644 -vDt "${pkgdir}/usr/share/libalpm/hooks/" 95-bpir-toolbox-uboot-rem.hook
 
   cd "${srcdir}/buildR64arch/rootfs/bin"
-  install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
+  install -m755 -vDt $pkgdir/usr/bin bpir-apt
   install -m755 -vDt $pkgdir/usr/bin bpir-flash2emmc
+  install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
 
   cd "${srcdir}/buildR64arch/rootfs/services"
   install -m644 -vDt $pkgdir/etc/systemd/system setmac.service
