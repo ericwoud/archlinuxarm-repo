@@ -8,4 +8,4 @@ Target = usr/lib/initcpio/*
 [Action]
 Description = Updating %PKGBASE% initcpios...
 When = PostTransaction
-Exec = /usr/bin/bash -c "if [ -f /usr/bin/dracut ]; then /usr/bin/dracut --kver 6.13.7-bpi --force; else /usr/bin/mkinitcpio -p %PKGBASE%; fi"
+Exec = /usr/bin/bash -c "if [ -f /usr/bin/dracut ]; then /usr/bin/dracut /boot/initramfs-bpir.img 6.13.7-bpi --force; else /usr/bin/mkinitcpio -p %PKGBASE%; fi"
