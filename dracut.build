@@ -1,0 +1,4 @@
+#! /bin/bash
+
+install () { inst_hook pre-mount 50 "$moddir/hook.sh"; }
+
