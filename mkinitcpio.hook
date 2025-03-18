@@ -3,11 +3,7 @@
 
 run_hook() {
   mkdir -p /usr/lib/initcpio
-  ln -s /bin/busybox /usr/lib/initcpio/busybox
-  if [[ "$(echo ${root} | cut -d'=' -f1)" == "PARTLABEL" ]]; then
-    target=$(echo ${root} | cut -d'=' -f2 | cut -d'-' -f1)
-    device=$(echo ${root} | cut -d'=' -f2 | cut -d'-' -f2)
-  fi
+  ln -s /bin/bash /bin/ash
   read -n 1 -t 0.3 char
   if [[ "$char" == "E" ]]; then
     echo "Executing 'bpir-flash2emmc /tmp/bpir.img.gz' ..."
