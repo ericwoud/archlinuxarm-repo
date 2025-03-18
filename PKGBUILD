@@ -47,7 +47,7 @@ source=('defconfig'
         'dracut.hook'
         'dracut.build'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
