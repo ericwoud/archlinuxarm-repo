@@ -127,8 +127,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'parted')
-  optdepends=('mkinitcpio>=0.7')
+  depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'parted' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
