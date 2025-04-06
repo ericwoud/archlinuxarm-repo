@@ -16,7 +16,7 @@ if [[ "$TARGET" == "stable" ]]; then
   _gitbranch="bpir-rolling-stable"
 else
   _target="am335x"
-  _gitbranch="bpir-nftflow-net-next"
+  _gitbranch="bpir-nftflow-nf-next"
 fi
 
 _gitroot="https://github.com/ericwoud/linux.git"
@@ -25,7 +25,7 @@ pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for BPI-R64/R3/R4"
-pkgver=6.12.0.rrc3.669b4487c72b.dirty.669b4487c
+pkgver=r6.14.0.65d7dd6a0b1c.dirty.65d7dd6a0b
 pkgrel=1
 arch=('armv7h' 'x86_64')
 url="http://www.kernel.org/"
