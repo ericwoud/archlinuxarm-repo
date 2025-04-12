@@ -123,7 +123,7 @@ package_bpir-atf-git() {
   cd "${srcdir}"
   for _folder in "${srcdir}/${_gitname}/build/"*; do
     cd "$_folder/release"
-    install -vDt "$pkgdir/boot" -m644 *-atf-*.bin
+    install -vDt "$pkgdir/usr/share/bpir-atf/" -m644 *-atf-*.bin
   done
 }
 
