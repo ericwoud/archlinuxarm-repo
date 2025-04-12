@@ -155,7 +155,7 @@ _package() {
   install -d -m 0700 "${pkgdir}/boot"
   install -d -m 0700 "${pkgdir}/boot/dtbs"
   install -Dt "${pkgdir}/boot"      -m600 arch/$KARCH/boot/Image{,.gz}
-  install -Dt "${pkgdir}/boot/dtbs" -m600 arch/$KARCH/boot/dts/mediatek/*.dtb
+  install -Dt "${pkgdir}/boot/dtbs" -m600 arch/$KARCH/boot/dts/mediatek/mt7*.dtb
 
   # make room for external modules
   local _extramodules="extramodules-${_basekernel}${_kernelname}"
