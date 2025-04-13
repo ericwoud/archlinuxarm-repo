@@ -63,8 +63,10 @@ mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]}
 echo "${FILES[*]}"
 touch $wdir/etc/modprobe.d/modprobe.conf
 
-cat <<'EOT' | tee "$wdir/init" >/dev/null
-#!/bin/bash
+echo -e -n '#!/bin/bash\n#' > "$wdir/init"
+type run_hook >> "$wdir/init"
+cat <<'EOT' | tee -a "$wdir/init" >/dev/null
+
 PATH=/usr/bin
 export PATH
 
@@ -73,7 +75,7 @@ mount -n -t proc     proc     /proc
 mount -n -t sysfs    sysfs    /sys
 mount -n -t tmpfs    tmpfs    /run
 
-# Hook here
+run_hook
 
 read -r cmdline < /proc/cmdline
 init=/sbin/init
@@ -130,6 +132,6 @@ chmod +x "$wdir/bin/reboot"
 
 ( cd $wdir; find . -print0 | cpio --null -ov --format=newc | gzip -9) > $default_image
 
-#rm -rf $wdir
+rm -rf $wdir
 
 stat $default_image
