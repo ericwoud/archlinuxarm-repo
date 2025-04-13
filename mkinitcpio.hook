@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 
 run_hook() {
-  ln -s /bin/ash /bin/bash
+  ln -s /bin/ash /bin/bash 2>/dev/null
   read -n 1 -t 0.3 char
   if [[ "$char" == "E" ]]; then
     echo "Executing 'bpir-flash2emmc /tmp/bpir.img.gz' ..."
