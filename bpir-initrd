@@ -2,6 +2,9 @@
 
 INITRAMFS_FILE="testimage"
 
+[ -n "$1" ] && INITRAMFS_FILE="$1"
+[ -n "$2" ] && kver="$2"
+
 commands="bash parted lsblk mount umount ls cat ip bridge ethtool 
   lsmod rmmod insmod modinfo modprobe depmod
   switch_root readlink basename nano sync blkid

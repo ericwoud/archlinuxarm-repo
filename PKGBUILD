@@ -10,6 +10,7 @@ source=('bpir-initrd')
 sha256sums=(SKIP)
 install=${pkgname}.install
 depends=('cpio')
+provides=('initramfs')
 
 package() {
   cd "${startdir}"
