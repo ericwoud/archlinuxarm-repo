@@ -43,11 +43,8 @@ source=('defconfig'
         'mkinitcpio.conf'
         'mkinitcpio.hook'
         'mkinitcpio.build'
-        'dracut.conf'
-        'dracut.hook'
-        'dracut.build'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -196,18 +193,6 @@ _package() {
   # install mkinitcpio build hook
   sed "${_subst}" ../mkinitcpio.build |
     install -Dm644 /dev/stdin "${pkgdir}/etc/initcpio/install/${pkgbase}"
-
-  # install dracut conf file
-  sed "${_subst}" ../dracut.conf |
-    install -Dm644 /dev/stdin "${pkgdir}/etc/dracut.conf.d/${pkgbase}.conf"
-
-  # install dracut runtime hook
-  sed "${_subst}" ../dracut.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/lib/dracut/modules.d/99${pkgbase}/hook.sh"
-
-  # install dracut build hook
-  sed "${_subst}" ../dracut.build |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/lib/dracut/modules.d/99${pkgbase}/module-setup.sh"
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
