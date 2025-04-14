@@ -8,7 +8,7 @@ pkgver=1.0
 pkgrel=1
 source=('bpir-initrd')
 sha256sums=(SKIP)
-depends=('cpio')
+depends=('cpio' 'which')
 provides=('initramfs')
 
 package() {
