@@ -10,11 +10,6 @@ source ${preset}
 source ${default_config}
 source "/etc/initcpio/hooks/${pkgbase}"
 
-hook=$(type run_hook | sed '$d' | sed 1,3d) 
-
-echo "$hook"
-#exit
-
 binaries=(bash parted lsblk mount umount ls cat ip bridge ethtool 
   lsmod rmmod insmod modinfo modprobe depmod
   switch_root readlink basename nano sync blkid
