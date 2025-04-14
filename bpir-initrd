@@ -65,11 +65,9 @@ mount -n -t proc     proc     /proc
 mount -n -t sysfs    sysfs    /sys
 mount -n -t tmpfs    tmpfs    /run
 
-run_hook
-
 read -r cmdline < /proc/cmdline
 init=/sbin/init
-root=
+export root=
 rootdelay=
 rootfstype=auto
 ro="ro"
@@ -78,7 +76,7 @@ device=
 for param in $cmdline ; do
   case $param in
     init=*      ) init=${param#init=}             ;;
-    root=*      ) root=${param#root=}             ;;
+    root=*      ) export root=${param#root=}      ;;
     rootdelay=* ) rootdelay=${param#rootdelay=}   ;;
     rootfstype=*) rootfstype=${param#rootfstype=} ;;
     rootflags=* ) rootflags=${param#rootflags=}   ;;
@@ -86,6 +84,8 @@ for param in $cmdline ; do
     rw          ) ro="rw"                         ;;
   esac
 done
+
+run_hook
 
 [ -n "$rootdelay" ] && sleep "$rootdelay"
 mkdir /.root
