@@ -8,7 +8,6 @@ pkgver=1.0
 pkgrel=1
 source=('bpir-initrd')
 sha256sums=(SKIP)
-install=${pkgname}.install
 depends=('cpio')
 provides=('initramfs')
 
