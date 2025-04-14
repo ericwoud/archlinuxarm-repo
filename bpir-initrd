@@ -1,7 +1,5 @@
 #!/bin/bash
 
-INITRAMFS_FILE="testimage"
-
 [ -n "$1" ] && pkgbase="$1"
 
 preset="/etc/mkinitcpio.d/${pkgbase}.preset"
