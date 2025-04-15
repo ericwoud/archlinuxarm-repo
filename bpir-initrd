@@ -13,9 +13,9 @@ source ${preset}
 source ${default_config}
 source "/etc/initcpio/hooks/${pkgbase}"
 
-binaries=(bash parted lsblk mount umount ls cat ip bridge ethtool 
+binaries=(bash mount umount ls cat
   lsmod rmmod insmod modinfo modprobe depmod
-  switch_root readlink basename nano sync blkid
+  switch_root readlink basename sync blkid
   cp dd mkdir mknod sed sleep ln rm uname touch chroot
   grep head tail cut
   )
