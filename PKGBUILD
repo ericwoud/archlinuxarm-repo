@@ -127,7 +127,10 @@ _package() {
   depends=('coreutils' 'linux-firmware' 'kmod' 'f2fs-tools' 'dosfstools' 'btrfs-progs' 'parted' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
-  backup=("etc/mkinitcpio.d/${pkgbase}.preset")
+  backup=("etc/mkinitcpio.d/${pkgbase}.preset"
+          "etc/mkinitcpio-${pkgbase}.conf"
+          "etc/initcpio/hooks/${pkgbase}"
+          "etc/initcpio/install/${pkgbase")
   install=linux-bpir-git.install
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
