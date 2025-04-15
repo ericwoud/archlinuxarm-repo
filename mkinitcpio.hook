@@ -9,10 +9,19 @@ run_hook() {
     bpir-flash2emmc /tmp/bpir.img.gz
     echo "Entering shell."
     bash
+  elif [[ "$char" == "e" ]]; then
+    echo "Booting EMMC!"
+    export root=${root/"-sdmmc-"/"-emmc-"}
+    export root=${root/"-nvme-"/"-emmc-"}
+  elif [[ "$char" == "s" ]]; then
+    echo "Booting SDMMC!"
+    export root=${root/"-emmc-"/"-sdmmc-"}
+    export root=${root/"-nvme-"/"-sdmmc-"}
   elif [[ "$char" == "x" ]]; then
     echo "Entering shell."
     echo "Enter 'bpir-flash2emmc /tmp/bpir.img.gz' to flash it to the EMMC on th R3."
     echo "Enter 'exit' to continue booting."
+    echo "Enter 'reboot' to reboot."
     bash
   fi
 }
