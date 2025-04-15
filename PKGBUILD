@@ -73,5 +73,5 @@ build() {
 
 package() {
   cd "${srcdir}/u-boot"
-  install -vDt "$pkgdir/boot/uboot" -m644 u-boot-bpir*.bin
+  install -vDt "$pkgdir/usr/share/bpir-uboot/" -m644 u-boot-bpir*.bin
 }
