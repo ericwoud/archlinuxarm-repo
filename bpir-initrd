@@ -1,6 +1,11 @@
 #!/bin/bash
 
-[ -n "$1" ] && pkgbase="$1"
+if [ -z "$1" ]; then
+  echo "Usage: $(basename $0) pkgbase"
+  exit
+else
+  pkgbase="$1"
+fi
 
 preset="/etc/mkinitcpio.d/${pkgbase}.preset"
 [ ! -f  "${preset}" ] && exit 1
@@ -11,7 +16,8 @@ source "/etc/initcpio/hooks/${pkgbase}"
 binaries=(bash parted lsblk mount umount ls cat ip bridge ethtool 
   lsmod rmmod insmod modinfo modprobe depmod
   switch_root readlink basename nano sync blkid
-  cp dd mkdir mknod sed sleep ln rm uname touch chroot grep
+  cp dd mkdir mknod sed sleep ln rm uname touch chroot
+  grep head tail cut
   )
 
 wdir="/tmp/initramfs.$$"
