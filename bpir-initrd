@@ -42,6 +42,8 @@ function mkchroot
   done
 }
 
+echo "Building ${default_image}..."
+
 rm -rf $wdir
 
 mkdir -p      $wdir/{dev,etc,proc,run,sys,usr/lib,usr/bin,usr/local,mnt/root,etc/modprobe.d}
@@ -130,4 +132,5 @@ chmod +x "$wdir/bin/reboot"
 
 rm -rf $wdir
 
-stat $default_image
+stat --printf="Filesize: %s\n" $default_image
+
