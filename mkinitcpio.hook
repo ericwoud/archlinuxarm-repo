@@ -17,6 +17,10 @@ run_hook() {
     echo "Booting SDMMC!"
     export root=${root/"-emmc-"/"-sdmmc-"}
     export root=${root/"-nvme-"/"-sdmmc-"}
+  elif [[ "$char" == "n" ]]; then
+    echo "Booting NVME!"
+    export root=${root/"-emmc-"/"-nvme-"}
+    export root=${root/"-sdmmc-"/"-nvme-"}
   elif [[ "$char" == "x" ]]; then
     echo "Entering shell."
     echo "Enter 'bpir-flash2emmc /tmp/bpir.img.gz' to flash it to the EMMC on th R3."
