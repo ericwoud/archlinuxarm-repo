@@ -66,7 +66,7 @@ mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
 
 if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
   for modfile in ${modules[*]}; do
-    zstd --rm -q -d "${wdir}${modfile}"
+    [[ "${modfile}" != *".ko" ]] && zstd --rm -q -d "${wdir}${modfile}"
   done
 fi
 
