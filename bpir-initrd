@@ -133,7 +133,8 @@ echo _sb > /proc/sysrq-trigger
 EOT
 chmod +x "$wdir/bin/reboot"
 
-( cd $wdir; find . -print0 | cpio --null -o --format=newc | gzip -9) > $default_image
+[ -z "${COMPRESSION}" ] && COMPRESSION="gzip"
+( cd $wdir; find . -print0 | cpio --null -o --format=newc | zstd --format=${COMPRESSION} -19 -T0) > $default_image
 
 rm -rf $wdir
 
