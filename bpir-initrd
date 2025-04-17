@@ -18,6 +18,7 @@ binaries=(bash mount umount ls cat
   switch_root readlink basename sync blkid
   cp dd mkdir mknod sed sleep ln rm uname touch chroot
   grep head tail cut
+  nano '/usr/share/terminfo/l/linux'
   )
 
 for module in ${MODULES[*]}; do
@@ -145,4 +146,3 @@ chmod +x "$wdir/bin/reboot"
 rm -rf $wdir
 
 stat --printf="Filesize: %s\n" $default_image
-
