@@ -12,8 +12,8 @@ _gitbranch="bpir"
 pkgbase=bpir-atf-git
 pkgname=("$pkgbase")
 epoch=2
-pkgver=v2.8r12614.f84551673
-pkgrel=6
+pkgver=v2.12r16266.4a23a7cf1
+pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
 arch=(aarch64 x86_64)
@@ -28,9 +28,11 @@ sha256sums=(SKIP SKIP SKIP)
 export CARCH=aarch64
 if [[ "$(uname -m)" == "aarch64" ]]; then
   pkgname+=("$pkgbase-fiptool")
+  export CC="gcc"
 else
   makedepends+=(aarch64-linux-gnu-gcc)
   export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
+  export CC="aarch64-linux-gnu-gcc"
 fi
  
 pkgver() {
@@ -78,7 +80,7 @@ _buildfiptool() {
 }
 
 _buildimage() {
-  _plat=$1; _bpir=$2; _atfdev=$3; _stretch=$4; _rest="${@:5}"
+  _plat=$1; _bpir=$2; _atfdev=$3; _stretch=$4; _ddrsize=$5; _options="${@:6}"
   cd "${srcdir}/${_gitname}"
   _file="plat/mediatek/apsoc_common/bl2/bl2_boot_mmc.c"
   [ -f "$_file" ] || _file="plat/mediatek/${_plat}/bl2_boot_mmc.c"
@@ -87,16 +89,17 @@ _buildimage() {
   touch plat/mediatek/${_plat}/platform.mk
   unset CXXFLAGS CPPFLAGS LDFLAGS
   export CFLAGS=-Wno-error
-  make $_crossc PLAT=${_plat} BOOT_DEVICE=$_atfdev LOG_LEVEL=40 USE_MKIMAGE=1 \
-       MKIMAGE="${srcdir}/u-boot-${_ubootpkgver}/${_stretch}-mkimage" ${_rest} all # MTK_BL33_IS_64BIT=1 
+  [[ "$_ddrsize" != "-" ]] && _extra="-${_ddrsize}gb" || _extra=""
+  make $_crossc PLAT=${_plat} BOOT_DEVICE=$_atfdev LOG_LEVEL=40 USE_MKIMAGE=1 BUILD_STRING="Alarm ATF ${pkgver}"\
+       MKIMAGE="${srcdir}/u-boot-${_ubootpkgver}/${_stretch}-mkimage" ${_options} all # MTK_BL33_IS_64BIT=1
   if [[ "${_stretch}" == "stretch" ]]; then
-    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-header.bin bs=1 count=440 if=build/${_plat}/release/bl2.img
-    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-atf.bin          skip=34  if=build/${_plat}/release/bl2.img
+    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-header${_extra}.bin bs=1 count=440 if=build/${_plat}/release/bl2.img
+    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-atf${_extra}.bin          skip=34  if=build/${_plat}/release/bl2.img
   else
-    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-atf.bin                   if=build/${_plat}/release/bl2.img
+    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-atf${_extra}.bin                   if=build/${_plat}/release/bl2.img
   fi
   if [ -z "$(cat bl2/bl2.mk | grep bl31.bin.o)" ]; then # bl31.bin is not being build in, so add it
-    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-bl31.bin                  if=build/${_plat}/release/bl31.bin
+    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-bl31${_extra}.bin                  if=build/${_plat}/release/bl31.bin
   fi
 }
 
@@ -107,13 +110,15 @@ build() {
      [ ! -f "${srcdir}/u-boot-${_ubootpkgver}/stretch-mkimage" ]; then _buildmkimage
   fi
   [ -z "$_crossc" ] && _buildfiptool
-  _buildimage mt7622 bpir64 sdmmc stretch   DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
-  _buildimage mt7622 bpir64 emmc  stretch   DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
-  _buildimage mt7986 bpir3  sdmmc nostretch DRAM_USE_DDR4=1
-  _buildimage mt7986 bpir3  emmc  nostretch DRAM_USE_DDR4=1 BROM_HEADER_TYPE=sdmmc
-  _buildimage mt7986 bpir3m emmc  nostretch DRAM_USE_DDR4=1
-  _buildimage mt7988 bpir4  sdmmc nostretch DRAM_USE_COMB=1
-  _buildimage mt7988 bpir4  emmc  nostretch DRAM_USE_COMB=1
+  _buildimage mt7622 bpir64 sdmmc stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
+  _buildimage mt7622 bpir64 emmc  stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
+  _buildimage mt7986 bpir3  sdmmc nostretch - DRAM_USE_DDR4=1
+  _buildimage mt7986 bpir3  emmc  nostretch - DRAM_USE_DDR4=1 BROM_HEADER_TYPE=sdmmc
+  _buildimage mt7986 bpir3m emmc  nostretch - DRAM_USE_DDR4=1
+  _buildimage mt7988 bpir4  sdmmc nostretch - DRAM_USE_COMB=1
+  _buildimage mt7988 bpir4  emmc  nostretch - DRAM_USE_COMB=1
+  _buildimage mt7988 bpir4  sdmmc nostretch 8  DRAM_USE_COMB=1 DDR4_4BG_MODE=1
+  _buildimage mt7988 bpir4  emmc  nostretch 8  DRAM_USE_COMB=1 DDR4_4BG_MODE=1
 }
  
 package_bpir-atf-git() {
