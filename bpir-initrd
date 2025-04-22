@@ -11,7 +11,10 @@ preset="/etc/mkinitcpio.d/${pkgbase}.preset"
 [ ! -f  "${preset}" ] && exit 1
 source ${preset}
 source ${default_config}
-source "/etc/initcpio/hooks/${pkgbase}"
+for hook in ${HOOKS[*]}; do
+  [[ ! "${hook}" =~ "bpir" ]] && continue
+  source "/etc/initcpio/hooks/${hook}"
+done
 
 binaries=(bash mount umount ls cat
   lsmod rmmod insmod modinfo modprobe depmod
