@@ -92,7 +92,9 @@ _buildimage() {
   [[ "$_ddrsize" != "-" ]] && _extra="-${_ddrsize}gb" || _extra=""
   make $_crossc PLAT=${_plat} BOOT_DEVICE=$_atfdev LOG_LEVEL=40 USE_MKIMAGE=1 BUILD_STRING="Alarm ATF ${pkgver}"\
        MKIMAGE="${srcdir}/u-boot-${_ubootpkgver}/${_stretch}-mkimage" ${_options} all # MTK_BL33_IS_64BIT=1
-  if [[ "${_stretch}" == "stretch" ]]; then
+  if [[ "${_atfdev}" == "ram" ]]; then
+    dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-atf${_extra}.bin                   if=build/${_plat}/release/bl2.bin
+  elif [[ "${_stretch}" == "stretch" ]]; then
     dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-header${_extra}.bin bs=1 count=440 if=build/${_plat}/release/bl2.img
     dd of=build/${_plat}/release/${_bpir}-atf-${_atfdev}-atf${_extra}.bin          skip=34  if=build/${_plat}/release/bl2.img
   else
