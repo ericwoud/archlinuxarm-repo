@@ -19,7 +19,7 @@ done
 binaries=(bash mount umount ls cat
   lsmod rmmod insmod modinfo modprobe depmod
   switch_root readlink basename sync blkid
-  cp dd mkdir mknod sed sleep ln rm uname touch chroot
+  cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
   grep head tail cut tee
   nano '/usr/share/terminfo/l/linux'
   )
