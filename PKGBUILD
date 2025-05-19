@@ -70,8 +70,11 @@ build() {
     patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
   fi
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
-  _buildimage bpir64 mt7622_rfb_defconfig       mt7622-bananapi-bpi-r64
-  _buildimage bpir3  mt7986a_bpir3_sd_defconfig mt7986a-sd-rfb
+  _buildimage bpir64    mt7622_rfb_defconfig          mt7622-bananapi-bpi-r64
+  _buildimage bpir3     mt7986a_bpir3_emmc_defconfig  mt7986a-rfb
+  _buildimage bpir3-sd  mt7986a_bpir3_sd_defconfig    mt7986a-sd-rfb
+  _buildimage bpir4     mt7988_rfb_defconfig          mt7988-rfb
+  _buildimage bpir4-sd  mt7988_sd_rfb_defconfig       mt7988-sd-rfb
 }
 
 package() {
