@@ -9,7 +9,8 @@
 
 pkgname=bpir-uboot-git
 #_pkgver=2021.10 # last build of u-boot tested for R64
-_pkgver=2023.04
+#_pkgver=2023.04 # last build of u-boot tested for R3
+_pkgver=2025.04
 pkgver=2023.04r84964.fd4ed6b7e8
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
@@ -65,7 +66,9 @@ EOT
 build() {
   cd "${srcdir}/u-boot"
   rm -f u-boot-bpir*.bin
-  patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
+  if [[ "$_pkgver" == "2023.04" ]]; then
+    patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
+  fi
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
   _buildimage bpir64 mt7622_rfb_defconfig       mt7622-bananapi-bpi-r64
   _buildimage bpir3  mt7986a_bpir3_sd_defconfig mt7986a-sd-rfb
