@@ -112,16 +112,17 @@ build() {
      [ ! -f "${srcdir}/u-boot-${_ubootpkgver}/stretch-mkimage" ]; then _buildmkimage
   fi
   [ -z "$_crossc" ] && _buildfiptool
-  _buildimage mt7622 bpir64 sdmmc stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
-  _buildimage mt7622 bpir64 emmc  stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
-  _buildimage mt7986 bpir3  sdmmc nostretch - DRAM_USE_DDR4=1
-  _buildimage mt7986 bpir3  emmc  nostretch - DRAM_USE_DDR4=1 BROM_HEADER_TYPE=sdmmc
-  _buildimage mt7986 bpir3m emmc  nostretch - DRAM_USE_DDR4=1
-  _buildimage mt7986 bpir3m ram   nostretch - DRAM_USE_DDR4=1 RAM_BOOT_UART_DL=1
-  _buildimage mt7988 bpir4  sdmmc nostretch - DRAM_USE_COMB=1
-  _buildimage mt7988 bpir4  emmc  nostretch - DRAM_USE_COMB=1
-  _buildimage mt7988 bpir4  sdmmc nostretch 8  DRAM_USE_COMB=1 DDR4_4BG_MODE=1
-  _buildimage mt7988 bpir4  emmc  nostretch 8  DRAM_USE_COMB=1 DDR4_4BG_MODE=1
+  _buildimage mt7622 bpir64 sdmmc     stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
+  _buildimage mt7622 bpir64 emmc      stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
+  _buildimage mt7986 bpir3  sdmmc     nostretch - DRAM_USE_DDR4=1
+  _buildimage mt7986 bpir3  emmc      nostretch - DRAM_USE_DDR4=1 BROM_HEADER_TYPE=sdmmc
+  _buildimage mt7986 bpir3  spim-nand nostretch - DRAM_USE_DDR4=1 UBI=1
+  _buildimage mt7986 bpir3m emmc      nostretch - DRAM_USE_DDR4=1
+  _buildimage mt7986 bpir3m ram       nostretch - DRAM_USE_DDR4=1 RAM_BOOT_UART_DL=1
+  _buildimage mt7988 bpir4  sdmmc     nostretch - DRAM_USE_COMB=1
+  _buildimage mt7988 bpir4  emmc      nostretch - DRAM_USE_COMB=1
+  _buildimage mt7988 bpir4  sdmmc     nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
+  _buildimage mt7988 bpir4  emmc      nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
 }
  
 package_bpir-atf-git() {
