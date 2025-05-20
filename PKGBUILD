@@ -12,6 +12,7 @@ source=("git+https://github.com/ericwoud/buildR64arch.git"
 	'95-bpir-toolbox-uboot-inst.hook'
 	'95-bpir-toolbox-uboot-rem.hook')
 sha256sums=(SKIP SKIP SKIP SKIP SKIP)
+depends=('mtd-utils')
 install=${pkgname}.install
 
 pkgver() {
