@@ -47,7 +47,6 @@ _buildimage() {
   cat <<EOT | tee -a configs/bpir_my_defconfig
 CONFIG_AUTOBOOT=y
 CONFIG_BOOTDELAY=1
-CONFIG_SYS_CONFIG_NAME="mt7xxx"
 CONFIG_DEFAULT_DEVICE_TREE="${_devtree}"
 CONFIG_DEFAULT_FDT_FILE="${_devtree}"
 CONFIG_CMD_EXT4=y
