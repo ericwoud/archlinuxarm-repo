@@ -11,7 +11,7 @@ pkgname=bpir-uboot-git
 #_pkgver=2021.10 # last build of u-boot tested for R64
 #_pkgver=2023.04 # last build of u-boot tested for R3
 _pkgver=2025.04
-pkgver=2023.04r84964.fd4ed6b7e8
+pkgver=2025.04r98055.34820924edb
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
@@ -22,9 +22,10 @@ makedepends=('git' 'bc')
 source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
   'mt7xxx.h'
+  'mt7xxx.patch'
   'clk-uclass-log_ret.patch'
 )
-sha256sums=(SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
@@ -91,6 +92,7 @@ build() {
   if [[ "$_pkgver" == "2023.04" ]]; then
     patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
   fi
+  git apply "${srcdir}/mt7xxx.patch"
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
   _buildimage bpir64       mt7622_rfb_defconfig          mt7622-bananapi-bpi-r64
   _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-rfb

@@ -1,0 +1,44 @@
+diff --git a/include/configs/mt7622.h b/include/configs/mt7622.h
+index 4a056954bf8..c61f7b00794 100644
+--- a/include/configs/mt7622.h
++++ b/include/configs/mt7622.h
+@@ -9,4 +9,6 @@
+ #ifndef __MT7622_H
+ #define __MT7622_H
+ 
++#include "mt7xxx.h"
++
+ #endif
+diff --git a/include/configs/mt7986.h b/include/configs/mt7986.h
+index 090b4c6833e..e75674f69c1 100644
+--- a/include/configs/mt7986.h
++++ b/include/configs/mt7986.h
+@@ -9,4 +9,6 @@
+ #ifndef __MT7986_H
+ #define __MT7986_H
+ 
++#include "mt7xxx.h"
++
+ #endif
+diff --git a/include/configs/mt7987.h b/include/configs/mt7987.h
+index 18ed3c7a55b..bd6f6d0d27a 100644
+--- a/include/configs/mt7987.h
++++ b/include/configs/mt7987.h
+@@ -11,4 +11,6 @@
+ 
+ #define CFG_MAX_MEM_MAPPED		0xC0000000
+ 
++#include "mt7xxx.h"
++
+ #endif
+diff --git a/include/configs/mt7988.h b/include/configs/mt7988.h
+index e63825a5a19..616f111aea1 100644
+--- a/include/configs/mt7988.h
++++ b/include/configs/mt7988.h
+@@ -11,4 +11,6 @@
+ 
+ #define CFG_MAX_MEM_MAPPED		0xC0000000
+ 
++#include "mt7xxx.h"
++
+ #endif
