@@ -40,6 +40,15 @@ pkgver() {
   printf "%s.%sr%s.%s" "$_year" "$_month" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
+prepare() {
+  cd "${srcdir}/u-boot"
+  if [[ "$_pkgver" == "2023.04" ]]; then
+    patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
+  fi
+  git apply "${srcdir}/mt7xxx.patch"
+  cp -vf "${srcdir}/mt7xxx.h" include/configs/
+}
+
 _buildimage() {
   _target=$1; _def=$2; _devtree=$3
   echo ^^^ BUILDING $_target ^^^
@@ -91,11 +100,6 @@ EOT
 build() {
   cd "${srcdir}/u-boot"
   rm -f u-boot-bpir*.bin
-  if [[ "$_pkgver" == "2023.04" ]]; then
-    patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
-  fi
-  git apply "${srcdir}/mt7xxx.patch"
-  cp -vf "${srcdir}/mt7xxx.h" include/configs/
   _buildimage bpir64       mt7622_rfb_defconfig          mt7622-bananapi-bpi-r64
   _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-rfb
   _buildimage bpir3-sdmmc  mt7986a_bpir3_sd_defconfig    mt7986a-sd-rfb
