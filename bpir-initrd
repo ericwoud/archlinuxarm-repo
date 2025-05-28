@@ -22,7 +22,11 @@ binaries=(bash mount umount ls cat
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
   grep head tail cut tee
   nano '/usr/share/terminfo/l/linux'
-  )
+  '/usr/lib/libnss_files.so.2'
+  '/usr/lib/libnss_dns.so.2'
+  '/usr/lib/libresolv.so.2'
+  '/etc/resolv.conf'
+)
 
 for module in ${MODULES[*]}; do
   modfile=$(modinfo -k ${ALL_kver} -F filename ${module})
