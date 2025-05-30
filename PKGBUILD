@@ -101,8 +101,8 @@ build() {
   cd "${srcdir}/u-boot"
   rm -f u-boot-bpir*.bin
   _buildimage bpir64       mt7622_rfb_defconfig          mt7622-bananapi-bpi-r64
-  _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-rfb
-  _buildimage bpir3-sdmmc  mt7986a_bpir3_sd_defconfig    mt7986a-sd-rfb
+  _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-emmc
+  _buildimage bpir3-sdmmc  mt7986a_bpir3_sd_defconfig    mt7986a-bpi-r3-sd
   _buildimage bpir4-emmc   mt7988_rfb_defconfig          mt7988-rfb
   _buildimage bpir4-sdmmc  mt7988_sd_rfb_defconfig       mt7988-sd-rfb
 }
