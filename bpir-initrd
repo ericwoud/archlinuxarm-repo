@@ -20,7 +20,7 @@ binaries=(bash mount umount ls cat
   lsmod rmmod insmod modinfo modprobe depmod
   switch_root readlink basename sync blkid
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
-  grep head tail cut tee
+  grep head tail cut tee tr
   nano '/usr/share/terminfo/l/linux'
   '/usr/lib/libnss_files.so.2'
   '/usr/lib/libnss_dns.so.2'
