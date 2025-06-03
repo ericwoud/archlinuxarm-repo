@@ -30,6 +30,8 @@ package() {
   install -m755 -vDt $pkgdir/usr/bin bpir-apt
   install -m755 -vDt $pkgdir/usr/bin bpir-flash2emmc
   install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
+  cd "${srcdir}/buildR64arch"
+  install -m755 -vT ./build.sh $pkgdir/usr/bin/bpir-build
 
   cd "${srcdir}/buildR64arch/rootfs/services"
   install -m644 -vDt $pkgdir/etc/systemd/system setmac.service
