@@ -28,7 +28,6 @@ binaries=(bash mount umount ls cat
   '/usr/lib/libnss_files.so.2'
   '/usr/lib/libnss_dns.so.2'
   '/usr/lib/libresolv.so.2'
-  '/etc/resolv.conf'
 )
 
 for module in ${MODULES[*]}; do
@@ -82,6 +81,7 @@ if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
 fi
 
 touch $wdir/etc/modprobe.d/modprobe.conf
+echo "nameserver 8.8.8.8" | tee $wdir/etc/resolv.conf
 
 echo -e -n '#!/bin/bash\n#' > "$wdir/init"
 type run_hook >> "$wdir/init"
