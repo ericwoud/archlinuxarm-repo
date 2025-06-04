@@ -8,7 +8,7 @@ run_hook() {
     echo "Executing 'bpir-flash2emmc /tmp/bpir.img.gz' ..."
     bpir-flash2emmc /tmp/bpir.img.gz
     echo "Entering shell."
-    bash
+    setsid /bin/bash -c 'exec /bin/bash </dev/ttyS0 >/dev/ttyS0 2>&1'
   elif [[ "$char" == "e" ]]; then
     echo "Booting EMMC!"
     export root=${root/"-sdmmc-"/"-emmc-"}
@@ -26,6 +26,6 @@ run_hook() {
     echo "Enter 'bpir-flash2emmc /tmp/bpir.img.gz' to flash it to the EMMC on th R3."
     echo "Enter 'exit' to continue booting."
     echo "Enter 'reboot' to reboot."
-    bash
+    setsid /bin/bash -c 'exec /bin/bash </dev/ttyS0 >/dev/ttyS0 2>&1'
   fi
 }
