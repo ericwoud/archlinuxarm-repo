@@ -6,12 +6,21 @@ license=('GPL')
 arch=('any')
 pkgver=1.0
 pkgrel=1
-source=('bpir-initrd')
-sha256sums=(SKIP)
+source=('bpir-initrd'
+        'git+https://github.com/ericwoud/daft-dhcp-client.git')
+sha256sums=(SKIP SKIP)
 depends=('cpio' 'which')
 provides=('initramfs')
+
+build() {
+	cd "$srcdir/daft-dhcp-client"
+	make
+}
 
 package() {
   cd "${startdir}"
   install -m700 -vDt $pkgdir/usr/bin bpir-initrd
+
+  cd "$srcdir/daft-dhcp-client"
+  install -m755 -vT ./daft-dhcp-client $pkgdir/usr/bin/dhcpc
 }
