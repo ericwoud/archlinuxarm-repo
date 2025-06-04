@@ -81,7 +81,7 @@ if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
 fi
 
 touch $wdir/etc/modprobe.d/modprobe.conf
-echo "nameserver 8.8.8.8" | tee $wdir/etc/resolv.conf
+echo "nameserver 8.8.8.8" > $wdir/etc/resolv.conf
 
 echo -e -n '#!/bin/bash\n#' > "$wdir/init"
 type run_hook >> "$wdir/init"
