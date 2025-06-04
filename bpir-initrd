@@ -124,7 +124,7 @@ rootflags+="$ro"
 device="$root"
 if [ -z "$device" ];then
   echo "No root device specified."
-  bash
+  setsid /bin/bash -c 'exec /bin/bash </dev/ttyS0 >/dev/ttyS0 2>&1'
 fi
 for (( i = 0 ; i < 50 ; i++ )); do
   [[ "$root" =~ "=" ]] && device=$(blkid -t $root -l -o device)
@@ -133,7 +133,7 @@ done
 
 if ! mount -n -t "$rootfstype" -o "$rootflags" "$device" /.root ; then
   echo "Device $device could not be mounted!"
-  bash
+  setsid /bin/bash -c 'exec /bin/bash </dev/ttyS0 >/dev/ttyS0 2>&1'
 else
   echo "Successfully mounted device $root"
 fi
