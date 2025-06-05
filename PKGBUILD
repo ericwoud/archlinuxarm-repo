@@ -23,9 +23,10 @@ source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
   'mt7xxx.h'
   'mt7xxx.patch'
+  'mt798x-pcie.patch'
   'clk-uclass-log_ret.patch'
 )
-sha256sums=(SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
@@ -46,6 +47,7 @@ prepare() {
     patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
   fi
   git apply "${srcdir}/mt7xxx.patch"
+  git apply "${srcdir}/mt798x-pcie.patch"
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
 }
 
