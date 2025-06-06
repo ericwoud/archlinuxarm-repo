@@ -22,7 +22,7 @@ binaries=(bash mount umount ls cat
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
   grep head tail cut tee tr parted lsblk partprobe wipefs
   fsck.f2fs fsck.btrfs fsck.vfat
-  mkfs.f2fs mkfs.btrfs mkfs.vfat
+  mkfs.f2fs mkfs.btrfs mkfs.vfat mkfs.ubifs
   fdtget fdtput fdtoverlay ip bridge ethtool ping dhcpc
   nano '/usr/share/terminfo/l/linux'
   '/usr/lib/libnss_files.so.2'
