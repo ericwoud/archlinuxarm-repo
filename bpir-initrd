@@ -160,7 +160,7 @@ IFS=$'\n'
 
 echo "Setting $intf up and waiting for it to be up..."
 ip link set $intf up
-while [ -n "$(ip link show dev "$dev" up 2>/dev/null | \
+while [ -n "$(ip link show dev $intf up 2>/dev/null | \
 	         grep 'state UP')" ]
 do sleep 0.1; done
 
@@ -190,7 +190,11 @@ for ns in ${DomainNameServers//,/ }; do
     echo "nameserver $ns" >>/etc/resolv.conf
 done
 
-ip a show dev $intf
+while [ -n "$(ip addr show dev $intf 2>/dev/null | \
+	         grep 'inet ')" ]
+do sleep 0.1; done
+
+ip addr show dev $intf
 echo
 ip route
 echo
