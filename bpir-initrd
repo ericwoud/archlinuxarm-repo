@@ -151,6 +151,53 @@ echo _sb > /proc/sysrq-trigger
 EOT
 chmod +x "$wdir/bin/reboot"
 
+cat <<'EOT' | tee "$wdir/bin/bpir-dhcpc" >/dev/null
+#!/bin/bash
+
+IFS=$'\n'
+
+[ -z "$1" ] && intf="wan" || intf="$1"
+
+echo "Setting $intf up and waiting for it to be up..."
+ip link set $intf up
+while [ -n "$(ip link show dev "$dev" up 2>/dev/null | \
+	         grep 'state UP')" ]
+do sleep 0.1; done
+
+echo "Asking DHCP server for IP number."
+outp=$(dhcpc -i $intf)
+if [[ $? != 0 ]]; then
+  echo "DHCP error on first call!"
+  exit
+fi
+for line in $outp; do eval "${line}"; done
+
+echo "Requesting lease of $YourIP."
+
+outp=$(dhcpc -i $intf -r $YourIP)
+if [[ $? != 0 ]]; then 
+  echo "DHCP error on second call!"
+  exit
+fi
+for line in $outp; do eval "${line}"; done
+
+ip addr add $YourIP/$SubnetMask brd + dev $intf
+
+ip route add default via ${DefaultGateways%%,*} dev $intf
+
+echo "# initrd resolv.conf" >/etc/resolv.conf
+for ns in ${DomainNameServers//,/ }; do
+    echo "nameserver $ns" >>/etc/resolv.conf
+done
+
+ip a show dev $intf
+echo
+ip route
+echo
+cat /etc/resolv.conf
+EOT
+chmod +x "$wdir/bin/bpir-dhcpc"
+
 [ -z "${COMPRESSION}" ] && COMPRESSION="gzip"
 ( cd $wdir; find . -print0 | cpio --null -o --format=newc | zstd --format=${COMPRESSION} -19 -T0) > $default_image
 
