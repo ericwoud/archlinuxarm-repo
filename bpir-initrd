@@ -20,7 +20,7 @@ binaries=(bash mount umount ls cat
   lsmod rmmod insmod modinfo modprobe depmod
   switch_root readlink basename sync blkid setsid unshare
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
-  stat chown chmod debootstrap curl pgrep
+  stat chown chmod debootstrap curl wget pgrep
   grep head tail cut tee tr parted lsblk partprobe wipefs
   fsck.f2fs fsck.btrfs fsck.vfat
   mkfs.f2fs mkfs.btrfs mkfs.vfat mkfs.ubifs
