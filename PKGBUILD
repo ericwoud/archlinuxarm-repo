@@ -7,8 +7,10 @@ arch=('any')
 pkgver=1.0
 pkgrel=1
 source=('bpir-initrd'
-        'git+https://github.com/ericwoud/daft-dhcp-client.git')
-sha256sums=(SKIP SKIP)
+        'git+https://github.com/ericwoud/daft-dhcp-client.git'
+        'pkgdetails.c::https://salsa.debian.org/installer-team/base-installer/-/raw/master/pkgdetails.c'
+        )
+sha256sums=(SKIP SKIP SKIP)
 depends=('cpio' 'which')
 provides=('initramfs')
 
