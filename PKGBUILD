@@ -11,7 +11,7 @@ source=('bpir-initrd'
         'pkgdetails.c::https://salsa.debian.org/installer-team/base-installer/-/raw/master/pkgdetails.c'
         )
 sha256sums=(SKIP SKIP SKIP)
-depends=('cpio' 'which')
+depends=('cpio' 'which' curl wget debootstrap)
 provides=('initramfs')
 
 build() {
