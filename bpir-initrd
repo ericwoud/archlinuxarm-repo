@@ -77,6 +77,8 @@ mknod -m 640  $wdir/dev/console c 5 1
 mknod -m 664  $wdir/dev/null    c 1 3
 mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
 
+ln -s sh $wdir/bin/bash
+
 cp -rvf /usr/share/debootstrap/ "${wdir}/usr/share"
 
 if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
