@@ -63,7 +63,7 @@ echo "Building ${default_image}..."
 
 rm -rf $wdir
 
-mkdir -p      $wdir/{dev,etc,proc,run,sys,usr/lib,usr/bin,usr/local,mnt/root,etc/modprobe.d}
+mkdir -p      $wdir/{dev,etc,proc,run,sys,usr/lib,usr/bin,usr/local,usr/share,mnt/root,etc/modprobe.d}
 ln -s usr/bin $wdir/bin
 ln -s usr/bin $wdir/sbin
 ln -s ../bin  $wdir/usr/local/bin
@@ -75,6 +75,8 @@ ln -s lib     $wdir/usr/lib64
 mknod -m 640  $wdir/dev/console c 5 1
 mknod -m 664  $wdir/dev/null    c 1 3
 mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
+
+cp -rvf /usr/share/debootstrap/ "${wdir}/usr/share"
 
 if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
   for modfile in ${modules[*]}; do
