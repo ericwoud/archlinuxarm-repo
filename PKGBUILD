@@ -28,4 +28,6 @@ package() {
 
   cd "$srcdir/daft-dhcp-client"
   install -m755 -vT ./daft-dhcp-client $pkgdir/usr/bin/dhcpc
+  cd "$srcdir"
+  install -m755 -vDt "$pkgdir/usr/lib/debootstrap" pkgdetails
 }
