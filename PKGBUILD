@@ -15,9 +15,11 @@ depends=('cpio' 'which')
 provides=('initramfs')
 
 build() {
-  cd "$srcdir/daft-dhcp-client"
   export CFLAGS+=" -w"
+  cd "$srcdir/daft-dhcp-client"
   make
+  cd "$srcdir"
+  gcc pkgdetails.c -o pkgdetails --static
 }
 
 package() {
