@@ -80,7 +80,7 @@ mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
 
 ln -s /bin/bash $wdir/bin/sh
 
-cp -rvf /usr/share/debootstrap/ "${wdir}/usr/share"
+cp -rf /usr/share/debootstrap/ "${wdir}/usr/share"
 
 if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
   for modfile in ${modules[*]}; do
