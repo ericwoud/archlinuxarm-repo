@@ -22,11 +22,12 @@ binaries=(bash mount umount ls cat
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
   stat chown chmod debootstrap curl wget ar sha256sum pgrep
   grep head tail cut tee tr parted lsblk partprobe wipefs
-  tar sort uniq wc zstdcat xzcat find mmc cpio zstd fiptool
+  tar sort uniq wc zstdcat xzcat xz find mmc cpio zstd fiptool
   fsck.f2fs fsck.btrfs fsck.vfat
   mkfs.f2fs mkfs.btrfs mkfs.vfat mkfs.ubifs
   ubiattach ubidetach blkdiscard
   fdtget fdtput fdtoverlay ip bridge ethtool ping dhcpc
+  bpir-toolbox bpir-initrd
   nano '/usr/share/terminfo/l/linux'
   '/usr/lib/libnss_files.so.2'
   '/usr/lib/libnss_dns.so.2'
