@@ -81,14 +81,14 @@ mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
 
 ln -s /bin/bash $wdir/bin/sh
 
-target=$(cat /etc/bpir-is-initrd 2>/dev/null)
+source /etc/bpir-is-initrd 2>/dev/null
 if [ -z "$target" ]; then
   rootdev=$(lsblk -pilno name,type,mountpoint | grep -G 'part /$' | head -n1 | cut -d " " -f1)
   partlabelroot=$(blkid $rootdev -s PARTLABEL -o value)
   target=$(echo $partlabelroot | cut -d'-' -f1)
 fi
 [ -z "$target" ] && exit 1
-echo -n $target > $wdir/etc/bpir-is-initrd
+echo "target=$target" > $wdir/etc/bpir-is-initrd
 
 cp -rf /usr/share/debootstrap/ "${wdir}/usr/share"
 
