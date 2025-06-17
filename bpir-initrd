@@ -78,6 +78,7 @@ ln -s bin     $wdir/usr/sbin
 ln -s usr/lib $wdir/lib
 ln -s usr/lib $wdir/lib64
 ln -s lib     $wdir/usr/lib64
+ln -s /proc/self/fd /dev/fd
 mknod -m 640  $wdir/dev/console c 5 1
 mknod -m 664  $wdir/dev/null    c 1 3
 mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
