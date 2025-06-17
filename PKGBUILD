@@ -96,6 +96,7 @@ CONFIG_PCIE_MEDIATEK_GEN3=y
 CONFIG_CMD_PCI=y
 CONFIG_NVME_PCI=y
 CONFIG_NVME=y
+CONFIG_BOOTCOMMAND="mmc rescan; run distro_bootcmd;"
 EOT
   unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
   ARCH=arm64 make bpir_my_defconfig
