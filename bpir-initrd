@@ -1,8 +1,9 @@
 #!/bin/bash
 
+
 if [ -z "$1" ]; then
-  echo "Usage: $(basename $0) pkgbase"
-  exit
+  pkgbase=$(basename /etc/initcpio/install/*)
+  echo "Building initrd for ${pkgbase}"
 else
   pkgbase="$1"
 fi
