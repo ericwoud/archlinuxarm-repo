@@ -17,7 +17,7 @@ for hook in ${HOOKS[*]}; do
   source "/etc/initcpio/hooks/${hook}"
 done
 
-binaries=(bash mount umount mountpoint ls cat
+binaries=(bash mount umount mountpoint ls cat dmesg
   lsmod rmmod insmod modinfo modprobe depmod ldd
   switch_root readlink basename dirname sync blkid setsid unshare
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
