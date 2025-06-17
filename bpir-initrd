@@ -50,7 +50,7 @@ function mkchroot
   dest=$1
   shift
   for i in "$@"; do
-    [ "${i:0:1}" == "/" ] || i=$(which $i 2>/dev/null)
+    [ "${i:0:1}" == "/" ] || i=$(command -v $i 2>/dev/null)
     [ -f "$dest/$i" ] && continue
     if [ -e "$i" ]; then
       d=`echo "$i" | grep -o '.*/'` &&
