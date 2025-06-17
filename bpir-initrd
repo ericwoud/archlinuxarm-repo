@@ -80,6 +80,8 @@ mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
 
 ln -s /bin/bash $wdir/bin/sh
 
+touch $wdir/etc/bpir-is-initrd
+
 cp -rf /usr/share/debootstrap/ "${wdir}/usr/share"
 
 if [[ "${MODULES_DECOMPRESS}" == "yes" ]]; then
