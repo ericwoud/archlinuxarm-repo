@@ -230,7 +230,7 @@ index b7485e1f1e..1359960f27 100644
 +         $root_html_element_attributes, $body_attributes, $copying_comment,
 +         $after_body_open, $extra_head, $program_and_version, $program_homepage,
 +         $program, $generator) = $self->_file_header_information($command_for_title,
-+                                                                 $filename); 
++                                                                 $filename);
 +    } elsif ($program_version_num >= 7.000000) {
 +        ($title, $description, $encoding, $date, $css_lines, $doctype,
 +         $root_html_element_attributes, $copying_comment, $after_body_open,
