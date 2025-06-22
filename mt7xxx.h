@@ -23,6 +23,8 @@
 	"fdt_high=" FDT_HIGH "\0"			\
 	"kernel_addr_r=0x44000000\0"			\
 	"ramdisk_addr_r=0x48000000\0"			\
+	"kernel_comp_addr_r=0x4c000000\0"		\
+	"kernel_comp_size=0x03c00000\0"			\
 	"scriptaddr=0x4fc00000\0"			\
 	"fdt_addr_r=" FDT_HIGH "\0"			\
 	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0"
