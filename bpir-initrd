@@ -23,7 +23,7 @@ binaries=(bash mount umount mountpoint ls cat dmesg date
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
   stat chown chmod debootstrap curl wget ar sha256sum pgrep
   grep head tail cut tee tr parted lsblk partprobe wipefs
-  blkdiscard realpath
+  blkdiscard realpath gzip gunzip
   tar sort uniq wc zstdcat xzcat xz find mmc cpio zstd fiptool
   fsck.f2fs fsck.btrfs fsck.vfat
   mkfs.f2fs mkfs.btrfs mkfs.vfat mkfs.ubifs
