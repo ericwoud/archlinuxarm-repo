@@ -32,9 +32,9 @@ binaries=(bash mount umount mountpoint ls cat dmesg date
   fdtget fdtput fdtoverlay ip bridge ethtool ping dhcpc
   bpir-toolbox bpir-initrd bpir-build
   nano '/usr/share/terminfo/l/linux'
-  '/lib/libnss_files.so.2'
-  '/lib/libnss_dns.so.2'
-  '/lib/libresolv.so.2'
+  'libnss_files.so.2'
+  'libnss_dns.so.2'
+  'libresolv.so.2'
   '/usr/lib/debootstrap/pkgdetails'
 )
 
@@ -52,9 +52,11 @@ function mkchroot
   shift
   for i in "$@"; do
     if [ "${i:0:1}" != "/" ]; then
-      i=$(command -v $i 2>/dev/null)
-#    elif [ "${i:0:5}" == "/lib/" ]; then
-#      i=$(find /usr/lib/ -type f -name "$(basename "$i")" -print -quit)
+      if [[ "$i" == "lib"*".so"* ]]; then
+        i=$(find /lib/ -type f -name "$(basename "$i")" -print -quit)
+      else
+        i=$(command -v $i 2>/dev/null)
+      fi
     fi
     [ -f "$dest/$i" ] && continue
     if [ -e "$i" ]; then
