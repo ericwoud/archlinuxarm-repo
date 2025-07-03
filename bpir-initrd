@@ -53,8 +53,8 @@ function mkchroot
   for i in "$@"; do
     if [ "${i:0:1}" != "/" ]; then
       i=$(command -v $i 2>/dev/null)
-    elif [ "${i:0:5}" != "/lib/" ]; then
-      i=$(find /usr/lib/ -type f -name "$(basename "$i")" -print -quit)
+#    elif [ "${i:0:5}" == "/lib/" ]; then
+#      i=$(find /usr/lib/ -type f -name "$(basename "$i")" -print -quit)
     fi
     [ -f "$dest/$i" ] && continue
     if [ -e "$i" ]; then
