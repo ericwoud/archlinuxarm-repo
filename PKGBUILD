@@ -105,7 +105,7 @@ EOT
 #  export KCFLAGS='-Wno-error=address'
   ARCH=arm64 make u-boot.bin
   cp u-boot.bin u-boot-${_target}.bin
-  cp .config config-${_target}.txt
+  mv .config config-${_target}.txt
 }
 
 build() {
