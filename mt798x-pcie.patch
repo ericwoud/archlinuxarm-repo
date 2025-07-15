@@ -95,3 +95,23 @@ index 63e923137c2..dbb1d6abf46 100644
 +&pcie3 {
 +	status = "okay";
 +};
+diff --git a/arch/arm/dts/mt7988-rfb.dts b/arch/arm/dts/mt7988-rfb.dts
+index 63e923137c2..dbb1d6abf46 100644
+--- a/arch/arm/dts/mt7988-rfb.dts
++++ b/arch/arm/dts/mt7988-rfb.dts
+@@ -70,14 +70,8 @@
+ 	status = "okay";
+ };
+ 
+-/* PCIE2 not working in u-boot */
+-&pcie2 {
+-	status = "disabled";
+-};
+-
+-/* PCIE3 not working in u-boot */
+ &pcie3 {
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &pio {
