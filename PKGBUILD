@@ -84,8 +84,15 @@ _buildimage() {
   cd "${srcdir}/${_gitname}"
   _file="plat/mediatek/apsoc_common/bl2/bl2_boot_mmc.c"
   [ -f "$_file" ] || _file="plat/mediatek/${_plat}/bl2_boot_mmc.c"
-  sed -i 's/.*entry = get_partition_entry.*fip.*/\tentry = get_partition_entry("'${_bpir}'-'${_atfdev}'-fip");/' $_file
-  sed -i 's/.*entry = get_partition_entry.*boot.*/\tentry = get_partition_entry("'${_bpir}'-'${_atfdev}'-boot");/' $_file
+  _match='.*dev_handle = fill_io_block_spec_gpt.*mmc_dev_fip_spec.*fip.*'
+   _new='\t*dev_handle = fill_io_block_spec_gpt(\&mmc_dev_fip_spec, "'${_bpir}'-'${_atfdev}'-fip");'
+  sed -i 's/'"${_match}"'/'"${_new}"'/g' $_file
+  _match='.*entry = get_partition_entry.*fip.*'
+    _new='\tentry = get_partition_entry("'${_bpir}'-'${_atfdev}'-fip");'
+  sed -i 's/'"${_match}"'/'"${_new}"'/g' $_file
+  _match='.*entry = get_partition_entry.*boot.*'
+    _new='\tentry = get_partition_entry("'${_bpir}'-'${_atfdev}'-boot");'
+  sed -i 's/'"${_match}"'/'"${_new}"'/g' $_file
   touch plat/mediatek/${_plat}/platform.mk
   unset CXXFLAGS CPPFLAGS LDFLAGS
   export CFLAGS=-Wno-error
