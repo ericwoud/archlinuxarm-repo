@@ -178,6 +178,12 @@ echo _sb > /proc/sysrq-trigger
 EOT
 chmod +x "$wdir/bin/reboot"
 
+cat <<'EOT' | tee "$wdir/bin/bpir-synctime" >/dev/null
+#!/bin/bash
+date +"%d %b %Y %T %Z" -s "$(curl -s --head http://google.com | grep '^Date:' | cut -d' ' -f 3-)"
+EOT
+chmod +x "$wdir/bin/bpir-synctime"
+
 cat <<'EOT' | tee "$wdir/bin/bpir-dhcpc" >/dev/null
 #!/bin/bash
 
@@ -221,7 +227,7 @@ while [ -z "$(ip addr show dev $intf 2>/dev/null | \
 	         grep $YourIP)" ]
 do sleep 0.1; done
 
-date +"%d %b %Y %T %Z" -s "$(curl -s --head http://google.com | grep '^Date:' | cut -d' ' -f 3-)"
+/bin/bpir-synctime
 
 ip addr show dev $intf
 echo
