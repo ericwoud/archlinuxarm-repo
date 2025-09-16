@@ -88,6 +88,9 @@ prepare() {
   else
     sed -i 's/CONFIG_MT798X_WMAC/CONFIG_MT7986_WMAC/g' ./arch/arm64/configs/bpir_defconfig
   fi
+  if [[ "$_target" == "bpirnn" ]]; then
+    echo -e "\nCONFIG_DEBUG_KERNEL=y\n" >>./arch/arm64/configs/bpir_defconfig
+  fi
   make ${MAKEFLAGS} $_llvm bpir_defconfig
   rm -vf ./arch/arm64/configs/bpir_defconfig
 
