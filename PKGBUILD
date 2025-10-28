@@ -79,9 +79,7 @@ _buildfiptool() {
   make HOSTCCFLAGS+="-D'SHA256(x,y,z)=nop'" LDLIBS=""
 }
 
-_buildimage() {
-  _plat=$1; _bpir=$2; _atfdev=$3; _stretch=$4; _ddrsize=$5; _options="${@:6}"
-  cd "${srcdir}/${_gitname}"
+_use_extended_partlabel() {
   _file="plat/mediatek/apsoc_common/bl2/bl2_boot_mmc.c"
   [ -f "$_file" ] || _file="plat/mediatek/${_plat}/bl2_boot_mmc.c"
   _match='.*dev_handle = fill_io_block_spec_gpt.*mmc_dev_fip_spec.*fip.*'
@@ -93,6 +91,12 @@ _buildimage() {
   _match='.*entry = get_partition_entry.*boot.*'
     _new='\tentry = get_partition_entry("'${_bpir}'-'${_atfdev}'-boot");'
   sed -i 's/'"${_match}"'/'"${_new}"'/g' $_file
+}
+
+_buildimage() {
+  _plat=$1; _bpir=$2; _atfdev=$3; _stretch=$4; _ddrsize=$5; _options="${@:6}"
+  cd "${srcdir}/${_gitname}"
+  [ -n "${EXTENDED_PARTLABEL}" ] && _use_extended_partlabel
   touch plat/mediatek/${_plat}/platform.mk
   unset CXXFLAGS CPPFLAGS LDFLAGS
   export CFLAGS=-Wno-error
