@@ -6,6 +6,6 @@ Target = boot/Image
 Target = usr/lib/initcpio/*
 
 [Action]
-Description = Updating fip partition...
+Description = Updating dtb and fip partition...
 When = PostTransaction
 Exec = /usr/bin/bpir-toolbox --write2fip
