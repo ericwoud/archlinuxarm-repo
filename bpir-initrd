@@ -32,9 +32,7 @@ binaries=(bash mount umount mountpoint ls cat dmesg date
   fdtget fdtput fdtoverlay ip bridge ethtool ping dhcpc
   bpir-toolbox bpir-initrd bpir-build
   nano '/usr/share/terminfo/l/linux'
-  'libnss_files.so.2'
-  'libnss_dns.so.2'
-  'libresolv.so.2'
+  'libnss_files.so.2' 'libnss_dns.so.2' 'libresolv.so.2'
   '/usr/lib/debootstrap/pkgdetails'
 )
 
