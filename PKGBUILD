@@ -11,18 +11,24 @@
 # Optional settings:
 #_lto="true"      # Uncomment this line to enable CLANG-LTO
 
+if [ -z "$TARGET" ]; then
+  TARGET="$(basename $(realpath .) | cut -d"-" -f2)"
+  [[ ! "$TARGET" =~ "bpir" ]] && TARGET="bpir"
+fi
 if [[ "$TARGET" == "bpir4" ]]; then
+  _gitroot="https://github.com/frank-w/BPI-Router-Linux.git"
   _target="bpir4"
-  _gitbranch="mt7988-for-next"
+  _gitbranch="6.18-rc"
 elif [[ "$TARGET" == "bpirnn" ]]; then
+  _gitroot="https://github.com/ericwoud/linux.git"
   _target="bpirnn"
   _gitbranch="bpir-net-next"
 else
+  _gitroot="https://github.com/ericwoud/linux.git"
   _target="bpir"
   _gitbranch="bpir-rolling-stable"
 fi
 
-_gitroot="https://github.com/ericwoud/linux.git"
 
 pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
