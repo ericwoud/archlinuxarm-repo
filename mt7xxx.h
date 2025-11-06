@@ -27,6 +27,7 @@
 	"kernel_comp_size=0x03c00000\0"			\
 	"scriptaddr=0x4fc00000\0"			\
 	"fdt_addr_r=" FDT_HIGH "\0"			\
+	"fdtoverlay_addr_r=0x4fff0000\0"			\
 	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0"
 
 #ifdef CONFIG_DISTRO_DEFAULTS
