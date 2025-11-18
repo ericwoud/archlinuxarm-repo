@@ -36,7 +36,7 @@
 	func(MMC, mmc, 1)		\
 	func(MMC, mmc, 0)		\
 	func(NVME, nvme, 0)		\
-	func(SATA, sata, 0)		\
+	func(SCSI, scsi, 0)		\
 	func(UBIFS, ubifs, 0, ubi, rootfs)
 
 #include <config_distro_bootcmd.h>
