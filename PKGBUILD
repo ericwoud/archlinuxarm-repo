@@ -26,7 +26,7 @@ source=(
   'mt798x-pcie.patch'
   'clk-uclass-log_ret.patch'
   'r4-nand.patch'
-  'r4-nand.patch'
+  'r64-nand.patch'
 )
 sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 
