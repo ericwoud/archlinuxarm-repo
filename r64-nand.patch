@@ -1,0 +1,41 @@
+diff --git a/arch/arm/dts/mt7622-bananapi-bpi-r64.dts b/arch/arm/dts/mt7622-bananapi-bpi-r64.dts
+index 717baf26d3f..bfa183abbd9 100644
+--- a/arch/arm/dts/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm/dts/mt7622-bananapi-bpi-r64.dts
+@@ -174,10 +174,34 @@
+ 	pinctrl-1 = <&snfi_pins>;
+ 	status = "okay";
+ 
+-	spi-flash@0{
+-		compatible = "jedec,spi-nor";
++	spi_nand@0 {
++		compatible = "spi-nand";
+ 		reg = <0>;
++		spi-max-frequency = <52000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
+ 		bootph-all;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			partition@0 {
++				label = "bl2";
++				reg = <0x0 0x80000>;
++			};
++
++			partition@80000 {
++				label = "fip";
++				reg = <0x80000 0x200000>;
++			};
++
++			partition@280000 {
++				label = "ubi";
++				reg = <0x280000 0x7d80000>;
++			};
++		};
+ 	};
+ };
+ 
