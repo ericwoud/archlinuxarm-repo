@@ -52,11 +52,9 @@ _buildimage() {
   echo ^^^ BUILDING $_target ^^^
   cp -vf ./configs/$_def configs/bpir_my_defconfig
   cat <<-EOF | tee -a configs/bpir_my_defconfig
-  
-  CONFIG_DEFAULT_DEVICE_TREE="${_devtree}"
-  CONFIG_DEFAULT_FDT_FILE="${_devtree}"
-  
-  EOF
+CONFIG_DEFAULT_DEVICE_TREE="${_devtree}"
+CONFIG_DEFAULT_FDT_FILE="${_devtree}"
+EOF
   cat "${srcdir}/append_defconfig" >> configs/bpir_my_defconfig
   unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
   ARCH=arm64 make bpir_my_defconfig
