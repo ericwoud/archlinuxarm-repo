@@ -20,8 +20,9 @@ makedepends=('git' 'bc')
 source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
   'mt7xxx.h'
+  'append_defconfig'
 )
-sha256sums=(SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
   sha256sums+=(SKIP)
