@@ -8,8 +8,6 @@
 # board/<CONFIG_SYS_VENDOR>/<CONFIG_SYS_BOARD>
 
 pkgname=bpir-uboot-git
-#_pkgver=2021.10 # last build of u-boot tested for R64
-#_pkgver=2023.04 # last build of u-boot tested for R3
 _pkgver=2025.04
 pkgver=2025.04r98055.34820924edb
 pkgrel=1
@@ -24,11 +22,10 @@ source=(
   'mt7xxx.h'
   'mt7xxx.patch'
   'mt798x-pcie.patch'
-  'clk-uclass-log_ret.patch'
   'r4-nand.patch'
   'r64-nand.patch'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
@@ -45,9 +42,6 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/u-boot"
-  if [[ "$_pkgver" == "2023.04" ]]; then
-    patch -p1 -N -r - < "${srcdir}/clk-uclass-log_ret.patch"
-  fi
   git apply "${srcdir}/mt7xxx.patch"
   git apply "${srcdir}/mt798x-pcie.patch"
   git apply "${srcdir}/r4-nand.patch"
