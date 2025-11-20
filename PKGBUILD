@@ -20,12 +20,12 @@ makedepends=('git' 'bc')
 source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
   'mt7xxx.h'
-  'mt7xxx.patch'
-  'mt798x-pcie.patch'
-  'r4-nand.patch'
-  'r64-nand.patch'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP)
+for p in $(shopt -s nullglob; echo *.patch) ; do
+  source+=($p)
+  sha256sums+=(SKIP)
+done
 
 export CARCH=aarch64
 if [[ "$(uname -m)" != "aarch64" ]]; then
@@ -42,10 +42,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/u-boot"
-  git apply "${srcdir}/mt7xxx.patch"
-  git apply "${srcdir}/mt798x-pcie.patch"
-  git apply "${srcdir}/r4-nand.patch"
-  git apply "${srcdir}/r64-nand.patch"
+  git apply --verbose ../../*.patch
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
 }
 
