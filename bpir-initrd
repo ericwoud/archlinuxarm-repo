@@ -28,7 +28,7 @@ binaries=(bash mount umount mountpoint ls cat dmesg date
   fsck.f2fs fsck.btrfs fsck.vfat
   mkfs.f2fs mkfs.btrfs mkfs.vfat mkfs.ubifs
   ubiattach ubidetach ubiupdatevol ubimkvol ubiformat ubinfo
-  flash_erase lsusb lspci
+  flash_erase lsusb lspci mkimage
   fdtget fdtput fdtoverlay ip bridge ethtool ping dhcpc
   bpir-toolbox bpir-initrd bpir-build
   nano '/usr/share/terminfo/l/linux'
