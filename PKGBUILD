@@ -8,8 +8,8 @@
 # board/<CONFIG_SYS_VENDOR>/<CONFIG_SYS_BOARD>
 
 pkgname=bpir-uboot-git
-_pkgver=2025.04
-pkgver=2025.04r98055.34820924edb
+_pkgver=2025.10
+pkgver=2025.10r101557.e50b1e87150
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
