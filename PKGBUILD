@@ -21,12 +21,13 @@ makedepends=('git' 'bc')
 source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
   "src/snand.patch::${_openwrturl}/patches/100-02-drivers-mtd-add-support-for-MediaTek-SPI-NAND-flash-.patch"
+  "src/mt7622.patch::${_openwrturl}/patches/100-19-board-mt7622-use-new-spi-nand-driver.patch"
   "src/r64dts1.patch::${_openwrturl}/patches/402-update-bananapi-bpi-r64-device-tree.patch"
   "src/r64dts2.patch::${_openwrturl}/patches/403-add-bananapi_bpi-r64-snand.patch"
   'mt7xxx.h'
   'append_defconfig'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
   sha256sums+=(SKIP)
