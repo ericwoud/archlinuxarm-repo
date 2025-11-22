@@ -14,16 +14,17 @@ pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
 url='https://github.com/u-boot/u-boot'
-_openwrturl='https://github.com/openwrt/openwrt/raw/refs/tags/v24.10.4/package/boot/uboot-mediatek'
+_openwrtver=v24.10.4
+_openwrturl='https://github.com/openwrt/openwrt/raw/refs/tags/${_openwrtver}/package/boot/uboot-mediatek/patches'
 license=(GPL3)
 depends=()
 makedepends=('git' 'bc')
 source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
-  "src/snand.patch::${_openwrturl}/patches/100-02-drivers-mtd-add-support-for-MediaTek-SPI-NAND-flash-.patch"
-  "src/mt7622.patch::${_openwrturl}/patches/100-19-board-mt7622-use-new-spi-nand-driver.patch"
-  "src/r64dts1.patch::${_openwrturl}/patches/402-update-bananapi-bpi-r64-device-tree.patch"
-  "src/r64dts2.patch::${_openwrturl}/patches/403-add-bananapi_bpi-r64-snand.patch"
+  "src/snand.patch::${_openwrturl}/100-02-drivers-mtd-add-support-for-MediaTek-SPI-NAND-flash-.patch"
+  "src/mt7622.patch::${_openwrturl}/100-19-board-mt7622-use-new-spi-nand-driver.patch"
+  "src/r64dts1.patch::${_openwrturl}/402-update-bananapi-bpi-r64-device-tree.patch"
+  "src/r64dts2.patch::${_openwrturl}/403-add-bananapi_bpi-r64-snand.patch"
   'mt7xxx.h'
   'append_defconfig'
 )
