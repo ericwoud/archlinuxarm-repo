@@ -14,15 +14,17 @@ pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
 url='https://github.com/u-boot/u-boot'
+_openwrturl='https://github.com/openwrt/openwrt/raw/refs/tags/v24.10.4/package/boot/uboot-mediatek'
 license=(GPL3)
 depends=()
 makedepends=('git' 'bc')
 source=(
   "git+https://github.com/u-boot/u-boot.git#tag=v${_pkgver}"
+  "src/snand.patch::${_openwrturl}/patches/100-02-drivers-mtd-add-support-for-MediaTek-SPI-NAND-flash-.patch"
   'mt7xxx.h'
   'append_defconfig'
 )
-sha256sums=(SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
   sha256sums+=(SKIP)
@@ -43,7 +45,8 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/u-boot"
-  git apply --verbose ../../*.patch
+  git clean -d -f
+  git apply --verbose ../*.patch
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
 }
 
