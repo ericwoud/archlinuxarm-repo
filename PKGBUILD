@@ -58,11 +58,20 @@ _buildimage() {
   _target=$1; _def=$2; _devtree=$3
   echo ^^^ BUILDING $_target ^^^
   cp -vf ./configs/$_def configs/bpir_my_defconfig
-  cat <<-EOF | tee -a configs/bpir_my_defconfig
-CONFIG_DEFAULT_DEVICE_TREE="${_devtree}"
-CONFIG_DEFAULT_FDT_FILE="${_devtree}"
-EOF
-  cat "${srcdir}/append_defconfig" >> configs/bpir_my_defconfig
+  (
+    echo 'CONFIG_DEFAULT_DEVICE_TREE="'${_devtree}'"'
+    echo 'CONFIG_DEFAULT_FDT_FILE="'${_devtree}'"'
+    cat "${srcdir}/append_defconfig"
+    if [[ ${_target} == "bpir64" ]]; then
+      echo 'CONFIG_MTD_SPI_NAND=n'
+      echo 'CONFIG_MTK_SPI_NAND=y'
+      echo 'CONFIG_MTK_SPI_NAND_MTD=y'
+    else
+      echo 'CONFIG_MTD_SPI_NAND=y'
+      echo 'CONFIG_MTK_SPI_NAND=n'
+      echo 'CONFIG_MTK_SPI_NAND_MTD=n'
+    fi
+  ) | tee -a configs/bpir_my_defconfig
   unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
   ARCH=arm64 make bpir_my_defconfig
 #  export KCFLAGS='-Wno-error=address'
