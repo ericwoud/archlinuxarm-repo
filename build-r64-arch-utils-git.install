@@ -1,4 +1,11 @@
 post_upgrade() {
+  mkdir -p "/etc/systemd/networkd.conf.d"
+  if [ ! -L "/etc/systemd/networkd.conf.d/networkd.conf" ]; then
+    ln -srT ../network/networkd.conf /etc/systemd/networkd.conf.d/networkd.conf
+  fi
+}
+
+post_install() {
   sudo systemctl --force --no-pager disable setmac.service
   echo
   sudo systemctl --force --no-pager enable setmac.service
@@ -7,10 +14,6 @@ post_upgrade() {
   if [ ! -L "/etc/systemd/networkd.conf.d/networkd.conf" ]; then
     ln -srT ../network/networkd.conf /etc/systemd/networkd.conf.d/networkd.conf
   fi
-}
-
-post_install() {
-  post_upgrade
 }
 
 pre_remove() {
