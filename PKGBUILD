@@ -6,6 +6,7 @@ license=('GPL')
 arch=('any')
 pkgver=v1
 pkgrel=1
+depends=('bpir-atf-git-fiptool' 'bpir-atf-git')
 source=("git+https://github.com/ericwoud/buildR64arch.git"
 	'95-bpir-toolbox-fip.hook'
 	'95-bpir-toolbox-atf.hook')
