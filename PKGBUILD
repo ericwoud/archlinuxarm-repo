@@ -4,6 +4,7 @@ pkgname=("build-r64-arch-utils-git")
 url="https://github.com/ericwoud/buildR64arch"
 license=('GPL')
 arch=('any')
+pkgdesc='Utilities for BPI Router boards installed with buildR64arch'
 pkgver=v1
 pkgrel=1
 depends=('bpir-atf-git-fiptool' 'bpir-atf-git')
