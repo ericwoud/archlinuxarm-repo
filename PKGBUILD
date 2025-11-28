@@ -4,6 +4,7 @@ pkgname=("bpir-initrd")
 url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
 arch=('aarch64')
+pkgdesc='Build customized initrd for BPI Router Boards'
 pkgver=1.0
 pkgrel=1
 source=('bpir-initrd'
