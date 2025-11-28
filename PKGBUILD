@@ -17,6 +17,7 @@ pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
 arch=(aarch64 x86_64)
+depends=()
 makedepends=(git dtc)
 license=(GPL)
 source=("git+${_gitroot}.git#branch=${_gitbranch}"
@@ -147,7 +148,6 @@ build() {
  
 package_bpir-atf-git() {
   pkgdesc='ATF BPI-R64/R3/R4 images'
-  depends=("linux" "dtc" "bpir-atf-git-fiptool" "build-r64-arch-utils-git")
   replaces=(bpir64-mkimage)
   cd "${srcdir}"
   for _folder in "${srcdir}/${_gitname}/build/"*; do
@@ -158,7 +158,6 @@ package_bpir-atf-git() {
 
 package_bpir-atf-git-fiptool() {
   pkgdesc='ATF BPI-R64/R3/R4 fiptool'
-  depends=()
   cd "${srcdir}/${_gitname}/tools/fiptool"
   install -m755 -vDt "$pkgdir/usr/bin" fiptool
 }
