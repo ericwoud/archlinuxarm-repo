@@ -4,7 +4,7 @@ pkgname=("build-r64-arch-utils-git")
 url="https://github.com/ericwoud/buildR64arch"
 license=('GPL')
 arch=('any')
-pkgver=r1
+pkgver=v1
 pkgrel=1
 source=("git+https://github.com/ericwoud/buildR64arch.git"
 	'95-bpir-toolbox-fip.hook'
@@ -14,7 +14,7 @@ install=${pkgname}.install
 
 pkgver() {
   cd "${srcdir}/buildR64arch"
-  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "v%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 package() {
