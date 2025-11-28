@@ -3,7 +3,7 @@
 pkgname=("bpir-initrd")
 url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
-arch=('any')
+arch=('aarch64')
 pkgver=1.0
 pkgrel=1
 source=('bpir-initrd'
