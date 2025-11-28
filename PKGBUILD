@@ -4,6 +4,7 @@ pkgname=("hostapd-launch")
 url="https://github.com/ericwoud/archlinuxarm-repo/tree/hostapd-launch"
 license=('GPL')
 arch=('armv7h' 'aarch64' 'x86_64')
+pkgdesc='Launch helper for hostapd'
 pkgver=1.1
 pkgrel=1
 source=('hostapd-launch'
