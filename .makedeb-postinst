@@ -1,0 +1,32 @@
+#!/bin/sh
+
+after_upgrade() {
+    :
+
+  depmod %KERNVER%
+}
+
+after_install() {
+    :
+
+  depmod %KERNVER%
+}
+
+if [ "$1" = triggered ]; then
+    after_upgrade "${2}"
+    exit 0
+fi
+
+if [ "${1}" = "configure" -a -z "${2}" ] || \
+   [ "${1}" = "abort-remove" ]
+then
+    after_install
+elif [ "${1}" = "configure" -a -n "${2}" ]
+then
+    upgradeFromVersion="${2}"
+    after_upgrade "${2}"
+elif echo "${1}" | grep -E -q "(abort|fail)"
+then
+    echo "Failed to install before the post-installation script was run." >&2
+    exit 1
+fi
