@@ -9,4 +9,4 @@ Target = usr/lib/modules/%EXTRAMODULES%/*
 [Action]
 Description = Updating %PKGBASE% module dependencies...
 When = PostTransaction
-Exec = /usr/bin/bash -c "if [ -f /usr/sbin/depmod ]; then /usr/sbin/depmod %KERNVER%; else /usr/bin/depmod %KERNVER%; fi"
+Exec = /usr/bin/depmod %KERNVER%
