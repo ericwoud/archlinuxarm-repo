@@ -2,5 +2,5 @@
 # prefix = "pool/main" 
 function makedeb {
   echo "Building .deb for package ${pkgname} in ${prefix} from $(basename ${pkgtar})" >&2
-  fpm -f -s pacman -t deb -x ".BUILDINFO" -p "${prefix}" "${pkgtar}"
+  fpm -f -s pacman -t deb -a ${debarch} -x ".BUILDINFO" -p "${prefix}" "${pkgtar}"
 }
