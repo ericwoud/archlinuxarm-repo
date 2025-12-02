@@ -3,7 +3,7 @@
 pkgname=("ssh-fix-reboot")
 url="https://github.com/ericwoud/archlinuxarm-repo/tree/ssh-fix-reboot"
 license=('GPL')
-arch=('armv7h' 'aarch64' 'x86_64')
+arch=('any')
 pkgdesc='Fix running reboot from ssh session'
 pkgver=1.0
 pkgrel=1
