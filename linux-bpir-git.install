@@ -1,6 +1,8 @@
 post_upgrade() {
-  echo "EEE:$1:EEE"
-  [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd %PKGBASE% || /usr/bin/mkinitcpio -p %PKGBASE%
+  local f
+  for f in $(basename /etc/initcpio/install/linux-bpir*-git); do
+    [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd "${f}" || /usr/bin/mkinitcpio -p "${f}"
+  done
   /usr/bin/bpir-toolbox --write2fip
 }
 
