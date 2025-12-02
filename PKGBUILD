@@ -212,9 +212,6 @@ _package() {
   # install debian triggerss
   sed "${_subst}" ${startdir}/.makedeb-postinst |
     install -Dm644 /dev/stdin "${srcdir}/.makedeb-postinst"
-
- # fix .INSTALL
-  sed -i "${_subst}" "${pkgdir}/.INSTALL"
 }
 
 _package-headers() {
