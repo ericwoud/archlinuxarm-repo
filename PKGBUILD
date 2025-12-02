@@ -48,6 +48,7 @@ source=('defconfig'
         'mkinitcpio.conf'
         'mkinitcpio.hook'
         'mkinitcpio.build'
+        'linux-bpir-git.install'
 )
 md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
 
@@ -136,7 +137,7 @@ _package() {
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install=${startdir}/linux-bpir-git.install
+  install="src/linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
               'linux-bpir3-git'
