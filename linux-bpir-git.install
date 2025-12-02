@@ -1,8 +1,6 @@
 post_upgrade() {
-  local f
-  for f in $(basename /etc/initcpio/install/linux-bpir*-git); do
-    [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd "${f}" || /usr/bin/mkinitcpio -p "${f}"
-  done
+  local pb="linux-${1##*.}-git"
+  [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd "${pb}" || /usr/bin/mkinitcpio -p "${pb}"
   /usr/bin/bpir-toolbox --write2fip
 }
 
