@@ -1,11 +1,11 @@
 post_upgrade() {
-  echo "${BASH_SOURCE[0]}"
+  echo "EEE:$1:EEE"
   [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd %PKGBASE% || /usr/bin/mkinitcpio -p %PKGBASE%
   /usr/bin/bpir-toolbox --write2fip
 }
 
 post_install() {
-  post_upgrade
+  post_upgrade "$@"
 }
 
 post_remove() {
