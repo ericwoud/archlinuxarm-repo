@@ -175,7 +175,6 @@ _package() {
 
   # used by mkinitcpio to name the kernel
   echo "${pkgbase}" | install -D -m 644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/pkgbase"
-  echo "${pkgver}-${pkgrel}" | install -D -m 644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/pkgver"
 
   # now we call depmod...
   depmod -b "${pkgdir}/usr" -F System.map "${_kernver}"
