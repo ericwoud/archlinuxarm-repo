@@ -4,7 +4,8 @@
 } # We are included within function after_install(), but we need main code
 
 if [ "$1" = triggered ]; then
-  after_upgrade "${2}"
+  pb="linux-${2##*.}-git"
+  /usr/sbin/depmod "${pb}"
   exit 0
 fi
 
