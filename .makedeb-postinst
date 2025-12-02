@@ -9,5 +9,5 @@ if [ "$1" = triggered ]; then
 fi
 
 dummy_function() { # Continue inside a function again
-
+    :
 ###### End of inserted file #####
