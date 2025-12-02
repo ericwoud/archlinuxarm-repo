@@ -1,6 +1,5 @@
 post_upgrade() {
   local pb="${1##*.}"; pb="linux-${pb%-*}-git"
-echo "TEST: ${1}   ${pb}"
   [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd "${pb}" || /usr/bin/mkinitcpio -p "${pb}"
   /usr/bin/bpir-toolbox --write2fip
 }
