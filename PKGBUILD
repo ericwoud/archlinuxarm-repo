@@ -214,7 +214,7 @@ _package() {
     install -Dm644 /dev/stdin "${srcdir}/.makedeb-postinst"
 
  # fix .INSTALL
-  sed -i "${_subst}" "${pkgdir}.INSTALL"
+  sed -i "${_subst}" "${pkgdir}/.INSTALL"
 }
 
 _package-headers() {
