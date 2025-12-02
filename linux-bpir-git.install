@@ -1,3 +1,11 @@
+post_upgrade() {
+  /usr/bin/bpir-toolbox --write2fip
+}
+
+post_install() {
+  /usr/bin/bpir-toolbox --write2fip
+}
+
 post_remove() {
   rm -f /boot/initramfs-linux-bpir64-git.img
   rm -f /boot/initramfs-linux-bpir64-git-fallback.img
