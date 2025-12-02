@@ -1,13 +1,13 @@
 ###### Start of inserted file #####
 
-  after_install_part2 "$@"
+  after_upgrade "${2}"
 } # We are included within function after_install(), but we need main code
 
 if [ "$1" = triggered ]; then
-    after_upgrade "${2}"
-    exit 0
+  after_upgrade "${2}"
+  exit 0
 fi
 
-after_install_part2() { # Continue inside a function again
+dummy_function() { # Continue inside a function again
 
 ###### End of inserted file #####
