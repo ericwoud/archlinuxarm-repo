@@ -1,5 +1,5 @@
 post_upgrade() {
-  echo $0
+  echo "${BASH_SOURCE[0]}"
   [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd %PKGBASE% || /usr/bin/mkinitcpio -p %PKGBASE%
   /usr/bin/bpir-toolbox --write2fip
 }
