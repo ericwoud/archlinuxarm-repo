@@ -2,5 +2,11 @@
 # prefix = "pool/main" 
 function makedeb {
   echo "Building .deb for package ${pkgname} in ${prefix} from $(basename ${pkgtar})" >&2
-  fpm -f -s pacman -t deb -x ".BUILDINFO" -p "${prefix}" "${pkgtar}"
+  if [[ ${pkgname} == "linux-bpir-git" ]]; then
+    echo "Adding trigger to .deb package" >&2
+    fpm -f -s pacman -t deb -x ".BUILDINFO" -p "${prefix}" --deb-interest "linux-update" --after-install "${srcdir}/.makedeb-postinst" "${pkgtar}"
+  else
+    fpm -f -s pacman -t deb -x ".BUILDINFO" -p "${prefix}" "${pkgtar}"
+  fi
+
 }
