@@ -45,12 +45,11 @@ options=('!strip')
 source=('defconfig'
         'linux.preset'
         '60-linux.hook'
-        '90-linux.hook'
         'mkinitcpio.conf'
         'mkinitcpio.hook'
         'mkinitcpio.build'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -209,8 +208,6 @@ _package() {
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}.hook"
-  sed "${_subst}" ../90-linux.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/90-${pkgbase}.hook"
 
   # install debian triggerss
   sed "${_subst}" ${startdir}/.makedeb-postinst |
