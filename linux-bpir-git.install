@@ -1,5 +1,5 @@
 post_upgrade() {
-  echo $(realpath .)
+  echo $0
   [ -f /usr/bin/bpir-initrd ] && /usr/bin/bpir-initrd %PKGBASE% || /usr/bin/mkinitcpio -p %PKGBASE%
   /usr/bin/bpir-toolbox --write2fip
 }
