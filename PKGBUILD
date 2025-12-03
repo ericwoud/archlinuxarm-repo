@@ -109,7 +109,7 @@ prepare() {
 
 pkgver() {
   cd "$srcdir/$_srcname"
-  printf "%s.%s.${_target}" "$(echo  $(make ${MAKEFLAGS} $_llvm -s kernelrelease) | \
+  printf "%s.%s" "$(echo  $(make ${MAKEFLAGS} $_llvm -s kernelrelease) | \
                  sed 's/\([^-]*-\)g/r\1/;s/-/./g')" \
                  "$(git rev-parse --short HEAD)"
 }
