@@ -210,8 +210,8 @@ _package() {
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}.hook"
 
   # install debian triggerss
-  sed "${_subst}" ${startdir}/.makedeb-postinst |
-    install -Dm644 /dev/stdin "${srcdir}/.makedeb-postinst"
+  sed "${_subst}" ${startdir}/.makedeb-postinst \
+    > "${srcdir}/.makedeb-postinst"
 }
 
 _package-headers() {
