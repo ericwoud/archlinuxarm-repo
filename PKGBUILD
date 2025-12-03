@@ -96,6 +96,7 @@ prepare() {
   if [[ "$_target" == "bpirnn" ]]; then
     echo -e "\nCONFIG_DEBUG_KERNEL=y\n" >>./arch/arm64/configs/bpir_defconfig
   fi
+  echo -e "\n"'CONFIG_LOCALVERSION="-'"${_target}"'"'"\n" >>./arch/arm64/configs/bpir_defconfig
   make ${MAKEFLAGS} $_llvm bpir_defconfig
   rm -vf ./arch/arm64/configs/bpir_defconfig
 
