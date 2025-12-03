@@ -77,7 +77,7 @@ _buildmkimage() {
 _buildfiptool() {
   cd "${srcdir}/${_gitname}/tools/fiptool"
   sed -i '/-Werror/d' ./Makefile
-  make HOSTCCFLAGS+="-D'SHA256(x,y,z)=nop'" LDLIBS=""
+  make HOSTCCFLAGS+="-D'SHA256(x,y,z)=nop'" LDOPTS="-static"
 }
 
 _use_extended_partlabel() {
