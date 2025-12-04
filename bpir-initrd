@@ -18,7 +18,7 @@ for hook in ${HOOKS[*]}; do
 done
 
 binaries=(bash mount umount mountpoint ls cat dmesg date
-  lsmod rmmod insmod modinfo modprobe depmod ldd
+  lsmod rmmod insmod modinfo modprobe depmod ldd xargs
   switch_root readlink basename dirname sync blkid setsid unshare
   cp mv dd mkdir mknod sed sleep ln rm uname touch chroot
   stat chown chmod debootstrap curl wget ar sha256sum pgrep
