@@ -133,7 +133,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 'kmod' 'build-r64-arch-utils-git')
+  depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
