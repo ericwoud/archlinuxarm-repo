@@ -14,7 +14,7 @@ sha256sums=(SKIP SKIP SKIP)
 
 package() {
   cd "${srcdir}"
-  install -m755 -vT ./mkinitcpio-bpir.conf  ${pkgdir}/etc/mkinitcpio-bpir.conf
-  install -m755 -vT ./mkinitcpio-bpir.hook  ${pkgdir}/etc/initcpio/hooks/bpir
-  install -m755 -vT ./mkinitcpio-bpir.build ${pkgdir}/etc/initcpio/install/bpir
+  install -m755 -vTD ./mkinitcpio-bpir.conf  ${pkgdir}/etc/mkinitcpio-bpir.conf
+  install -m755 -vTD ./mkinitcpio-bpir.hook  ${pkgdir}/etc/initcpio/hooks/bpir
+  install -m755 -vTD ./mkinitcpio-bpir.build ${pkgdir}/etc/initcpio/install/bpir
 }
