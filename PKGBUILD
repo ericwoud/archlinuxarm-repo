@@ -29,7 +29,6 @@ else
   _gitbranch="bpir-rolling-stable"
 fi
 
-
 pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
@@ -43,13 +42,10 @@ makedepends=('kmod' 'inetutils' 'bc' 'git')
 [[ "$_lto" == "true" ]] &&  makedepends+=('clang' 'llvm' 'lld')
 options=('!strip')
 source=('defconfig'
-        'linux.preset'
+        'mkinitcpio.preset'
         '60-linux.hook'
-        'mkinitcpio.conf'
-        'mkinitcpio.hook'
-        'mkinitcpio.build'
 )
-md5sums=(SKIP SKIP SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -133,7 +129,7 @@ build() {
 
 _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
-  depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'initramfs')
+  depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
@@ -160,7 +156,8 @@ _package() {
 
   install -d -m 0700 "${pkgdir}/boot"
   install -d -m 0700 "${pkgdir}/boot/dtbs"
-  install -Dt "${pkgdir}/boot"      -m600 arch/$KARCH/boot/Image{,.gz}
+  install -m600 -vT arch/$KARCH/boot/Image    ${pkgdir}/boot/Image-${pkgbase}
+  install -m600 -vT arch/$KARCH/boot/Image.gz ${pkgdir}/boot/Image-${pkgbase}.gz
   install -Dt "${pkgdir}/boot/dtbs" -m600 arch/$KARCH/boot/dts/mediatek/mt7*.dtb
 
   # make room for external modules
@@ -192,20 +189,8 @@ _package() {
   "
 
   # install mkinitcpio preset file
-  sed "${_subst}" ../linux.preset |
+  sed "${_subst}" ../mkinitcpio.preset |
     install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
-
-  # install mkinitcpio conf file
-  sed "${_subst}" ../mkinitcpio.conf |
-    install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio-${pkgbase}.conf"
-
-  # install mkinitcpio runtime hook
-  sed "${_subst}" ../mkinitcpio.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/etc/initcpio/hooks/${pkgbase}"
-
-  # install mkinitcpio build hook
-  sed "${_subst}" ../mkinitcpio.build |
-    install -Dm644 /dev/stdin "${pkgdir}/etc/initcpio/install/${pkgbase}"
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
