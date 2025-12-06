@@ -1,6 +1,6 @@
 # Maintainer: Eric Woudstra <ericwouds@gmail.com>
 
-pkgname=("bpir-initrd")
+pkgname=("mkinitcpio-bpir")
 url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
 arch=('any')
