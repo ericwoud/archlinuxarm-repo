@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+# SPDX-License-Identifier: GPL-2.0-only
+
+run_hook() {
+  read -n 1 -t 0.3 char
+  if [[ "$char" == "E" ]]; then
+    echo "Executing 'bpir-flash2emmc /tmp/bpir.img.gz' ..."
+    bpir-flash2emmc /tmp/bpir.img.gz
+    echo "Entering shell."
+    setsid /bin/bash -c 'exec /bin/bash </dev/ttyS0 >/dev/ttyS0 2>&1'
+  elif [[ "$char" == "e" ]]; then
+    echo "Booting EMMC!"
+    export root=${root/"-sdmmc-"/"-emmc-"}
+    export root=${root/"-nvme-"/"-emmc-"}
+  elif [[ "$char" == "s" ]]; then
+    echo "Booting SDMMC!"
+    export root=${root/"-emmc-"/"-sdmmc-"}
+    export root=${root/"-nvme-"/"-sdmmc-"}
+  elif [[ "$char" == "n" ]]; then
+    echo "Booting NVME!"
+    export root=${root/"-emmc-"/"-nvme-"}
+    export root=${root/"-sdmmc-"/"-nvme-"}
+  elif [[ "$char" == "x" ]]; then
+    echo "Entering shell."
+    echo "Enter 'exit' to continue booting."
+    echo "Enter 'reboot' to reboot."
+    setsid /bin/bash -c 'exec /bin/bash </dev/ttyS0 >/dev/ttyS0 2>&1'
+  fi
+}
