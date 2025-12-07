@@ -97,6 +97,9 @@ package() {
   cd "${srcdir}/u-boot"
   _pd="$pkgdir/usr/share/bpir-uboot"
   install -vDt "${_pd}/" -m644 u-boot-bpir*.bin
+  ln -srf "${_pd}/u-boot-bpir64.bin"     "${_pd}/u-boot-bpir64-emmc.bin"
+  ln -srf "${_pd}/u-boot-bpir64.bin"     "${_pd}/u-boot-bpir64-sd.bin"
   ln -srf "${_pd}/u-boot-bpir3-emmc.bin" "${_pd}/u-boot-bpir3.bin"
+  ln -srf "${_pd}/u-boot-bpir3m.bin"     "${_pd}/u-boot-bpir3m-emmc.bin"
   ln -srf "${_pd}/u-boot-bpir4-emmc.bin" "${_pd}/u-boot-bpir4.bin"
 }
