@@ -25,10 +25,11 @@ source=(
   "src/mt7622.patch::${_openwrturl}/100-19-board-mt7622-use-new-spi-nand-driver.patch"
   "src/r64dts1.patch::${_openwrturl}/402-update-bananapi-bpi-r64-device-tree.patch"
   "src/r64dts2.patch::${_openwrturl}/403-add-bananapi_bpi-r64-snand.patch"
+  "src/mt7986a-bpi-r3-mini.dts::https://github.com/frank-w/u-boot/raw/refs/heads/${_pkgver/./-}-bpi/arch/arm/dts/mt7986a-bpi-r3-mini.dts"
   'mt7xxx.h'
   'append_defconfig'
 )
-sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP)
 for p in $(shopt -s nullglob; echo *.patch) ; do
   source+=($p)
   sha256sums+=(SKIP)
@@ -52,6 +53,7 @@ prepare() {
   git clean -d -f
   git apply --verbose ../*.patch
   cp -vf "${srcdir}/mt7xxx.h" include/configs/
+  cp -vf "${srcdir}/"*".dts" arch/arm/dts/
 }
 
 _buildimage() {
@@ -86,6 +88,7 @@ build() {
   _buildimage bpir64       mt7622_rfb_defconfig          mt7622-bananapi-bpi-r64
   _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-emmc
   _buildimage bpir3-sdmmc  mt7986a_bpir3_sd_defconfig    mt7986a-bpi-r3-sd
+  _buildimage bpir3m       mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-mini
   _buildimage bpir4-emmc   mt7988_rfb_defconfig          mt7988-rfb
   _buildimage bpir4-sdmmc  mt7988_sd_rfb_defconfig       mt7988-sd-rfb
 }
