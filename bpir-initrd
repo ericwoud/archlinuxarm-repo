@@ -1,13 +1,12 @@
 #!/bin/bash
 
-
-if [ -z "$1" ]; then
-  pkgbase=$(basename /etc/mkinitcpio.d/*.preset)
-  pkgbase=${pkgbase/.preset/}
-  echo "Building initrd for ${pkgbase}"
+if [ -n "$1" ]; then
+  pkgbases=$@
 else
-  pkgbase="$1"
+  pkgbases=$(shopt -s nullglob; basename --suffix=.preset /etc/mkinitcpio.d/*.preset 2>/dev/null)
 fi
+
+for pkgbase in $pkgbases; do
 
 preset="/etc/mkinitcpio.d/${pkgbase}.preset"
 [ ! -f  "${preset}" ] && exit 1
@@ -242,3 +241,5 @@ chmod +x "$wdir/bin/bpir-dhcpc"
 rm -rf $wdir
 
 stat --printf="Filesize: %s\n" $default_image
+
+done
