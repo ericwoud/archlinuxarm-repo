@@ -33,7 +33,7 @@ pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for BPI-R64/R3/R4"
-pkgver=6.9.3.bpi.f8d8d2c01
+pkgver=6.9.3.bpi.1.f8d8d2c01
 pkgrel=1
 arch=('aarch64' 'x86_64')
 url="http://www.kernel.org/"
@@ -105,8 +105,9 @@ prepare() {
 
 pkgver() {
   cd "$srcdir/$_srcname"
-  printf "%s.%s" "$(echo  $(make ${MAKEFLAGS} $_llvm -s kernelrelease) | \
+  printf "%s.%s.%s" "$(echo  $(make ${MAKEFLAGS} $_llvm -s kernelrelease) | \
                  sed 's/\([^-]*-\)g/r\1/;s/-/./g')" \
+                 "$(git -C "${startdir}" rev-list --count HEAD)" \
                  "$(git rev-parse --short HEAD)"
 }
 
