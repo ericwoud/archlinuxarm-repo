@@ -1,10 +1,14 @@
 # Build debian package for architecture: aarch64
 # prefix = "pool/main" 
+function dependsdeb {
+    echo
+    source "${startdir}/PKGBUILD"
+    echo ${depends_debian[*]}
+    echo
+}
+
 function makedeb {
   echo "Building .deb for package ${pkgname} in ${prefix} from $(basename ${pkgtar})" >&2
-echo
-  source "${startdir}/PKGBUILD"
-echo ${depends_debian[*]}
-echo
+  dependsdeb >&2
   fpm -f -s pacman -t deb -x ".BUILDINFO" -p "${prefix}" "${pkgtar}"
 }
