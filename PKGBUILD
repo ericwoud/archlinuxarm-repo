@@ -5,8 +5,7 @@ url="https://github.com/ericwoud/archlinuxarm-repo/tree/ssh-fix-reboot"
 license=('GPL')
 arch=('any')
 pkgdesc='Fix running reboot from ssh session'
-_pkgver=1
-pkgver=1.20.5fa541f
+pkgver=21.90ac03f
 pkgrel=1
 source=('ssh-fix-reboot.service')
 sha256sums=(SKIP)
@@ -15,7 +14,7 @@ depends=('systemd')
 
 pkgver() {
   cd ""${startdir}""
-  printf "${_pkgver}.%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+  printf "%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
 }
 
 package() {
