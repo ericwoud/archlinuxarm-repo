@@ -2,10 +2,10 @@
 # prefix = "pool/main" 
 function dependsdeb {
   (source "${startdir}/PKGBUILD"
-   for deb in ${depends_debian[*]}; do echo -n " -d ${deb}"; done)
+   for deb in ${depends[*]} ${depends_debian[*]}; do echo -n " -d ${deb}"; done)
 }
 function makedeb {
   echo "Building .deb for package ${pkgname} in ${prefix} from $(basename ${pkgtar})" >&2
   dependsdeb >&2
-  fpm -f -s pacman -t deb -x ".BUILDINFO" $(dependsdeb) -p "${prefix}" "${pkgtar}"
+  fpm -f -s pacman -t deb -x ".BUILDINFO" --no-auto-depends $(dependsdeb) -p "${prefix}" "${pkgtar}"
 }
