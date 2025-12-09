@@ -46,7 +46,7 @@ pkgver() {
   _year=$(grep '^VERSION = ' Makefile | cut -b 11-)
   _month=$(grep '^PATCHLEVEL = ' Makefile | cut -b 14-)
   printf "%s.%sr%s.%s.%s" "$_year" "$_month" \
-                       "$(git -C "${startdir}" rev-list --count HEAD)"
+                       "$(git -C "${startdir}" rev-list --count HEAD)" \
                        "$(git rev-list --count HEAD)" \
                        "$(git rev-parse --short HEAD)"
 }
