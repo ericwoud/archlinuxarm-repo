@@ -9,7 +9,7 @@
 
 pkgname=bpir-uboot-git
 _pkgver=2025.10
-pkgver=2025.10r101557.e50b1e87150
+pkgver=2025.10r1.101557.e50b1e87150
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
@@ -45,7 +45,10 @@ pkgver() {
   cd "${srcdir}/u-boot"
   _year=$(grep '^VERSION = ' Makefile | cut -b 11-)
   _month=$(grep '^PATCHLEVEL = ' Makefile | cut -b 14-)
-  printf "%s.%sr%s.%s" "$_year" "$_month" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "%s.%sr%s.%s.%s" "$_year" "$_month" \
+                       "$(git -C "${startdir}" rev-list --count HEAD)"
+                       "$(git rev-list --count HEAD)" \
+                       "$(git rev-parse --short HEAD)"
 }
 
 prepare() {
