@@ -5,8 +5,7 @@ url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
 arch=('any')
 pkgdesc='Mkinitcpio configuration files for BPI Router Boards'
-_pkgver=1
-pkgver=1.4.de689d1
+pkgver=5.d75fd0d
 pkgrel=1
 source=('mkinitcpio-bpir.conf'
         'mkinitcpio-bpir.hook'
@@ -15,7 +14,7 @@ sha256sums=(SKIP SKIP SKIP)
 
 pkgver() {
   cd ""${startdir}""
-  printf "${_pkgver}.%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+  printf "%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
 }
 
 package() {
