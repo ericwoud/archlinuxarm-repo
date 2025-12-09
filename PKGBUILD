@@ -12,7 +12,7 @@ _gitbranch="bpir"
 pkgbase=bpir-atf-git
 pkgname=("$pkgbase")
 epoch=2
-pkgver=v2.12r16266.09661111e
+pkgver=v2.12r1.16266.09661111e
 pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
@@ -38,9 +38,10 @@ fi
  
 pkgver() {
   cd "${srcdir}/${_gitname}"
-  printf "v%s.%sr%s.%s" \
+  printf "v%s.%sr%s.%s.%s" \
       $(grep '^VERSION_MAJOR' Makefile | cut -b 19-) \
       $(grep '^VERSION_MINOR' Makefile | cut -b 19-) \
+      "$(git -C "${startdir}" rev-list --count HEAD)"
       "$(git rev-list --count HEAD)" \
       "$(git rev-parse --short HEAD)"
 }
