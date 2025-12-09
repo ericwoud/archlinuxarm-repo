@@ -7,7 +7,18 @@ arch=('aarch64')
 pkgdesc='Utilities for BPI Router boards installed with buildR64arch'
 pkgver=37.384.d7e7f5c
 pkgrel=1
-depends=('bpir-atf-git-fiptool' 'bpir-atf-git' 'initramfs' 'sudo')
+depends=(bpir-atf-git-fiptool initramfs sudo
+         hostapd wireless-regdb iproute2 nftables f2fs-tools dosfstools
+         btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
+         nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
+         bpir-atf-git bpir-uboot-git ssh-fix-reboot hostapd-launch bpir-initrd
+         linux-firmware-other linux-firmware-mediatek)
+depends_alarm=( openssh        dtc                  mmc-utils-git uboot-tools
+                base dbus-broker-units)
+depends_debian=(openssh-server device-tree-compiler mmc-utils     u-boot-tools
+                libpam-systemd systemd-timesyncd systemd-resolved kmod zstd
+                iputils-ping iw file)
+
 source=("git+https://github.com/ericwoud/buildR64arch.git")
 sha256sums=(SKIP)
 install=${pkgname}.install
@@ -17,10 +28,10 @@ pkgver() {
   printf "%s.%s.%s" "$(git -C "${startdir}" rev-list --count HEAD)" \
                     "$(git rev-list --count HEAD)" \
                     "$(git rev-parse --short HEAD)"
-                    
 }
 
 package() {
+  depends+=(${depends_alarm[*]})
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-apt
   install -m755 -vDt $pkgdir/usr/bin bpir-flash2emmc
