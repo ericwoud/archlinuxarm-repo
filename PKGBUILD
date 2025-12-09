@@ -41,7 +41,7 @@ pkgver() {
   printf "v%s.%sr%s.%s.%s" \
       $(grep '^VERSION_MAJOR' Makefile | cut -b 19-) \
       $(grep '^VERSION_MINOR' Makefile | cut -b 19-) \
-      "$(git -C "${startdir}" rev-list --count HEAD)"
+      "$(git -C "${startdir}" rev-list --count HEAD)" \
       "$(git rev-list --count HEAD)" \
       "$(git rev-parse --short HEAD)"
 }
