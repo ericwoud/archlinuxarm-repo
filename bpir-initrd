@@ -1,9 +1,12 @@
 #!/bin/bash
 
-if [ -n "$1" ]; then
-  pkgbases=$@
-else
+if [ -z "$1" ]; then
   pkgbases=$(shopt -s nullglob; basename --suffix=.preset /etc/mkinitcpio.d/*.preset 2>/dev/null)
+elif [[ "$1" == "--help" ]]; then
+  echo "$(basename $0) - arguments: linux package name(s), no arguments builds all."
+  exit
+else
+  pkgbases=$@
 fi
 
 for pkgbase in $pkgbases; do
