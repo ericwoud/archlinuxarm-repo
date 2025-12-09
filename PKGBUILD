@@ -4,7 +4,7 @@ pkgname=("build-rk-arch-utils-git")
 url="https://github.com/ericwoud/buildRKarch"
 license=('GPL')
 arch=('any')
-pkgver=r53.9e25a90
+pkgver=13.113.bba3a9d
 pkgrel=1
 source=("git+https://github.com/ericwoud/buildRKarch.git"
 	'95-rockchip-toolbox-dtbs.hook'
@@ -14,7 +14,10 @@ install=${pkgname}.install
 
 pkgver() {
   cd "${srcdir}/buildRKarch"
-  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "%s.%s.%s" "$(git -C "${startdir}" rev-list --count HEAD)" \
+                    "$(git rev-list --count HEAD)" \
+                    "$(git rev-parse --short HEAD)"
+                    
 }
 
 package() {
