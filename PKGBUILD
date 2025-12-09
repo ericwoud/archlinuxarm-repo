@@ -11,7 +11,7 @@ depends=(bpir-atf-git-fiptool initramfs sudo
          hostapd wireless-regdb iproute2 nftables f2fs-tools dosfstools
          btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
          nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
-         bpir-atf-git bpir-uboot-git ssh-fix-reboot hostapd-launch bpir-initrd
+         bpir-atf-git bpir-uboot-git ssh-fix-reboot hostapd-launch
          linux-firmware-other linux-firmware-mediatek)
 depends_alarm=( openssh        dtc                  mmc-utils-git uboot-tools
                 base dbus-broker-units)
