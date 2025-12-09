@@ -5,7 +5,7 @@ url="https://github.com/ericwoud/buildR64arch"
 license=('GPL')
 arch=('aarch64')
 pkgdesc='Utilities for BPI Router boards installed with buildR64arch'
-pkgver=v1
+pkgver=37.384.d7e7f5c
 pkgrel=1
 depends=('bpir-atf-git-fiptool' 'bpir-atf-git' 'initramfs' 'sudo')
 source=("git+https://github.com/ericwoud/buildR64arch.git")
@@ -14,7 +14,10 @@ install=${pkgname}.install
 
 pkgver() {
   cd "${srcdir}/buildR64arch"
-  printf "v%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "%s.%s.%s" "$(git -C "${startdir}" rev-list --count HEAD)" \
+                    "$(git rev-list --count HEAD)" \
+                    "$(git rev-parse --short HEAD)"
+                    
 }
 
 package() {
