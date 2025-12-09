@@ -5,8 +5,7 @@ url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
 arch=('aarch64')
 pkgdesc='Build customized initrd for BPI Router Boards'
-_pkgver=1
-pkgver=1.95.db23030
+pkgver=96.a47b774
 pkgrel=1
 source=('bpir-initrd'
         'git+https://github.com/ericwoud/daft-dhcp-client.git'
@@ -18,7 +17,7 @@ provides=('initramfs')
 
 pkgver() {
   cd ""${startdir}""
-  printf "${_pkgver}.%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+  printf "%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
 }
 
 build() {
