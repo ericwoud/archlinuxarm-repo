@@ -34,6 +34,7 @@ package() {
   depends+=(${depends_alarm[*]})
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-apt
+  install -m755 -vDt $pkgdir/usr/bin bpir-rootfs
   install -m755 -vDt $pkgdir/usr/bin bpir-flash2emmc
   install -m755 -vDt $pkgdir/usr/bin bpir-toolbox
   cd "${srcdir}/buildR64arch"
