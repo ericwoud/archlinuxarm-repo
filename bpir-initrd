@@ -33,7 +33,7 @@ binaries=(bash mount umount mountpoint ls cat dmesg date
   ubiattach ubidetach ubiupdatevol ubimkvol ubiformat ubinfo
   flash_erase lsusb lspci mkimage
   fdtget fdtput fdtoverlay ip bridge ethtool ping dhcpc
-  bpir-toolbox bpir-initrd bpir-build
+  bpir-toolbox bpir-initrd bpir-build bpir-rootfs
   nano '/usr/share/terminfo/l/linux'
   'libnss_files.so.2' 'libnss_dns.so.2' 'libresolv.so.2'
   '/usr/lib/debootstrap/pkgdetails'
