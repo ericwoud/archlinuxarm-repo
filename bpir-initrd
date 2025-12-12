@@ -48,6 +48,7 @@ wdir="/tmp/initramfs.$$"
 
 function mkchroot
 {
+  local dest i ix d
   [ $# -lt 2 ] && return
   dest=$1
   shift
@@ -61,13 +62,18 @@ function mkchroot
     fi
     [ -f "$dest/$i" ] && continue
     if [ -e "$i" ]; then
-      d=$(dirname "$i") &&
-      mkdir -p "$dest/$d" &&
+      mkdir -p "$dest/$(dirname "$i")" &&
       cat "$i" > "$dest/$i" &&
-      chmod +x "$dest/$i"
+      [[ -x "$i" ]] && chmod +x "$dest/$i"
       mkchroot "$dest" $(ldd "$i" 2>/dev/null | grep -E -o '/.* ')
     elif [ -n "$i" ]; then
-      echo "Possibly missing binary: $i"
+      ix=""; [ -e "${i}.zst" ] && ix="${i}.zst"; [ -e "${i}.xz"  ] && ix="${i}.xz"
+      if [ -n "$ix" ]; then
+        mkdir -p "$dest$(dirname ${ix})"
+        zstd -d -q --output-dir-flat="$dest$(dirname ${ix})" "${ix}"
+      else
+        echo "Possibly missing binary: $i"
+      fi
     fi
   done
 }
@@ -238,11 +244,15 @@ cat /etc/resolv.conf
 EOT
 chmod +x "$wdir/bin/bpir-dhcpc"
 
+(cd $wdir; ls -R)
+
+echo -ne "\nCompressing ${default_image}, size "
+
 [ -z "${COMPRESSION}" ] && COMPRESSION="gzip"
 ( cd $wdir; find . -print0 | cpio --null -o --format=newc | zstd --format=${COMPRESSION} -19 -T0) > $default_image
 
 rm -rf $wdir
 
-stat --printf="Filesize: %s\n" $default_image
+stat --printf="Done building ${default_image}, size %s bytes\n" $default_image
 
 done
