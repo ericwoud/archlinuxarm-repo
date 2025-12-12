@@ -3,7 +3,7 @@ post_upgrade() {
 }
 
 post_install() {
-  post_upgrade "$@"
+  /usr/bin/bpir-toolbox --write2fip
 }
 
 post_remove() {
