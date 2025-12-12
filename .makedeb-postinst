@@ -1,6 +1,6 @@
 ###### Start of inserted file #####
 
-  after_upgrade "${2}"
+  /usr/bin/bpir-toolbox --write2fip
 } # We are included within function after_install(), but we need main code
 
 if [ "$1" = triggered ]; then
