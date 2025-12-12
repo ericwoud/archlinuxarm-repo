@@ -3,6 +3,8 @@ post_upgrade() {
   if [ ! -L "/etc/systemd/networkd.conf.d/networkd.conf" ]; then
     ln -srT ../network/networkd.conf /etc/systemd/networkd.conf.d/networkd.conf
   fi
+  # Old script has set these as ignore, restore this to normal:
+  sed -i -e '/^IgnorePkg/s/bpir-atf-git//g' -e '/^IgnorePkg/s/bpir-uboot-git//g' /etc/pacman.conf
 }
 
 post_install() {
