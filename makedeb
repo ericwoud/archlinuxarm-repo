@@ -1,0 +1,284 @@
+#!/bin/bash
+
+translation="\
+-e 's/dtc/device-tree-compiler/' \
+-e 's/openssh/openssh-server/' \
+-e 's/mmc-utils-git/mmc-utils/' \
+-e 's/uboot-tools/u-boot-tools/' \
+-e 's/dbus-broker-units//' \
+-e 's/base/libpam-systemd systemd-timesyncd systemd-resolved kmod zstd iputils-ping iw file/' \
+-e 's/armv7h/armhf/' \
+-e 's/x86_64/amd64/' \
+-e 's/aarch64/arm64/'"
+
+function control {
+  ( cat <<-EOF #| tee $rootfsdir/etc/pacman.conf
+	Package: $package
+	Version: $pkgver
+	Vendor: none
+	Architecture: $arch
+	Section: default
+	Priority: optional
+	EOF
+  putinfo      Description    pkgdesc
+  putinfo      Homepage       url
+  putinfo      Installed-Size size
+  putinfocomma Depends        depend
+  putinfocomma Conflicts      conflict
+  putinfocomma Provides       provides
+  putinfocomma Replaces       replaces
+  putinfo      License        license
+  putinfo      Maintainer     packager
+  ) >deb/$package/control/control
+}
+
+function prerm {
+  [ -z "${pre_remove}" ] && return
+  ( cat <<-EOF
+	#!/bin/sh
+	pre_remove() {
+	${pre_remove}
+	    :
+	}
+	dummy() {
+	    :
+	}
+	EOF
+  cat <<-'EOF'
+	if [ "${1}" = "remove" -a -z "${2}" ]; then
+	    pre_remove
+	elif [ "${1}" = "upgrade" ]; then
+	    dummy
+	elif echo "${1}" | grep -E -q "(fail|abort)"; then
+	    echo "Failed to install before the pre-removal script was run." >&2
+	    exit 1
+	fi
+	EOF
+  ) >deb/$package/control/prerm
+}
+
+function postrm {
+  [ -z "${post_remove}" ] && return
+  ( cat <<-EOF
+	#!/bin/sh
+	post_remove() {
+	${post_remove}
+	    :
+	}
+	post_purge() {
+	    :
+	}
+	dummy() {
+	    :
+	}
+	EOF
+  cat <<-'EOF'
+	if [ "${1}" = "remove" -o "${1}" = "abort-install" ]; then
+	    post_remove
+	elif [ "${1}" = "purge" -a -z "${2}" ]; then
+	    post_purge
+	elif [ "${1}" = "upgrade" ]; then
+	    dummy
+	elif echo "${1}" | grep -E -q '(fail|abort)'; then
+	    echo "Failed to install before the post-removal script was run." >&2
+	    exit 1
+	fi
+	EOF
+  ) >deb/$package/control/postrm
+}
+
+function preinst {
+  [ -z "${pre_upgrade}" ] && [ -z "${pre_install}" ] && return
+  ( cat <<-EOF
+	#!/bin/sh
+	pre_upgrade() {
+	${pre_upgrade}
+	    :
+	}
+	pre_install() {
+	${pre_install}
+	    :
+	}
+	EOF
+  cat <<-'EOF'
+	if [ "${1}" = "install" -a -z "${2}" ]; then
+	    pre_install
+	elif [ "${1}" = "upgrade" -a -n "${2}" ]; then
+	    upgradeFromVersion="${2}"
+	    pre_upgrade "${upgradeFromVersion}"
+	elif [ "${1}" = "install" -a -n "${2}" ]; then
+	    upgradeFromVersion="${2}"
+	    pre_upgrade "${upgradeFromVersion}"
+	elif echo "${1}" | grep -E -q '(fail|abort)'; then
+	    echo "Failed to install before the pre-installation script was run." >&2
+	    exit 1
+	fi
+	EOF
+  ) >deb/$package/control/preinst
+}
+
+function postinst {
+  [ -z "${post_upgrade}" ] && [ -z "${post_install}" ] && [ -z "${post_trigger}" ] && return
+  ( cat <<-EOF
+	#!/bin/sh
+	post_upgrade() {
+	${post_upgrade}
+	    :
+	}
+	post_install() {
+	${post_install}
+	    :
+	}
+	post_trigger() {
+	   ${post_trigger}
+	    :
+	}
+	EOF
+  cat <<-'EOF'
+	if [ "${1}" = "triggered" ]; then
+	    triggerName="${2}"
+	    post_trigger "${triggerName}"
+	elif [ "${1}" = "configure" -a -z "${2}" ] || [ "${1}" = "abort-remove" ]; then
+	    post_install
+	elif [ "${1}" = "configure" -a -n "${2}" ]; then
+	    upgradeFromVersion="${2}"
+	    post_upgrade "${2}"
+	elif echo "${1}" | grep -E -q "(abort|fail)"; then
+	    echo "Failed to install before the post-installation script was run." >&2
+	    exit 1
+	fi
+	EOF
+  ) >deb/$package/control/postinst
+}
+
+do_hash() {
+  echo "${1}:"
+  for f in $(find -type f); do
+    f=$(echo $f | cut -c3-) # remove ./ prefix
+    [ "$f" = "Release" ] && continue
+    echo " $(${2} ${f}  | cut -d" " -f1) $(wc -c $f)"
+  done
+}
+
+release() {(
+  cat <<-EOF
+	Origin: Example Repository
+	Label: Example
+	Suite: stable
+	Codename: stable
+	Version: 1.0
+	Architectures: arm64
+	Components: main
+	Description: An example software repository
+	Date: $(date -Ru)
+	EOF
+  cd "$1"
+  do_hash "MD5Sum" "md5sum"
+  do_hash "SHA1"   "sha1sum"
+  do_hash "SHA256" "sha256sum"
+)}
+
+function repo-add {
+  if [ -n "$(head -n 1 $startdir/.makedeb 2>/dev/null | grep $arch)" ]; then ( 
+    cd "$scrpath/apt-repo"
+    for pkgtar in ${pkgtarlist//":"/"-"}; do
+      prefix="pool/main"
+      pkgname=$(tar -xO --wildcards ".PKGINFO" -f ${pkgtar} | grep "pkgname =" | cut -d"=" -f2 | tr -d ' ') 
+      source $startdir/.makedeb # declares function makedeb()
+      if   [[ $arch == "armv7h" ]];  then debarch="armhf"
+      elif [[ $arch == "aarch64" ]]; then debarch="arm64"
+      else debarch="$arch"
+      fi
+      deb=$(makedeb | grep '"Created package"' | sed 's/.*path: "//' | cut -d'"' -f1)
+      if [[ $? == 0 ]] && [ -n "${deb}" ]; then
+        echo "Created $(basename $deb)"
+        dpkg-scanpackages "$deb" | sed "s/${scrpath//'/'/'\/'}\/apt-repo\///g" > "${deb%.deb}.txt"
+        pkgline=$(grep "Package:" "${deb%.deb}.txt")
+        for samepkg in $(grep -rnw pool/main/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
+          [[ "$deb" == "${samepkg%.txt}.deb" ]] && continue
+          rm -vf "${samepkg%.txt}."*
+        done
+     fi
+    done
+    cat ${prefix}/*.txt >dists/stable/main/binary-arm64/Packages
+###    cat dists/stable/main/binary-arm64/Packages | gzip -9 > dists/stable/main/binary-arm64/Packages.gz
+    release dists/stable >dists/stable/Release
+#    cd "$scrpath/apt-repo"  #### temp
+    cat dists/stable/Release | gpg -abs > dists/stable/Release.gpg
+  ) fi
+}
+
+function getinfo {
+  local p q
+  for p in $(grep  -e "^${1}" pkg/$package/.PKGINFO | cut -d= -f2); do
+    p=$(echo $p | xargs -a <(echo -n "${translation}") sed); q+=($p)
+  done
+  echo ${q[*]}
+}
+
+function putinfo {
+  local s=$(getinfo "${2}")
+  [ -z "${s}" ] && return
+  echo "${1}: ${s}" | xargs
+}
+
+function putinfocomma {
+  local s=$(getinfo "${2}" | sed -e 's/ /, /g')
+  [ -z "${s}" ] && return
+  echo "${1}: ${s}" | xargs
+}
+
+deb=$(realpath deb)
+for package in $(cd pkg; ls); do
+  mkdir -p "deb/$package/control" ######### "deb/$package/data" 
+  ##############  cp -rf "pkg/$package/"* "deb/$package/data"
+
+  pkgver=$(getinfo pkgver | tr ':' '.')
+  arch=$(getinfo arch)
+  debfile="${package}_${pkgver}_${arch}"
+
+  [ -f "pkg/$package/.INSTALL" ] && source "pkg/$package/.INSTALL"
+  pre_install=$( type pre_install  2>/dev/null | tail -n+4 | head -n-1)
+  post_install=$(type post_install 2>/dev/null | tail -n+4 | head -n-1)
+  pre_upgrade=$( type pre_upgrade  2>/dev/null | tail -n+4 | head -n-1)
+  post_upgrade=$(type post_upgrade 2>/dev/null | tail -n+4 | head -n-1)
+  pre_remove=$(  type pre_remove   2>/dev/null | tail -n+4 | head -n-1)
+  post_remove=$( type post_remove  2>/dev/null | tail -n+4 | head -n-1)
+
+  for hook in $(find pkg/$package/usr/share/libalpm/hooks/* -type f); do
+    trigger=$(basename -s ".hook" "${hook}")
+    triggers+="${trigger#*${package}-} "
+    post_trigger+="$(cat $hook | grep -e '^Exec' | cut -d= -f2-);"
+  done
+  triggers=$(echo ${triggers} | xargs)
+  conffiles=$(cd pkg/$package; find etc/* etc/.* -type f 2>/dev/null)
+  md5sums=$(  cd pkg/$package; find * -type f -exec md5sum '{}' \; 2>/dev/null)
+
+  control          
+  preinst          
+  postinst
+  prerm
+  postrm
+  echo "2.0"                                 >deb/$package/debian-binary
+  [ -n "${triggers}" ]  && echo ${triggers}  >deb/$package/control/triggers
+  [ -n "${conffiles}" ] && echo ${conffiles} >deb/$package/control/conffiles
+  [ -n "${md5sums}" ]   && echo ${md5sums}   >deb/$package/control/md5sums
+
+  (cd deb/$package/control; tar czf "$deb/$package/control.tar.gz" ./*)
+  (cd pkg/$package        ; tar czf "$deb/$package/data.tar.gz" ./*)
+  (cd deb/$package        ;  ar r   "$deb/${debfile}.deb" "debian-binary" "control.tar.gz" "data.tar.gz")
+
+  (######### .txt -> .deb
+    cat <<-EOF
+	Filename: pool/main/${debfile}.deb
+	MD5Sum: $(md5sum    "./deb/${debfile}.deb" | cut -d. -f1 | xargs)
+	SHA1: $(  sha1sum   "./deb/${debfile}.deb" | cut -d. -f1 | xargs)
+	SHA256: $(sha256sum "./deb/${debfile}.deb" | cut -d. -f1 | xargs)
+	EOF
+    cat deb/$package/control/control
+  ) > "deb/${debfile}.txt"
+
+done
+
+exit 0
+
