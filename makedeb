@@ -181,8 +181,8 @@ release() {(
 function repo_rem_old_deb {
     [ -z "${repopath}" ] && return
     cd "${repopath}"
-    pkgline=$(grep "Package:" "pool/main/${debfile}.txt")
-    for samepkg in $(grep -rnw pool/main/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
+    pkgline=$(grep "Package:" "${prefix}/${debfile}.txt")
+    for samepkg in $(grep -rnw ${prefix}/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
       [[ "${debfile}" == "${samepkg%.txt}" ]] && continue
       rm -vf "${samepkg%.txt}."*
     done
@@ -221,6 +221,7 @@ function putinfocomma {
 [ ! -f "PKGBUILD" ] && exit 1
 repopath="${1}"
 deb=$(realpath deb)
+prefix="pool/main"
 for package in $(cd pkg; ls); do
   mkdir -p "deb/$package/control" ######### "deb/$package/data" 
   ##############  cp -rf "pkg/$package/"* "deb/$package/data"
