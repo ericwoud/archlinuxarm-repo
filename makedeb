@@ -218,6 +218,7 @@ function putinfocomma {
   echo "${1}: ${s}" | xargs
 }
 
+[ ! -f "PKGBUILD" ] && exit 1
 repopath="${1}"
 deb=$(realpath deb)
 for package in $(cd pkg; ls); do
