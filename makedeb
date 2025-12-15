@@ -178,34 +178,24 @@ release() {(
   do_hash "SHA256" "sha256sum"
 )}
 
-function repo-add {
-  if [ -n "$(head -n 1 $startdir/.makedeb 2>/dev/null | grep $arch)" ]; then ( 
-    cd "$scrpath/apt-repo"
-    for pkgtar in ${pkgtarlist//":"/"-"}; do
-      prefix="pool/main"
-      pkgname=$(tar -xO --wildcards ".PKGINFO" -f ${pkgtar} | grep "pkgname =" | cut -d"=" -f2 | tr -d ' ') 
-      source $startdir/.makedeb # declares function makedeb()
-      if   [[ $arch == "armv7h" ]];  then debarch="armhf"
-      elif [[ $arch == "aarch64" ]]; then debarch="arm64"
-      else debarch="$arch"
-      fi
-      deb=$(makedeb | grep '"Created package"' | sed 's/.*path: "//' | cut -d'"' -f1)
-      if [[ $? == 0 ]] && [ -n "${deb}" ]; then
-        echo "Created $(basename $deb)"
-        dpkg-scanpackages "$deb" | sed "s/${scrpath//'/'/'\/'}\/apt-repo\///g" > "${deb%.deb}.txt"
-        pkgline=$(grep "Package:" "${deb%.deb}.txt")
-        for samepkg in $(grep -rnw pool/main/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
-          [[ "$deb" == "${samepkg%.txt}.deb" ]] && continue
-          rm -vf "${samepkg%.txt}."*
-        done
-     fi
+function repo_rem_old_deb {
+    [ -z "${repopath}" ] && return
+    cd "${repopath}"
+    pkgline=$(grep "Package:" "pool/main/${debfile}.txt")
+    for samepkg in $(grep -rnw pool/main/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
+      [[ "${debfile}" == "${samepkg%.txt}" ]] && continue
+      rm -vf "${samepkg%.txt}."*
     done
+}
+
+function repo_update {
+    [ -z "${repopath}" ] && return
+    cd "${repopath}"
     cat ${prefix}/*.txt >dists/stable/main/binary-arm64/Packages
 ###    cat dists/stable/main/binary-arm64/Packages | gzip -9 > dists/stable/main/binary-arm64/Packages.gz
     release dists/stable >dists/stable/Release
 #    cd "$scrpath/apt-repo"  #### temp
     cat dists/stable/Release | gpg -abs > dists/stable/Release.gpg
-  ) fi
 }
 
 function getinfo {
@@ -228,6 +218,7 @@ function putinfocomma {
   echo "${1}: ${s}" | xargs
 }
 
+repopath="${1}"
 deb=$(realpath deb)
 for package in $(cd pkg; ls); do
   mkdir -p "deb/$package/control" ######### "deb/$package/data" 
