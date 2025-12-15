@@ -250,9 +250,9 @@ for package in $(cd pkg; ls); do
     triggers+="${trigger#*${package}-} "
     post_trigger+="$(cat $hook | grep -e '^Exec' | cut -d= -f2-);"
   done
-  triggers=$(echo ${triggers} | xargs)
-  conffiles=$(cd pkg/$package; find etc/* etc/.* -type f 2>/dev/null)
-  md5sums=$(  cd pkg/$package; find * -type f -exec md5sum '{}' \; 2>/dev/null)
+  triggers="$(echo ${triggers} | xargs)"
+  conffiles="$(cd pkg/$package; find etc/* etc/.* -type f 2>/dev/null)"
+  md5sums="$(  cd pkg/$package; find * -type f -exec md5sum '{}' \; 2>/dev/null)"
 
   control          
   preinst          
@@ -260,9 +260,9 @@ for package in $(cd pkg; ls); do
   prerm
   postrm
   echo "2.0"                                 >deb/$package/debian-binary
-  [ -n "${triggers}" ]  && echo ${triggers}  >deb/$package/control/triggers
-  [ -n "${conffiles}" ] && echo ${conffiles} >deb/$package/control/conffiles
-  [ -n "${md5sums}" ]   && echo ${md5sums}   >deb/$package/control/md5sums
+  [ -n "${triggers}" ]  && echo "${triggers}"  >deb/$package/control/triggers
+  [ -n "${conffiles}" ] && echo "${conffiles}" >deb/$package/control/conffiles
+  [ -n "${md5sums}" ]   && echo "${md5sums}"   >deb/$package/control/md5sums
 
   (cd deb/$package/control; tar czf "$deb/$package/control.tar.gz" ./*)
   (cd pkg/$package        ; tar czf "$deb/$package/data.tar.gz" ./*)
