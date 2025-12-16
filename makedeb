@@ -1,15 +1,35 @@
 #!/bin/bash
 
 translation="\
--e 's/dtc/device-tree-compiler/' \
--e 's/openssh/openssh-server/' \
--e 's/mmc-utils-git/mmc-utils/' \
--e 's/uboot-tools/u-boot-tools/' \
--e 's/dbus-broker-units//' \
--e 's/base/libpam-systemd systemd-timesyncd systemd-resolved kmod zstd iputils-ping iw file/' \
--e 's/armv7h/armhf/' \
--e 's/x86_64/amd64/' \
--e 's/aarch64/arm64/'"
+-e 's/\b''dtc''\b/''device-tree-compiler''/' \
+-e 's/\b''openssh''\b/''openssh-server''/' \
+-e 's/\b''mmc-utils-git''\b/''mmc-utils''/' \
+-e 's/\b''uboot-tools''\b/''u-boot-tools''/' \
+-e 's/\b''dbus-broker-units''\b//' \
+-e 's/\b''base''\b/''libpam-systemd systemd-timesyncd systemd-resolved kmod zstd iputils-ping iw file''/' \
+-e 's/\b''armv7h''\b/''armhf''/' \
+-e 's/\b''x86_64''\b/''amd64''/' \
+-e 's/\b''aarch64''\b/''arm64''/' \
+-e 's/\b''any''\b/''all''/' \
+"
+
+pool="main"
+dist="stable"
+exclude="usr/share/libalpm"
+repoarches="all arm64"
+
+while [ "${1:-}" != '' ]; do
+  case "$1" in
+  '-r' | '--repo-add') shift; repopath="${1}" ;;
+  *) cat <<-EOF
+	Usage: $(basename "$0") [OPTION]...
+	  -r --repo-add            Path to apt-repo to create/update
+	EOF
+    exit 1
+    ;;
+  esac
+  shift
+done
 
 function control {
   ( cat <<-EOF #| tee $rootfsdir/etc/pacman.conf
@@ -29,6 +49,7 @@ function control {
   putinfocomma Replaces       replaces
   putinfo      License        license
   putinfo      Maintainer     packager
+  [[ "$arch" == "all" ]] && echo "Multi-Arch: foreign"
   ) >deb/$package/control/control
 }
 
@@ -45,6 +66,7 @@ function prerm {
 	}
 	EOF
   cat <<-'EOF'
+	# Source from fpm
 	if [ "${1}" = "remove" -a -z "${2}" ]; then
 	    pre_remove
 	elif [ "${1}" = "upgrade" ]; then
@@ -73,6 +95,7 @@ function postrm {
 	}
 	EOF
   cat <<-'EOF'
+	# Source from fpm
 	if [ "${1}" = "remove" -o "${1}" = "abort-install" ]; then
 	    post_remove
 	elif [ "${1}" = "purge" -a -z "${2}" ]; then
@@ -101,6 +124,7 @@ function preinst {
 	}
 	EOF
   cat <<-'EOF'
+	# Source from fpm
 	if [ "${1}" = "install" -a -z "${2}" ]; then
 	    pre_install
 	elif [ "${1}" = "upgrade" -a -n "${2}" ]; then
@@ -138,6 +162,7 @@ function postinst {
 	if [ "${1}" = "triggered" ]; then
 	    triggerName="${2}"
 	    post_trigger "${triggerName}"
+	# Source from fpm
 	elif [ "${1}" = "configure" -a -z "${2}" ] || [ "${1}" = "abort-remove" ]; then
 	    post_install
 	elif [ "${1}" = "configure" -a -n "${2}" ]; then
@@ -162,17 +187,17 @@ do_hash() {
 
 release() {(
   cat <<-EOF
-	Origin: Example Repository
-	Label: Example
-	Suite: stable
-	Codename: stable
+	Origin: EricWoud Repository
+	Label: EricWoud
+	Suite: ${dist}
+	Codename: ${dist}
 	Version: 1.0
-	Architectures: arm64
-	Components: main
-	Description: An example software repository
+	Architectures: ${arch}
+	Components: ${pool}
+	Description: My repository for BPI Router boards
 	Date: $(date -Ru)
 	EOF
-  cd "$1"
+  cd "dists/${dist}"
   do_hash "MD5Sum" "md5sum"
   do_hash "SHA1"   "sha1sum"
   do_hash "SHA256" "sha256sum"
@@ -180,22 +205,28 @@ release() {(
 
 function repo_rem_old_deb {
     [ -z "${repopath}" ] && return
-    cd "${repopath}"
-    pkgline=$(grep "Package:" "${prefix}/${debfile}.txt")
-    for samepkg in $(grep -rnw ${prefix}/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
-      [[ "${debfile}" == "${samepkg%.txt}" ]] && continue
+    (cd "${repopath}"
+    pkgline=$(grep "Package:" "pool/${pool}/${debfile}.txt")
+    for samepkg in $(grep -lrnw pool/${pool}/*.txt -e "^${pkgline}$" | cut -d':' -f1); do
+      [[ "pool/${pool}/${debfile}" == "${samepkg%.txt}" ]] && continue
       rm -vf "${samepkg%.txt}."*
-    done
+    done)
 }
 
 function repo_update {
     [ -z "${repopath}" ] && return
-    cd "${repopath}"
-    cat ${prefix}/*.txt >dists/stable/main/binary-arm64/Packages
-###    cat dists/stable/main/binary-arm64/Packages | gzip -9 > dists/stable/main/binary-arm64/Packages.gz
-    release dists/stable >dists/stable/Release
-#    cd "$scrpath/apt-repo"  #### temp
-    cat dists/stable/Release | gpg -abs > dists/stable/Release.gpg
+    (
+      cd "${repopath}"
+      for ra in $repoarches; do
+        mkdir -p dists/${dist}/${pool}/binary-${ra}
+        cat pool/${pool}/*_${ra}.txt >dists/${dist}/${pool}/binary-${ra}/Packages
+        cat dists/${dist}/${pool}/binary-${ra}/Packages | gzip -9 \
+           >dists/${dist}/${pool}/binary-${ra}/Packages.gz
+      done
+      release >dists/${dist}/Release
+      cat dists/${dist}/Release | gpg -abs > dists/${dist}/Release.gpg
+      gpg --clear-sign --output dists/${dist}/InRelease dists/${dist}/Release
+    )
 }
 
 function getinfo {
@@ -219,12 +250,21 @@ function putinfocomma {
 }
 
 [ ! -f "PKGBUILD" ] && exit 1
-repopath="${1}"
 deb=$(realpath deb)
-prefix="pool/main"
+
+rm -rf "deb/"*
+
+if [ -n "${repopath}" ]; then
+  mkdir -p "${repopath}/pool/${pool}" "${repopath}/dists/${dist}"
+fi
+
+for ex in ${exclude}; do
+  exdata+=("--exclude=./${ex}")
+  exfind+=("-not ( -path "${ex}" -prune )")
+done
+
 for package in $(cd pkg; ls); do
-  mkdir -p "deb/$package/control" ######### "deb/$package/data" 
-  ##############  cp -rf "pkg/$package/"* "deb/$package/data"
+  mkdir -p "deb/$package/control"
 
   pkgver=$(getinfo pkgver | tr ':' '.')
   arch=$(getinfo arch)
@@ -238,40 +278,55 @@ for package in $(cd pkg; ls); do
   pre_remove=$(  type pre_remove   2>/dev/null | tail -n+4 | head -n-1)
   post_remove=$( type post_remove  2>/dev/null | tail -n+4 | head -n-1)
 
-  for hook in $(find pkg/$package/usr/share/libalpm/hooks/* -type f); do
+  for hook in $(find pkg/$package/usr/share/libalpm/hooks/* -type f 2>/dev/null); do
     trigger=$(basename -s ".hook" "${hook}")
-    triggers+="${trigger#*${package}-} "
+    triggers+="interest ${trigger#*${package}-} "
     post_trigger+="$(cat $hook | grep -e '^Exec' | cut -d= -f2-);"
   done
   triggers="$(echo ${triggers} | xargs)"
-  conffiles="$(cd pkg/$package; find etc/* etc/.* -type f 2>/dev/null)"
-  md5sums="$(  cd pkg/$package; find * -type f -exec md5sum '{}' \; 2>/dev/null)"
+  conffiles="$(cd pkg/$package; find etc/* etc/.* -type f 2>/dev/null | sed  's/^/\//')"
+  md5sums="$(  cd pkg/$package; find * ${exfind[*]} -type f -exec md5sum '{}' \; 2>/dev/null)"
 
   control          
   preinst          
   postinst
   prerm
   postrm
-  echo "2.0"                                 >deb/$package/debian-binary
+  echo "2.0"                                   >deb/$package/debian-binary
   [ -n "${triggers}" ]  && echo "${triggers}"  >deb/$package/control/triggers
   [ -n "${conffiles}" ] && echo "${conffiles}" >deb/$package/control/conffiles
   [ -n "${md5sums}" ]   && echo "${md5sums}"   >deb/$package/control/md5sums
 
-  (cd deb/$package/control; tar czf "$deb/$package/control.tar.gz" ./*)
-  (cd pkg/$package        ; tar czf "$deb/$package/data.tar.gz" ./*)
-  (cd deb/$package        ;  ar r   "$deb/${debfile}.deb" "debian-binary" "control.tar.gz" "data.tar.gz")
+  (cd pkg/$package; files=$(shopt -s nullglob; echo ./*); [ -z "$files" ] && files="--files-from /dev/null"
+                            fakeroot tar -cz "${exdata[*]}" -f "$deb/$package/data.tar.gz" $files)
+  (cd deb/$package/control; fakeroot tar -cz                -f "$deb/$package/control.tar.gz" ./*)
+  (cd deb/$package        ; fakeroot  ar -cr                   "$deb/${debfile}.deb" \
+                                        "debian-binary" "control.tar.gz" "data.tar.gz")
+#tar -t -f "$deb/$package/data.tar.gz"
 
-  (######### .txt -> .deb
-    cat <<-EOF
+  if [ -z "${repopath}" ]; then
+    echo "Created: deb/${debfile}.deb"
+    continue
+  fi
+
+  mv -f "$deb/${debfile}.deb" "${repopath}/pool/${pool}/${debfile}.deb"
+  ( cat <<-EOF
 	Filename: pool/main/${debfile}.deb
-	MD5Sum: $(md5sum    "./deb/${debfile}.deb" | cut -d. -f1 | xargs)
-	SHA1: $(  sha1sum   "./deb/${debfile}.deb" | cut -d. -f1 | xargs)
-	SHA256: $(sha256sum "./deb/${debfile}.deb" | cut -d. -f1 | xargs)
+	Size: $(stat -c %s ${repopath}/pool/${pool}/${debfile}.deb)
+	MD5Sum: $(md5sum    "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
+	SHA1: $(  sha1sum   "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
+	SHA256: $(sha256sum "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
 	EOF
     cat deb/$package/control/control
-  ) > "deb/${debfile}.txt"
+    echo
+  ) > "${repopath}/pool/${pool}/${debfile}.txt"
+    
+  repo_rem_old_deb
+
+  echo "Added to repo: pool/${pool}/${debfile}.deb"
 
 done
 
-exit 0
+repo_update
 
+exit 0
