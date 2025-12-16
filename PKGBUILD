@@ -196,10 +196,6 @@ _package() {
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
-
-  # install debian triggerss
-  sed "${_subst}" ${startdir}/.makedeb-postinst \
-    > "${srcdir}/.makedeb-postinst"
 }
 
 _package-headers() {
