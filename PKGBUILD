@@ -46,7 +46,6 @@ source=('defconfig'
         '60-linux.hook'
 )
 md5sums=(SKIP SKIP SKIP)
-_debhookname="linux-update"
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -196,7 +195,7 @@ _package() {
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-${_debhookname}.hook"
+    install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
 
   # install debian triggerss
   sed "${_subst}" ${startdir}/.makedeb-postinst \
