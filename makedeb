@@ -312,7 +312,7 @@ for package in $(cd pkg; ls); do
   mv -f "$deb/${debfile}.deb" "${repopath}/pool/${pool}/${debfile}.deb"
   ( cat <<-EOF
 	Filename: pool/main/${debfile}.deb
-	Size: $(stat -c %s ${repopath}/pool/${pool}/${debfile}.deb)
+	Size: $(stat -c %s  "${repopath}/pool/${pool}/${debfile}.deb")
 	MD5Sum: $(md5sum    "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
 	SHA1: $(  sha1sum   "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
 	SHA256: $(sha256sum "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
