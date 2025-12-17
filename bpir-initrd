@@ -1,10 +1,14 @@
 #!/bin/bash
 
+function usage {
+  echo "$(basename $0) - arguments: linux package name(s), no arguments builds all."
+  exit 1
+}
+
 if [ -z "$1" ]; then
   pkgbases=$(shopt -s nullglob; basename --suffix=.preset /etc/mkinitcpio.d/*.preset 2>/dev/null)
 elif [[ "$1" == "--help" ]]; then
-  echo "$(basename $0) - arguments: linux package name(s), no arguments builds all."
-  exit
+  usage
 else
   pkgbases=$@
 fi
@@ -12,7 +16,7 @@ fi
 for pkgbase in $pkgbases; do
 
 preset="/etc/mkinitcpio.d/${pkgbase}.preset"
-[ ! -f  "${preset}" ] && exit 1
+[ ! -f  "${preset}" ] && usage
 source ${preset}
 source ${default_config}
 for hook in ${HOOKS[*]}; do
