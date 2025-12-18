@@ -10,9 +10,9 @@ _gitbranch="bpir"
 #_gitbranch="master"
 #_gitbranch="mtksoc"
 pkgbase=bpir-atf-git
-pkgname=("$pkgbase")
+pkgname=("$pkgbase" "$pkgbase-fiptool")
 epoch=2
-pkgver=2.12r1.16266.09661111e
+pkgver=2.13r38.17172.31ca5d76f
 pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
@@ -28,11 +28,11 @@ sha256sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" == "aarch64" ]]; then
-  pkgname+=("$pkgbase-fiptool")
   export CC="gcc"
 else
-  makedepends+=(aarch64-linux-gnu-gcc)
+  makedepends+=(aarch64-linux-gnu-gcc lib32-glibc)
   export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
+  export _hostcc="host-cc=aarch64-linux-gnu-gcc"
   export CC="aarch64-linux-gnu-gcc"
 fi
  
@@ -78,7 +78,7 @@ _buildmkimage() {
 _buildfiptool() {
   cd "${srcdir}/${_gitname}/tools/fiptool"
   sed -i '/-Werror/d' ./Makefile
-  make HOSTCCFLAGS+="-D'SHA256(x,y,z)=nop'" LDOPTS="-static"
+  make $_hostcc HOSTCCFLAGS+="-D'SHA256(x,y,z)=nop'" LDOPTS="-static"
 }
 
 _use_extended_partlabel() {
@@ -125,7 +125,7 @@ build() {
   if [ ! -f "${srcdir}/u-boot-${_ubootpkgver}/nostretch-mkimage"  ] || \
      [ ! -f "${srcdir}/u-boot-${_ubootpkgver}/stretch-mkimage" ]; then _buildmkimage
   fi
-  [ -z "$_crossc" ] && _buildfiptool
+  _buildfiptool
   _buildimage mt7622 bpir64 sdmmc     stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
   _buildimage mt7622 bpir64 emmc      stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
   _buildimage mt7622 bpir64 snand     nostretch - DDR3_FLYBY=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x80000 # Addr not used
