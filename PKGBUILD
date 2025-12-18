@@ -132,7 +132,6 @@ _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
-  conflicts=('linux')
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install="linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
@@ -201,7 +200,6 @@ _package() {
 _package-headers() {
   pkgdesc="Header files and scripts for building modules for linux kernel - ${_desc}"
   provides=("linux-headers=${pkgver}")
-  conflicts=('linux-headers')
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git-headers'
               'linux-bpir3-git-headers'
