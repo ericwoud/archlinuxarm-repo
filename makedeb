@@ -225,7 +225,7 @@ function repo_update {
       done
       release >dists/${dist}/Release
       cat dists/${dist}/Release | gpg -abs > dists/${dist}/Release.gpg
-      gpg --clear-sign --output dists/${dist}/InRelease dists/${dist}/Release
+      gpg --batch --yes --clear-sign --output dists/${dist}/InRelease dists/${dist}/Release
     )
 }
 
