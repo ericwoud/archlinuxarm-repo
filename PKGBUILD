@@ -7,12 +7,10 @@ _gitroot=https://github.com/ericwoud/${_gitname}
 #_gitroot=https://github.com/mtk-openwrt/${_gitname}
 #_gitbranch="wip"
 _gitbranch="bpir"
-#_gitbranch="master"
-#_gitbranch="mtksoc"
 pkgbase=bpir-atf-git
 pkgname=("$pkgbase" "$pkgbase-fiptool")
 epoch=2
-pkgver=2.13r38.17172.31ca5d76f
+pkgver=2.13r39.17172.31ca5d76f
 pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
@@ -44,17 +42,6 @@ pkgver() {
       "$(git -C "${startdir}" rev-list --count HEAD)" \
       "$(git rev-list --count HEAD)" \
       "$(git rev-parse --short HEAD)"
-}
-
-prepare() {
-  cd "${srcdir}/${_gitname}"
-#  git config --global user.email "you@example.com"
-#  git config --global user.name "Your Name"
-#  rm -rf ${srcdir}/${_gitname}/.git/rebase-apply  
-#  echo -n -e "\n\nCOMMIT DATE:"
-#  git log -1 --format="%at" | xargs -I{} date -d @{} +%Y/%m/%d-%H:%M:%S
-#  echo -e "\n\n"
-#  git am --ignore-space-change --ignore-whitespace "${startdir}/"*.patch
 }
 
 _buildmkimage() {
@@ -129,7 +116,7 @@ build() {
   _buildimage mt7622 bpir64 sdmmc     stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
   _buildimage mt7622 bpir64 emmc      stretch   - DDR3_FLYBY=1 DEVICE_HEADER_OFFSET=0
   _buildimage mt7622 bpir64 snand     nostretch - DDR3_FLYBY=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x80000 # Addr not used
-  _buildimage mt7986 bpir64 ram       nostretch - DDR3_FLYBY=1 RAM_BOOT_UART_DL=1
+  _buildimage mt7622 bpir64 ram       nostretch - DDR3_FLYBY=1 RAM_BOOT_UART_DL=1
   _buildimage mt7986 bpir3  sdmmc     nostretch - DRAM_USE_DDR4=1
   _buildimage mt7986 bpir3  emmc      nostretch - DRAM_USE_DDR4=1 BROM_HEADER_TYPE=sdmmc
   _buildimage mt7986 bpir3  ram       nostretch - DRAM_USE_DDR4=1 RAM_BOOT_UART_DL=1
@@ -140,21 +127,31 @@ build() {
   _buildimage mt7988 bpir4  sdmmc     nostretch - DRAM_USE_COMB=1
   _buildimage mt7988 bpir4  emmc      nostretch - DRAM_USE_COMB=1
   _buildimage mt7988 bpir4  spim-nand nostretch - DRAM_USE_COMB=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
-  _buildimage mt7986 bpir4  ram       nostretch - DRAM_USE_COMB=1 RAM_BOOT_UART_DL=1
+  _buildimage mt7988 bpir4  ram       nostretch - DRAM_USE_COMB=1 RAM_BOOT_UART_DL=1
   _buildimage mt7988 bpir4  sdmmc     nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
   _buildimage mt7988 bpir4  emmc      nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
   _buildimage mt7988 bpir4  spim-nand nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
-  _buildimage mt7986 bpir4  ram       nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1 RAM_BOOT_UART_DL=1
+  _buildimage mt7988 bpir4  ram       nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1 RAM_BOOT_UART_DL=1
 }
  
+_package() {
+  pkgdesc="ATF $1 images"
+  cd "${srcdir}/${_gitname}/build"
+  for _file in *"/release/$1-atf-"*".bin"; do (
+    cd $(dirname "${_file}")
+    install -vDt "$pkgdir/usr/share/bpir-atf/" -m644 $(basename "${_file}")
+  ) done
+}
+
+for _target in bpir64 bpir3 bpir3m bpir4; do
+  eval "package_${_target}-atf-git() { _package ${_target} ; }"
+  _packages+=(${_target}-atf-git)
+  pkgname+=(${_target}-atf-git)
+done
+
 package_bpir-atf-git() {
   pkgdesc='ATF BPI-R64/R3/R4 images'
-  replaces=(bpir64-mkimage)
-  cd "${srcdir}"
-  for _folder in "${srcdir}/${_gitname}/build/"*; do
-    cd "$_folder/release"
-    install -vDt "$pkgdir/usr/share/bpir-atf/" -m644 *-atf-*.bin
-  done
+  depends=(${_packages[@]})
 }
 
 package_bpir-atf-git-fiptool() {
