@@ -7,9 +7,10 @@
 # arch/<CONFIG_SYS_ARCH>/cpu/<CONFIG_SYS_CPU>
 # board/<CONFIG_SYS_VENDOR>/<CONFIG_SYS_BOARD>
 
-pkgname=bpir-uboot-git
+pkgbase=bpir-uboot-git
+pkgname=("$pkgbase")
 _pkgver=2025.10
-pkgver=2025.10r1.101557.e50b1e87150
+pkgver=2025.10r72.101557.e50b1e87150
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
@@ -61,6 +62,8 @@ prepare() {
 
 _buildimage() {
   _target=$1; _def=$2; _devtree=$3
+  _maintarget=$(echo ${_target} | cut -d- -f1)
+  rm -f ${_maintarget}/* 2>/dev/null
   echo ^^^ BUILDING $_target ^^^
   cp -vf ./configs/$_def configs/bpir_my_defconfig
   (
@@ -81,8 +84,9 @@ _buildimage() {
   ARCH=arm64 make bpir_my_defconfig
 #  export KCFLAGS='-Wno-error=address'
   ARCH=arm64 make u-boot.bin
-  cp u-boot.bin u-boot-${_target}.bin
-  mv .config config-${_target}.txt
+  mkdir -p ${_maintarget}
+  cp -vf u-boot.bin ${_maintarget}/u-boot-${_target}.bin
+  mv -vf .config config-${_target}.txt
 }
 
 build() {
@@ -94,16 +98,30 @@ build() {
   _buildimage bpir3m       mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-mini
   _buildimage bpir4-emmc   mt7988_rfb_defconfig          mt7988-rfb
   _buildimage bpir4-sdmmc  mt7988_sd_rfb_defconfig       mt7988-sd-rfb
+  #               Filename                       Linkname
+  ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-emmc.bin"
+  ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-sd.bin"
+  ln -srf "bpir3/u-boot-bpir3-emmc.bin"  "bpir3/u-boot-bpir3.bin"
+  ln -srf "bpir3m/u-boot-bpir3m.bin"     "bpir3m/u-boot-bpir3m-emmc.bin"
+  ln -srf "bpir4/u-boot-bpir4-emmc.bin"  "bpir4/u-boot-bpir4.bin"
 }
 
-package() {
-  cd "${srcdir}/u-boot"
+_package() {
+  pkgdesc="U-Boot $1 images"
+  cd "${srcdir}/u-boot/$1"
   _pd="$pkgdir/usr/share/bpir-uboot"
-  install -vDt "${_pd}/" -m644 u-boot-bpir*.bin
-  #               Filename                       Linkname
-  ln -srf "${_pd}/u-boot-bpir64.bin"     "${_pd}/u-boot-bpir64-emmc.bin"
-  ln -srf "${_pd}/u-boot-bpir64.bin"     "${_pd}/u-boot-bpir64-sd.bin"
-  ln -srf "${_pd}/u-boot-bpir3-emmc.bin" "${_pd}/u-boot-bpir3.bin"
-  ln -srf "${_pd}/u-boot-bpir3m.bin"     "${_pd}/u-boot-bpir3m-emmc.bin"
-  ln -srf "${_pd}/u-boot-bpir4-emmc.bin" "${_pd}/u-boot-bpir4.bin"
+  mkdir -p "${_pd}"
+  cp -vdf *.bin "${_pd}"
 }
+
+for _target in bpir64 bpir3 bpir3m bpir4; do
+  eval "package_${_target}-uboot-git() { _package ${_target} ; }"
+  _packages+=(${_target}-uboot-git)
+  pkgname+=(${_target}-uboot-git)
+done
+
+package_bpir-uboot-git() {
+  pkgdesc='U-Boot BPI-R64/R3/R4 images'
+  depends=(${_packages[@]})
+}
+
