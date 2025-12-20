@@ -8,7 +8,7 @@ _gitroot=https://github.com/ericwoud/${_gitname}
 #_gitbranch="wip"
 _gitbranch="bpir"
 pkgbase=bpir-atf-git
-pkgname=("$pkgbase" "$pkgbase-fiptool")
+pkgname=("$pkgbase-fiptool")
 epoch=2
 pkgver=2.13r39.17172.31ca5d76f
 pkgrel=1
@@ -136,6 +136,7 @@ build() {
  
 _package() {
   pkgdesc="ATF $1 images"
+  replaces=('bpir-atf-git')
   cd "${srcdir}/${_gitname}/build"
   for _file in *"/release/$1-atf-"*".bin"; do (
     cd $(dirname "${_file}")
@@ -148,11 +149,6 @@ for _target in bpir64 bpir3 bpir3m bpir4; do
   _packages+=(${_target}-atf-git)
   pkgname+=(${_target}-atf-git)
 done
-
-package_bpir-atf-git() {
-  pkgdesc='ATF BPI-R64/R3/R4 images'
-  depends=(${_packages[@]})
-}
 
 package_bpir-atf-git-fiptool() {
   pkgdesc='ATF BPI-R64/R3/R4 fiptool'
