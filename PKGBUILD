@@ -5,7 +5,7 @@ pkgname=("$pkgbase")
 url="https://github.com/ericwoud/buildR64arch"
 license=('GPL')
 arch=('aarch64')
-pkgver=51.434.6d7c634
+pkgver=54.434.6d7c634
 pkgrel=1
 depends_alarm=( openssh        dtc                  mmc-utils-git uboot-tools
                 base dbus-broker-units)
@@ -30,7 +30,7 @@ package_build-r64-arch-utils-git() {
            hostapd wireless-regdb iproute2 nftables f2fs-tools dosfstools
            btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
            nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
-           bpir-atf-git bpir-uboot-git ssh-fix-reboot hostapd-launch
+           ssh-fix-reboot hostapd-launch
            linux-firmware-other linux-firmware-mediatek)
   depends+=(${depends_alarm[*]})
   install=${pkgname}.install
