@@ -15,7 +15,6 @@ depends_debian=(openssh-server device-tree-compiler mmc-utils     u-boot-tools
 
 source=("git+https://github.com/ericwoud/buildR64arch.git")
 sha256sums=(SKIP)
-install=${pkgname}.install
 
 pkgver() {
   cd "${srcdir}/buildR64arch"
@@ -33,6 +32,7 @@ package_build-r64-arch-utils-git() {
            bpir-atf-git bpir-uboot-git ssh-fix-reboot hostapd-launch
            linux-firmware-other linux-firmware-mediatek)
   depends+=(${depends_alarm[*]})
+  install=${pkgname}.install
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-rootfs
   install -m755 -vDt $pkgdir/usr/bin bpir-flash2emmc
