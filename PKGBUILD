@@ -8,7 +8,6 @@
 # board/<CONFIG_SYS_VENDOR>/<CONFIG_SYS_BOARD>
 
 pkgbase=bpir-uboot-git
-pkgname=("$pkgbase")
 _pkgver=2025.10
 pkgver=2025.10r73.101557.e50b1e87150
 pkgrel=1
@@ -120,9 +119,4 @@ for _target in bpir64 bpir3 bpir3m bpir4; do
   _packages+=(${_target}-uboot-git)
   pkgname+=(${_target}-uboot-git)
 done
-
-package_bpir-uboot-git() {
-  pkgdesc='U-Boot BPI-R64/R3/R4 images'
-  depends=(${_packages[@]})
-}
 
