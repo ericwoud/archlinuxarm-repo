@@ -14,6 +14,7 @@ source=('bpir-initrd'
 sha256sums=(SKIP SKIP SKIP)
 depends=('cpio' 'which' curl wget debootstrap)
 provides=('initramfs')
+export CARCH=aarch64
 
 pkgver() {
   cd ""${startdir}""
