@@ -15,6 +15,7 @@ depends_debian=(openssh-server device-tree-compiler mmc-utils     u-boot-tools
 
 source=("git+https://github.com/ericwoud/buildR64arch.git")
 sha256sums=(SKIP)
+export CARCH=aarch64
 
 pkgver() {
   cd "${srcdir}/buildR64arch"
