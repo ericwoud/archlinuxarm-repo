@@ -30,7 +30,6 @@ package_build-r64-arch-utils-git() {
            hostapd wireless-regdb iproute2 nftables f2fs-tools dosfstools
            btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
            nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
-           ssh-fix-reboot hostapd-launch
            linux-firmware-other linux-firmware-mediatek)
   depends+=(${depends_alarm[*]})
   install=${pkgname}.install
