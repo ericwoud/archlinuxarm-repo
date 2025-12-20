@@ -10,7 +10,7 @@
 pkgbase=bpir-uboot-git
 pkgname=("$pkgbase")
 _pkgver=2025.10
-pkgver=2025.10r72.101557.e50b1e87150
+pkgver=2025.10r73.101557.e50b1e87150
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
@@ -108,6 +108,7 @@ build() {
 
 _package() {
   pkgdesc="U-Boot $1 images"
+  replaces=('bpir-uboot-git')
   cd "${srcdir}/u-boot/$1"
   _pd="$pkgdir/usr/share/bpir-uboot"
   mkdir -p "${_pd}"
