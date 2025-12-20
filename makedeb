@@ -16,7 +16,7 @@ translation="\
 pool="main"
 dist="stable"
 exclude="usr/share/libalpm"
-repoarches="all arm64"
+repoarches="arm64"
 
 while [ "${1:-}" != '' ]; do
   case "$1" in
@@ -178,9 +178,10 @@ function postinst {
 
 do_hash() {
   echo "${1}:"
-  for f in $(find -type f); do
-    f=$(echo $f | cut -c3-) # remove ./ prefix
-    [[ "$f" == "Release"* ]] && continue
+  for f in $(find main -type f); do
+    [[ "$f" == "Release" ]] && continue
+    [[ "$f" == "Release.gpg" ]] && continue
+    [[ "$f" == "InRelease" ]] && continue
     echo " $(${2} ${f}  | cut -d" " -f1) $(wc -c $f)"
   done
 }
@@ -192,7 +193,7 @@ release() {(
 	Suite: ${dist}
 	Codename: ${dist}
 	Version: 1.0
-	Architectures: ${arch}
+	Architectures: ${repoarches}
 	Components: ${pool}
 	Description: My repository for BPI Router boards
 	Date: $(date -Ru)
@@ -219,7 +220,7 @@ function repo_update {
       cd "${repopath}"
       for ra in $repoarches; do
         mkdir -p dists/${dist}/${pool}/binary-${ra}
-        cat pool/${pool}/*_${ra}.txt >dists/${dist}/${pool}/binary-${ra}/Packages
+        cat pool/${pool}/*_${ra}.txt pool/${pool}/*_all.txt >dists/${dist}/${pool}/binary-${ra}/Packages
         cat dists/${dist}/${pool}/binary-${ra}/Packages | gzip -9 \
            >dists/${dist}/${pool}/binary-${ra}/Packages.gz
       done
@@ -311,7 +312,7 @@ for package in $(cd pkg; ls); do
 
   mv -f "$deb/${debfile}.deb" "${repopath}/pool/${pool}/${debfile}.deb"
   ( cat <<-EOF
-	Filename: pool/main/${debfile}.deb
+	Filename: pool/${pool}/${debfile}.deb
 	Size: $(stat -c %s  "${repopath}/pool/${pool}/${debfile}.deb")
 	MD5Sum: $(md5sum    "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
 	SHA1: $(  sha1sum   "${repopath}/pool/${pool}/${debfile}.deb" | cut -d' ' -f1 | xargs)
