@@ -75,7 +75,7 @@ function prerm {
 }
 
 function postrm {
-  declare -F post_remove >/dev/null || declare -F post_purge >/dev/null || return
+  declare -F post_remove >/dev/null || return
   (
     echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
     cat "pkg/$package/.INSTALL"
@@ -86,7 +86,7 @@ function postrm {
 	if [ "${1}" = "remove" -o "${1}" = "abort-install" ]; then
 	    declare -F post_remove >/dev/null && post_remove || exit 0
 	elif [ "${1}" = "purge" -a -z "${2}" ]; then
-	    declare -F post_purge >/dev/null && post_purge || exit 0
+	    declare -F post_remove >/dev/null && post_remove || exit 0
 	elif [ "${1}" = "upgrade" ]; then
 	    declare -F dummy >/dev/null && dummy || exit 0
 	elif echo "${1}" | grep -E -q '(fail|abort)'; then
@@ -234,6 +234,15 @@ done
 
 for package in $(cd pkg; ls); do
   mkdir -p "deb/$package/control"
+
+  unset pre_remove
+  unset pre_upgrade
+  unset pre_install
+  unset post_remove
+  unset post_upgrade
+  unset post_install
+  unset post_trigger
+  unset triggers
 
   pkgver=$(getinfo pkgver | tr ':' '.')
   arch=$(getinfo arch)
