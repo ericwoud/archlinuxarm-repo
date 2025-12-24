@@ -54,23 +54,18 @@ function control {
 }
 
 function prerm {
-  [ -z "${pre_remove}" ] && return
-  ( cat <<-EOF
-	#!/bin/sh
-	pre_remove() {
-	${pre_remove}
-	    :
-	}
+  declare -F pre_remove >/dev/null || return
+  ( 
+    echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
+    cat "pkg/$package/.INSTALL"
+    cat <<-'EOF'
 	dummy() {
 	    :
 	}
-	EOF
-  cat <<-'EOF'
-	# Source from fpm
 	if [ "${1}" = "remove" -a -z "${2}" ]; then
-	    pre_remove
+	    declare -F pre_remove >/dev/null && pre_remove || exit 0
 	elif [ "${1}" = "upgrade" ]; then
-	    dummy
+	    declare -F dummy >/dev/null && dummy || exit 0
 	elif echo "${1}" | grep -E -q "(fail|abort)"; then
 	    echo "Failed to install before the pre-removal script was run." >&2
 	    exit 1
@@ -80,28 +75,20 @@ function prerm {
 }
 
 function postrm {
-  [ -z "${post_remove}" ] && return
-  ( cat <<-EOF
-	#!/bin/sh
-	post_remove() {
-	${post_remove}
-	    :
-	}
-	post_purge() {
-	    :
-	}
+  declare -F post_remove >/dev/null || declare -F post_purge >/dev/null || return
+  (
+    echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
+    cat "pkg/$package/.INSTALL"
+    cat <<-'EOF'
 	dummy() {
 	    :
 	}
-	EOF
-  cat <<-'EOF'
-	# Source from fpm
 	if [ "${1}" = "remove" -o "${1}" = "abort-install" ]; then
-	    post_remove
+	    declare -F post_remove >/dev/null && post_remove || exit 0
 	elif [ "${1}" = "purge" -a -z "${2}" ]; then
-	    post_purge
+	    declare -F post_purge >/dev/null && post_purge || exit 0
 	elif [ "${1}" = "upgrade" ]; then
-	    dummy
+	    declare -F dummy >/dev/null && dummy || exit 0
 	elif echo "${1}" | grep -E -q '(fail|abort)'; then
 	    echo "Failed to install before the post-removal script was run." >&2
 	    exit 1
@@ -111,28 +98,17 @@ function postrm {
 }
 
 function preinst {
-  [ -z "${pre_upgrade}" ] && [ -z "${pre_install}" ] && return
-  ( cat <<-EOF
-	#!/bin/sh
-	pre_upgrade() {
-	${pre_upgrade}
-	    :
-	}
-	pre_install() {
-	${pre_install}
-	    :
-	}
-	EOF
-  cat <<-'EOF'
-	# Source from fpm
+  declare -F pre_upgrade >/dev/null || declare -F pre_install >/dev/null || return
+  (
+    echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
+    cat "pkg/$package/.INSTALL"
+    cat <<-'EOF'
 	if [ "${1}" = "install" -a -z "${2}" ]; then
-	    pre_install
+	    declare -F pre_install >/dev/null && pre_install || exit 0
 	elif [ "${1}" = "upgrade" -a -n "${2}" ]; then
-	    upgradeFromVersion="${2}"
-	    pre_upgrade "${upgradeFromVersion}"
+	    declare -F pre_upgrade >/dev/null && pre_upgrade "${2}" || exit 0
 	elif [ "${1}" = "install" -a -n "${2}" ]; then
-	    upgradeFromVersion="${2}"
-	    pre_upgrade "${upgradeFromVersion}"
+	    declare -F pre_upgrade >/dev/null && pre_upgrade "${2}" || exit 0
 	elif echo "${1}" | grep -E -q '(fail|abort)'; then
 	    echo "Failed to install before the pre-installation script was run." >&2
 	    exit 1
@@ -142,32 +118,24 @@ function preinst {
 }
 
 function postinst {
-  [ -z "${post_upgrade}" ] && [ -z "${post_install}" ] && [ -z "${post_trigger}" ] && return
-  ( cat <<-EOF
-	#!/bin/sh
-	post_upgrade() {
-	${post_upgrade}
-	    :
-	}
-	post_install() {
-	${post_install}
-	    :
-	}
+  declare -F post_upgrade >/dev/null || declare -F post_install >/dev/null || [ -n "${post_trigger}" ] || return
+  (
+    echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
+    cat "pkg/$package/.INSTALL"
+    [ -n "${post_trigger}" ] && cat <<-EOF
 	post_trigger() {
 	   ${post_trigger}
 	    :
 	}
 	EOF
-  cat <<-'EOF'
+    cat <<-'EOF'
 	if [ "${1}" = "triggered" ]; then
 	    triggerName="${2}"
-	    post_trigger "${triggerName}"
-	# Source from fpm
+	    declare -F post_trigger >/dev/null && post_trigger "${triggerName}" || exit 0
 	elif [ "${1}" = "configure" -a -z "${2}" ] || [ "${1}" = "abort-remove" ]; then
-	    post_install
+	    declare -F post_install >/dev/null && post_install || exit 0
 	elif [ "${1}" = "configure" -a -n "${2}" ]; then
-	    upgradeFromVersion="${2}"
-	    post_upgrade "${2}"
+	    declare -F post_upgrade >/dev/null && post_upgrade "${2}" || exit 0
 	elif echo "${1}" | grep -E -q "(abort|fail)"; then
 	    echo "Failed to install before the post-installation script was run." >&2
 	    exit 1
@@ -272,12 +240,6 @@ for package in $(cd pkg; ls); do
   debfile="${package}_${pkgver}_${arch}"
 
   [ -f "pkg/$package/.INSTALL" ] && source "pkg/$package/.INSTALL"
-  pre_install=$( type pre_install  2>/dev/null | tail -n+4 | head -n-1)
-  post_install=$(type post_install 2>/dev/null | tail -n+4 | head -n-1)
-  pre_upgrade=$( type pre_upgrade  2>/dev/null | tail -n+4 | head -n-1)
-  post_upgrade=$(type post_upgrade 2>/dev/null | tail -n+4 | head -n-1)
-  pre_remove=$(  type pre_remove   2>/dev/null | tail -n+4 | head -n-1)
-  post_remove=$( type post_remove  2>/dev/null | tail -n+4 | head -n-1)
 
   for hook in $(find pkg/$package/usr/share/libalpm/hooks/* -type f 2>/dev/null); do
     trigger=$(basename -s ".hook" "${hook}")
