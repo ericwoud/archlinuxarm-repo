@@ -133,7 +133,7 @@ _package() {
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install="${srcdir}/linux-bpir-git.install"
+  install="${startdir}/linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
               'linux-bpir3-git'
