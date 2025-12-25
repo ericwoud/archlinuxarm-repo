@@ -1,4 +1,4 @@
-KVER="%KERNVER%"
+KERNEL_VERSION="NeedToChange"
 
 post_upgrade() {
   /usr/bin/bpir-toolbox --write2fip
