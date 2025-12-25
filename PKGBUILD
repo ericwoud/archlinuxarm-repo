@@ -133,7 +133,7 @@ _package() {
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install="${startdir}/linux-bpir-git.install"
+  install="linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
               'linux-bpir3-git'
@@ -197,7 +197,7 @@ _package() {
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
 
   # change .install
-  sed -i "${_subst}" "${startdir}/src/linux-bpir-git.install"
+  sed -i "${_subst}" "${startdir}/linux-bpir-git.install"
 }
 
 _package-headers() {
