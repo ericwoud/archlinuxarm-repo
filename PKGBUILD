@@ -200,8 +200,7 @@ _package() {
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
 
   # change .install
-  sed "${_subst}" "${startdir}/linux-bpir-git.install" |
-    install -Dm644 /dev/stdin "${srcdir}/linux-bpir-git.install"
+  sed -i "${_subst}" "${startdir}/src/linux-bpir-git.install"
 }
 
 _package-headers() {
