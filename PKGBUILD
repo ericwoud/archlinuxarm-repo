@@ -133,7 +133,7 @@ _package() {
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install="linux-bpir-git.install"
+  install="${srcdir}/linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
               'linux-bpir3-git'
@@ -195,6 +195,10 @@ _package() {
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
+
+  # change .install
+  sed "${_subst}" "${startdir}/linux-bpir-git.install" |
+    install -Dm644 /dev/stdin "${srcdir}/linux-bpir-git.install"
 }
 
 _package-headers() {
