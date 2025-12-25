@@ -44,8 +44,9 @@ options=('!strip')
 source=('defconfig'
         'mkinitcpio.preset'
         '60-linux.hook'
+        'linux-bpir-git.install'
 )
-md5sums=(SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -133,7 +134,7 @@ _package() {
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install="${startdir}/linux-bpir-git.install"
+  install="${startdir}/src/linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
               'linux-bpir3-git'
