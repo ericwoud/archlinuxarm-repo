@@ -44,9 +44,8 @@ options=('!strip')
 source=('defconfig'
         'mkinitcpio.preset'
         '60-linux.hook'
-        'linux-bpir-git.install'
 )
-md5sums=(SKIP SKIP SKIP SKIP)
+md5sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -55,6 +54,9 @@ if [[ "$(uname -m)" != "aarch64" ]]; then
   export MAKEFLAGS+=" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-"
 fi
 [[ "$_lto" == "true" ]] && _llvm="LLVM=1" || _llvm=""
+
+mkdir -p ${startdir}/src
+cp -vf "${startdir}/linux-bpir-git.install" "${startdir}/src/linux-bpir-git.install"
 
 prepare() {
   if [[ -d "${srcdir}/${_srcname}/" ]]; then
