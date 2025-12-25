@@ -1,9 +1,6 @@
-_get_kver() {
-  grep -H "${1}" /lib/modules/*/pkgversion | cut -d: -f1 | xargs dirname | xargs basename
-}
+KVER="%KERNVER%"
 
 post_upgrade() {
-  echo "Kernel version: $(_get_kver $1)"
   /usr/bin/bpir-toolbox --write2fip
 }
 
