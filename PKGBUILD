@@ -196,8 +196,10 @@ _package() {
   sed "${_subst}" ../60-linux.hook |
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
 
-  # change .install
-  sed -i "${_subst}" "${startdir}/linux-bpir-git.install"
+  # set correct depmod command for install
+  sed \
+    -e  "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/g" \
+    -i "${startdir}/linux-bpir-git.install"
 }
 
 _package-headers() {
