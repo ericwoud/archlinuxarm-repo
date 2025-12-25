@@ -55,9 +55,6 @@ if [[ "$(uname -m)" != "aarch64" ]]; then
 fi
 [[ "$_lto" == "true" ]] && _llvm="LLVM=1" || _llvm=""
 
-mkdir -p ${startdir}/src
-cp -vf "${startdir}/linux-bpir-git.install" "${startdir}/src/linux-bpir-git.install"
-
 prepare() {
   if [[ -d "${srcdir}/${_srcname}/" ]]; then
     cd "${srcdir}/${_srcname}/"
@@ -136,7 +133,7 @@ _package() {
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   backup=("etc/mkinitcpio.d/${pkgbase}.preset")
-  install="${startdir}/src/linux-bpir-git.install"
+  install="${startdir}/linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
               'linux-bpir3-git'
