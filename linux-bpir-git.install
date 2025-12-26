@@ -1,6 +1,8 @@
 KERNEL_VERSION="NeedToChange"
 
 post_upgrade() {
+  echo ">>> Updating module dependencies. Please wait ..."
+  depmod ${KERNEL_VERSION}
   /usr/bin/bpir-toolbox --write2fip
 }
 
