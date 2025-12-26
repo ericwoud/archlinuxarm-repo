@@ -194,6 +194,7 @@ _package() {
   # set correct depmod command for install
   sed \
     -e  "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/g" \
+    -e  "s/PKGBASE=.*/PKGBASE=${pkgbase}/g" \
     -i "${startdir}/linux-bpir-git.install"
 }
 
