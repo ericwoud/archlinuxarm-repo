@@ -43,9 +43,8 @@ makedepends=('kmod' 'inetutils' 'bc' 'git')
 options=('!strip')
 source=('defconfig'
         'mkinitcpio.preset'
-        '60-linux.hook'
 )
-md5sums=(SKIP SKIP SKIP)
+md5sums=(SKIP SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -164,7 +163,7 @@ _package() {
   local _extramodules="extramodules-${_basekernel}${_kernelname}"
   ln -s "../${_extramodules}" "${pkgdir}/usr/lib/modules/${_kernver}/extramodules"
 
-  # add real version for building modules and running depmod from hook
+  # add real version for building modules and running depmod from install
   echo "${_kernver}" |
     install -Dm644 /dev/stdin "${pkgdir}/usr/lib/modules/${_extramodules}/version"
 
@@ -191,10 +190,6 @@ _package() {
   # install mkinitcpio preset file
   sed "${_subst}" ../mkinitcpio.preset |
     install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
-
-  # install pacman hooks
-  sed "${_subst}" ../60-linux.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}-linux-update-${_kernver}.hook"
 
   # set correct depmod command for install
   sed \
