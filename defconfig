@@ -973,7 +973,6 @@ CONFIG_NLS_ISO8859_15=y
 CONFIG_SECURITY_DMESG_RESTRICT=y
 CONFIG_HARDENED_USERCOPY=y
 CONFIG_FORTIFY_SOURCE=y
-CONFIG_LSM="lockdown,yama,loadpin,safesetid,integrity"
 
 #
 # Kernel hardening options
