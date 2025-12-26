@@ -1,9 +1,19 @@
 KERNEL_VERSION="NeedToChange"
+PKGBASE="NeedToChange"
+
+pre_upgrade() {
+  test -d /etc/kernel/preinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/preinst.d
+}
+
+pre_install() {
+  pre_upgrade "$@"
+}
 
 post_upgrade() {
   echo ">>> Updating module dependencies. Please wait ..."
   depmod ${KERNEL_VERSION}
   /usr/bin/bpir-toolbox --write2fip
+  test -d /etc/kernel/postinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postinst.d
 }
 
 post_install() {
@@ -11,6 +21,11 @@ post_install() {
 }
 
 post_remove() {
-  rm -f /boot/initramfs-linux-bpir64-git.img
-  rm -f /boot/initramfs-linux-bpir64-git-fallback.img
+  rm -f /boot/initramfs-${PKGBASE}.img
+  rm -f /boot/initramfs-${PKGBASE}-fallback.img
+  test -d /etc/kernel/postrm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postrm.d
+}
+
+pre_remove() {
+  test -d /etc/kernel/prerm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/prerm.d
 }
