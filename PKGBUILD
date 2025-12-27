@@ -7,12 +7,6 @@ license=('GPL')
 arch=('aarch64')
 pkgver=54.434.6d7c634
 pkgrel=1
-depends_alarm=( openssh        dtc                  mmc-utils-git uboot-tools
-                base dbus-broker-units)
-depends_debian=(openssh-server device-tree-compiler mmc-utils     u-boot-tools
-                libpam-systemd systemd-timesyncd systemd-resolved kmod zstd
-                iputils-ping iw file)
-
 source=("git+https://github.com/ericwoud/buildR64arch.git")
 sha256sums=(SKIP)
 export CARCH=aarch64
@@ -30,7 +24,8 @@ package_build-r64-arch-utils-git() {
            hostapd wireless-regdb iproute2 nftables f2fs-tools dosfstools
            btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
            nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
-           linux-firmware-other linux-firmware-mediatek)
+           linux-firmware-other linux-firmware-mediatek
+           openssh dtc mmc-utils-git uboot-tools base dbus-broker-units iptables-nft)
   depends+=(${depends_alarm[*]})
   install=${pkgname}.install
   cd "${srcdir}/buildR64arch/rootfs/bin"
