@@ -22,11 +22,11 @@ pkgver() {
 package_build-r64-arch-utils-git() {
   pkgdesc='Utilities for BPI Router boards installed with buildR64arch'
   depends=(bpir-atf-git-fiptool initramfs sudo
-           hostapd wireless-regdb iproute2 nftables f2fs-tools dosfstools
+           hostapd wireless-regdb iptables-nft iproute2 nftables f2fs-tools dosfstools
            btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
            nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
            linux-firmware-other linux-firmware-mediatek
-           openssh dtc mmc-utils-git uboot-tools base dbus-broker-units iptables-nft)
+           openssh dtc mmc-utils-git uboot-tools base dbus-broker-units)
   install=${pkgname}.install
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-rootfs
