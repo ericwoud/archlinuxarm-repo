@@ -4,7 +4,7 @@ PKGBASE="NeedToChange"
 pre_upgrade() {
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="upgrade"
-  test -d /etc/kernel/preinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/preinst.d
+  #test -d /etc/kernel/preinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/preinst.d
 }
 
 pre_install() {
@@ -15,7 +15,7 @@ pre_install() {
 pre_remove() {
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="remove"
-  test -d /etc/kernel/prerm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/prerm.d
+  #test -d /etc/kernel/prerm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/prerm.d
 }
 
 post_upgrade() {
@@ -24,7 +24,7 @@ post_upgrade() {
   /usr/bin/bpir-toolbox --write2fip
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="triggered"
-  test -d /etc/kernel/postinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postinst.d
+  #test -d /etc/kernel/postinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postinst.d
 }
 
 post_install() {
@@ -37,5 +37,5 @@ post_remove() {
   rm -f /boot/initramfs-${PKGBASE}-fallback.img
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="remove"
-  test -d /etc/kernel/postrm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postrm.d
+  #test -d /etc/kernel/postrm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postrm.d
 }
