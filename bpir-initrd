@@ -1,16 +1,32 @@
 #!/bin/bash
 
 function usage {
-  echo "$(basename $0) - arguments: linux package name(s), no arguments builds all."
+  cat <<-EOF
+	Usage: $(basename "$0") [OPTION]...
+	  -p --preset [PRESET]       specify preset
+	  -P --allpresets            build all presets
+	  -m --modulesonly           build only when image holds modules
+	EOF
   exit 1
 }
 
-if [ -z "$1" ]; then
+while [ "${1:-}" != '' ]; do
+  case "$1" in
+  '-p' | '--preset') shift; preset="${1}"      ;;
+         '--preset'=*)      preset="${1#*=}"   ;;
+  '-P' | '--allpresets')    allpresets=1       ;;
+  '-m' | '--modulesonly')   modulesonly=1      ;;
+  *) usage ;;
+  esac
+  shift
+done
+
+if [ -n "$allpresets" ]; then
   pkgbases=$(shopt -s nullglob; basename --suffix=.preset /etc/mkinitcpio.d/*.preset 2>/dev/null)
-elif [[ "$1" == "--help" ]]; then
-  usage
+elif [ -n "$preset" ]; then
+  pkgbases="$preset"
 else
-  pkgbases=$@
+  usage
 fi
 
 for pkgbase in $pkgbases; do
