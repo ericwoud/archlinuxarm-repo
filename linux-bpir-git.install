@@ -5,17 +5,20 @@ pre_upgrade() {
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="upgrade"
   #test -d /etc/kernel/preinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/preinst.d
+  return 0
 }
 
 pre_install() {
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="install"
   pre_upgrade "$@"
+  return 0
 }
 
 pre_remove() {
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="remove"
   #test -d /etc/kernel/prerm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/prerm.d
+  return 0
 }
 
 post_upgrade() {
@@ -25,11 +28,13 @@ post_upgrade() {
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="triggered"
   #test -d /etc/kernel/postinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postinst.d
+  return 0
 }
 
 post_install() {
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="configure"
   post_upgrade "$@"
+  return 0
 }
 
 post_remove() {
@@ -38,4 +43,5 @@ post_remove() {
   export INITRD=Yes
   [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="remove"
   #test -d /etc/kernel/postrm.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postrm.d
+  return 0
 }
