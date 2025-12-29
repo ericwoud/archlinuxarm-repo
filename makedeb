@@ -123,22 +123,13 @@ function preinst {
 }
 
 function postinst {
-  declare -F post_upgrade >/dev/null || declare -F post_install >/dev/null || [ -n "${post_trigger}" ] || return
+  declare -F post_upgrade >/dev/null || declare -F post_install >/dev/null || return
   (
     echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
     cat "pkg/$package/.INSTALL"
-    [ -n "${post_trigger}" ] && cat <<-EOF
-	post_trigger() {
-	   ${post_trigger}
-	    :
-	}
-	EOF
     cat <<-'EOF'
 	export DEB_MAINT_PARAMS="$*"
-	if [ "${1}" = "triggered" ]; then
-	    triggerName="${2}"
-	    declare -F post_trigger >/dev/null && post_trigger "${triggerName}" || exit 0
-	elif [ "${1}" = "configure" -a -z "${2}" ] || [ "${1}" = "abort-remove" ]; then
+	if [ "${1}" = "configure" -a -z "${2}" ] || [ "${1}" = "abort-remove" ]; then
 	    declare -F post_install >/dev/null && post_install || exit 0
 	elif [ "${1}" = "configure" -a -n "${2}" ]; then
 	    declare -F post_upgrade >/dev/null && post_upgrade "${2}" || exit 0
@@ -247,8 +238,6 @@ for package in $(cd pkg; ls); do
   unset post_remove
   unset post_upgrade
   unset post_install
-  unset post_trigger
-  unset triggers
 
   pkgver=$(getinfo pkgver | tr ':' '.')
   arch=$(getinfo arch)
@@ -256,12 +245,6 @@ for package in $(cd pkg; ls); do
 
   [ -f "pkg/$package/.INSTALL" ] && source "pkg/$package/.INSTALL"
 
-  for hook in $(find pkg/$package/usr/share/libalpm/hooks/* -type f 2>/dev/null); do
-    trigger=$(basename -s ".hook" "${hook}")
-    triggers+="interest ${trigger#*${package}-} "
-    post_trigger+="$(cat $hook | grep -e '^Exec' | cut -d= -f2-);"
-  done
-  triggers="$(echo ${triggers} | xargs)"
   conffiles="$(cd pkg/$package; find etc/* etc/.* -type f 2>/dev/null | sed  's/^/\//')"
   md5sums="$(  cd pkg/$package; find * ${exfind[*]} -type f -exec md5sum '{}' \; 2>/dev/null)"
 
@@ -271,7 +254,6 @@ for package in $(cd pkg; ls); do
   prerm
   postrm
   echo "2.0"                                   >deb/$package/debian-binary
-  [ -n "${triggers}" ]  && echo "${triggers}"  >deb/$package/control/triggers
   [ -n "${conffiles}" ] && echo "${conffiles}" >deb/$package/control/conffiles
   [ -n "${md5sums}" ]   && echo "${md5sums}"   >deb/$package/control/md5sums
   chmod 755 deb/$package/control/*
@@ -281,7 +263,7 @@ for package in $(cd pkg; ls); do
   (cd deb/$package/control; fakeroot tar -cz                -f "$deb/$package/control.tar.gz" ./*)
   (cd deb/$package        ; fakeroot  ar -cr                   "$deb/${debfile}.deb" \
                                         "debian-binary" "control.tar.gz" "data.tar.gz")
-#tar -t -f "$deb/$package/data.tar.gz"
+# tar -t -f "$deb/$package/data.tar.gz"
 
   if [ -z "${repopath}" ]; then
     echo "Created: deb/${debfile}.deb"
