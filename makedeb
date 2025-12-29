@@ -6,6 +6,7 @@ translation="\
 -e 's/\b''mmc-utils-git''\b/''mmc-utils''/' \
 -e 's/\b''uboot-tools''\b/''u-boot-tools''/' \
 -e 's/\b''iptables-nft''\b/''iptables''/' \
+-e 's/\b''run-parts''\b/''debianutils''/' \
 -e 's/\b''dbus-broker-units''\b//' \
 -e 's/\b''base''\b/''libpam-systemd systemd-timesyncd systemd-resolved kmod zstd iputils-ping iw file''/' \
 -e 's/\b''armv7h''\b/''armhf''/' \
@@ -63,6 +64,7 @@ function prerm {
 	dummy() {
 	    :
 	}
+	export DEB_MAINT_PARAMS="$*"
 	if [ "${1}" = "remove" -a -z "${2}" ]; then
 	    declare -F pre_remove >/dev/null && pre_remove || exit 0
 	elif [ "${1}" = "upgrade" ]; then
@@ -84,6 +86,7 @@ function postrm {
 	dummy() {
 	    :
 	}
+	export DEB_MAINT_PARAMS="$*"
 	if [ "${1}" = "remove" -o "${1}" = "abort-install" ]; then
 	    declare -F post_remove >/dev/null && post_remove || exit 0
 	elif [ "${1}" = "purge" -a -z "${2}" ]; then
@@ -104,6 +107,7 @@ function preinst {
     echo -e "#!/bin/bash\n# Source from archlinux package .INSTALL"
     cat "pkg/$package/.INSTALL"
     cat <<-'EOF'
+	export DEB_MAINT_PARAMS="$*"
 	if [ "${1}" = "install" -a -z "${2}" ]; then
 	    declare -F pre_install >/dev/null && pre_install || exit 0
 	elif [ "${1}" = "upgrade" -a -n "${2}" ]; then
@@ -130,6 +134,7 @@ function postinst {
 	}
 	EOF
     cat <<-'EOF'
+	export DEB_MAINT_PARAMS="$*"
 	if [ "${1}" = "triggered" ]; then
 	    triggerName="${2}"
 	    declare -F post_trigger >/dev/null && post_trigger "${triggerName}" || exit 0
@@ -269,6 +274,7 @@ for package in $(cd pkg; ls); do
   [ -n "${triggers}" ]  && echo "${triggers}"  >deb/$package/control/triggers
   [ -n "${conffiles}" ] && echo "${conffiles}" >deb/$package/control/conffiles
   [ -n "${md5sums}" ]   && echo "${md5sums}"   >deb/$package/control/md5sums
+  chmod 755 deb/$package/control/*
 
   (cd pkg/$package; files=$(shopt -s nullglob; echo ./*); [ -z "$files" ] && files="--files-from /dev/null"
                             fakeroot tar -cz "${exdata[*]}" -f "$deb/$package/data.tar.gz" $files)
@@ -303,3 +309,4 @@ done
 repo_update
 
 exit 0
+
