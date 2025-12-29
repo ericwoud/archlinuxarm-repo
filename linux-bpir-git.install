@@ -26,7 +26,7 @@ post_upgrade() {
   depmod ${KERNEL_VERSION}
   /usr/bin/bpir-toolbox --write2fip
   export INITRD=Yes
-  [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="triggered"
+  [ -z "${DEB_MAINT_PARAMS}" ] && export DEB_MAINT_PARAMS="configure"
   #test -d /etc/kernel/postinst.d && run-parts --arg="${KERNEL_VERSION}" --arg="/boot/Image-${PKGBASE}" /etc/kernel/postinst.d
   return 0
 }
