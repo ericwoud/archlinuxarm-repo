@@ -1,5 +1,5 @@
 #!/bin/bash
 
-bpir-toolbox # --remove-dtb --for-linux="${2#*Image-}"
+bpir-toolbox --remove-dtb --for-linux="${2#*Image-}"
 
 exit 0
