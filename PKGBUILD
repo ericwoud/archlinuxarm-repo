@@ -22,7 +22,7 @@ if [[ "$TARGET" == "bpir4" ]]; then
 elif [[ "$TARGET" == "bpirnn" ]]; then
   _gitroot="https://github.com/ericwoud/linux.git"
   _target="bpirnn"
-  _gitbranch="bpir-net-next"
+  _gitbranch="bpir-nftflow-nf-next"
 else
   _gitroot="https://github.com/ericwoud/linux.git"
   _target="bpir"
