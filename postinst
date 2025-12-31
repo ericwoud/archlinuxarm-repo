@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bpir-initrd --preset="${1}" --modulesonly

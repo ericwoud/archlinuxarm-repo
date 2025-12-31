@@ -5,7 +5,7 @@ url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
 arch=('aarch64')
 pkgdesc='Build customized initrd for BPI Router Boards'
-pkgver=96.a47b774
+pkgver=105.7a9ba4a
 pkgrel=1
 source=('bpir-initrd'
         'git+https://github.com/ericwoud/daft-dhcp-client.git'
@@ -32,6 +32,7 @@ build() {
 package() {
   cd "${startdir}"
   install -m700 -vDt $pkgdir/usr/bin bpir-initrd
+  install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/$pkgname
 
   cd "$srcdir/daft-dhcp-client"
   install -m755 -vT ./daft-dhcp-client $pkgdir/usr/bin/dhcpc
