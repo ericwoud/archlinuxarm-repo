@@ -32,7 +32,7 @@ build() {
 package() {
   cd "${startdir}"
   install -m700 -vDt $pkgdir/usr/bin bpir-initrd
-  install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/$pkgname
+  install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/30-$pkgname
 
   cd "$srcdir/daft-dhcp-client"
   install -m755 -vT ./daft-dhcp-client $pkgdir/usr/bin/dhcpc
