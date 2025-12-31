@@ -1,4 +1,4 @@
-# Arch64 kernel for BananaPi R64
+# Arch64 kernel for BananaPi Router boards
 # Maintainer: Eric Woudstra <ericwouds AT gmail DOT com>
 
 #NOEXTRACT="1"
