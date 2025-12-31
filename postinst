@@ -1,3 +1,5 @@
 #!/bin/bash
 
 bpir-initrd --preset="${2#*Image-}" --modulesonly
+
+exit 0
