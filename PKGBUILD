@@ -5,10 +5,12 @@ pkgname=("$pkgbase")
 url="https://github.com/ericwoud/buildR64arch"
 license=('GPL')
 arch=('aarch64')
-pkgver=54.434.6d7c634
+pkgver=59.447.69b6dad
 pkgrel=1
-source=("git+https://github.com/ericwoud/buildR64arch.git")
-sha256sums=(SKIP)
+source=("git+https://github.com/ericwoud/buildR64arch.git"
+        'postinst'
+        'prerm')
+sha256sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 
@@ -44,6 +46,10 @@ package_build-r64-arch-utils-git() {
   cp -vr etc     ${pkgdir}/usr/share/buildR64arch/
   cp -vr network ${pkgdir}/usr/share/buildR64arch/
   cp -vr hostapd ${pkgdir}/usr/share/buildR64arch/
+
+  cd "${startdir}"
+  install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/70-$pkgbase
+  install -m755 -vTD ./prerm    $pkgdir/etc/kernel/prerm.d/70-$pkgbase
 }
 
 _package() {
