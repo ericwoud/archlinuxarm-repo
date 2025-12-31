@@ -5,3 +5,5 @@ depmod "$1"
 
 # To change: build only 1 dtb for this linux, write2fip if this is the atf-linux
 bpir-toolbox --write2dtb --write2fip # --for-linux="${2#*Image-}"
+
+exit 0
