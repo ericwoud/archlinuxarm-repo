@@ -1,3 +1,4 @@
 #!/bin/bash
 
-rm -vf /boot/initramfs-"${2#*Image-}"
+rm -vf /boot/initramfs-"${2#*Image-}.img" 2>/dev/null
+rm -vf /boot/initramfs-"${2#*Image-}-fallback.img" 2>/dev/null
