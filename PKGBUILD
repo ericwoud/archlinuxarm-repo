@@ -5,13 +5,15 @@ url="https://github.com/ericwoud/archlinuxarm-repo/tree/$pkgname"
 license=('GPL')
 arch=('aarch64')
 pkgdesc='Build customized initrd for BPI Router Boards'
-pkgver=105.7a9ba4a
+pkgver=108.2d7c74d
 pkgrel=1
 source=('bpir-initrd'
+        'postinst'
+        'prerm'
         'git+https://github.com/ericwoud/daft-dhcp-client.git'
         'pkgdetails.c::https://salsa.debian.org/installer-team/base-installer/-/raw/master/pkgdetails.c'
         )
-sha256sums=(SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 depends=('cpio' 'which' curl wget debootstrap)
 provides=('initramfs')
 export CARCH=aarch64
@@ -33,6 +35,7 @@ package() {
   cd "${startdir}"
   install -m700 -vDt $pkgdir/usr/bin bpir-initrd
   install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/30-$pkgname
+  install -m755 -vTD ./prerm    $pkgdir/etc/kernel/prerm.d/30-$pkgname
 
   cd "$srcdir/daft-dhcp-client"
   install -m755 -vT ./daft-dhcp-client $pkgdir/usr/bin/dhcpc
