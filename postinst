@@ -8,7 +8,6 @@ echo -n "${linuxpkg}" >/lib/modules/${unamer}/pkgbase
 echo ">>> Updating module dependencies for ${unamer}. Please wait ..."
 depmod "${unamer}"
 
-# To change: build only 1 dtb for this linux, write2fip if this is the atf-linux
 bpir-toolbox --write2dtb --write2fip --for-linux="${linuxpkg}"
 
 exit 0
