@@ -32,8 +32,12 @@ fi
 for pkgbase in $pkgbases; do
 
 preset="/etc/mkinitcpio.d/${pkgbase}.preset"
-[ ! -f  "${preset}" ] && usage
-source ${preset}
+if [ -f  "${preset}" ]; then
+  source ${preset}
+else
+  default_config="/etc/mkinitcpio-bpir.conf"
+  default_image="/boot/initramfs-${pkgbase}.img"
+fi
 source ${default_config}
 for hook in ${HOOKS[*]}; do
   [[ ! "${hook}" =~ "bpir" ]] && continue
