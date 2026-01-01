@@ -41,10 +41,8 @@ license=('GPL2')
 makedepends=('kmod' 'inetutils' 'bc' 'git')
 [[ "$_lto" == "true" ]] &&  makedepends+=('clang' 'llvm' 'lld')
 options=('!strip')
-source=('defconfig'
-        'mkinitcpio.preset'
-)
-md5sums=(SKIP SKIP)
+source=('defconfig')
+md5sums=(SKIP)
 
 export CARCH=aarch64
 export LOCALVERSION=""
@@ -131,7 +129,6 @@ _package() {
   pkgdesc="The Linux Kernel and modules - ${_desc}"
   depends=('coreutils' 'kmod' 'build-r64-arch-utils-git' 'mkinitcpio-bpir' 'initramfs' 'run-parts')
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
-  backup=("etc/mkinitcpio.d/${pkgbase}.preset")
   install="linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
     replaces=('linux-bpir64-git'
@@ -186,10 +183,6 @@ _package() {
     s|%KERNVER%|${_kernver}|g
     s|%EXTRAMODULES%|${_extramodules}|g
   "
-
-  # install mkinitcpio preset file
-  sed "${_subst}" ../mkinitcpio.preset |
-    install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
 
   # set correct depmod command for install
   sed \
