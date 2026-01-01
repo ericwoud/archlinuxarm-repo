@@ -1,0 +1,9 @@
+#!/bin/bash
+
+linuxpkg="${2#*Image-}"
+
+if [[ "$1" == "upgrade" ]]; then
+  bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
+fi
+
+exit 0

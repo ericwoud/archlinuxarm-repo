@@ -1,5 +1,9 @@
 #!/bin/bash
 
-bpir-toolbox --remove-dtb --for-linux="${2#*Image-}"
+linuxpkg="${2#*Image-}"
+
+bpir-toolbox --remove-dtb --for-linux="${linuxpkg}"
+
+bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
 
 exit 0

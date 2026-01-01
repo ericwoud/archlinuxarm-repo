@@ -1,9 +1,11 @@
 #!/bin/bash
 
+linuxpkg="${2#*Image-}"
+
 echo ">>> Updating module dependencies for $1. Please wait ..."
 depmod "$1"
 
 # To change: build only 1 dtb for this linux, write2fip if this is the atf-linux
-bpir-toolbox --write2dtb --write2fip --for-linux="${2#*Image-}"
+bpir-toolbox --write2dtb --write2fip --for-linux="${linuxpkg}"
 
 exit 0
