@@ -22,7 +22,7 @@ while [ "${1:-}" != '' ]; do
 done
 
 if [ -n "$allpresets" ]; then
-  pkgbases=$(shopt -s nullglob; basename --suffix=.preset /etc/mkinitcpio.d/*.preset 2>/dev/null)
+  pkgbases=$(shopt -s nullglob; for f in /lib/modules/*/pkgbase ; do cat $f; echo; done | xargs)
 elif [ -n "$preset" ]; then
   pkgbases="$preset"
 else
