@@ -1,5 +1,6 @@
 #!/bin/bash
 
+unamer="${1}"
 linuxpkg="${2#*Image-}"
 
 if [[ "$1" == "upgrade" ]]; then

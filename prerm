@@ -1,9 +1,12 @@
 #!/bin/bash
 
+unamer="${1}"
 linuxpkg="${2#*Image-}"
 
 bpir-toolbox --remove-dtb --for-linux="${linuxpkg}"
 
 bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
+
+rm -vf /lib/modules/${unamer}/pkgbase
 
 exit 0
