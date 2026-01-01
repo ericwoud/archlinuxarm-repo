@@ -32,11 +32,12 @@ fi
 for pkgbase in $pkgbases; do
 
 preset="/etc/mkinitcpio.d/${pkgbase}.preset"
-if [ ! -f  "${preset}" ]; then
-  echo "Cannot open ${preset}!"
-  usage
+if [ -f  "${preset}" ]; then
+  source ${preset}
+else
+  default_config="/etc/mkinitcpio-bpir.conf"
+  default_image="/boot/initramfs-${pkgbase}.img"
 fi
-source ${preset}
 if [ ! -f  "${default_config}" ]; then
   echo "Cannot open ${default_config}!"
   usage
