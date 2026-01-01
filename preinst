@@ -3,7 +3,7 @@
 unamer="${1}"
 linuxpkg="${2#*Image-}"
 
-if [[ "$1" == "upgrade" ]]; then
+if [[ "${DEB_MAINT_PARAMS%% *}" == "upgrade" ]]; then
   bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
 fi
 
