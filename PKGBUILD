@@ -167,10 +167,6 @@ _package() {
   # remove build and source links
   rm -f "${pkgdir}"/usr/lib/modules/${_kernver}/{source,build}
 
-  # used by mkinitcpio to name the kernel
-  echo "${pkgbase}"          | install -D -m 644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/pkgbase"
-  echo "${pkgver}-${pkgrel}" | install -D -m 644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/pkgversion"
-
   # now we call depmod...
   depmod -b "${pkgdir}/usr" -F System.map "${_kernver}"
 
