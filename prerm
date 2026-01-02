@@ -1,7 +1,11 @@
 #!/bin/bash
 
 unamer="${1}"
-linuxpkg="${2#*Image-}"
+if [[ "${2##*.}" == "itb" ]]; then
+  linuxpkg="linux-image-${unamer}" # from altered mkdebian
+else
+  linuxpkg="${2#*Image-}"
+fi
 
 bpir-toolbox --remove-dtb --for-linux="${linuxpkg}"
 
