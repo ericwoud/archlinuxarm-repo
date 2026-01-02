@@ -1,7 +1,11 @@
 #!/bin/bash
 
 unamer="${1}"
-linuxpkg="${2#*Image-}"
+if [[ "${2##*.}" == "itb" ]]; then
+  linuxpkg="linux-image-${unamer}" # from altered mkdebian
+else
+  linuxpkg="${2#*Image-}"
+fi
 
 if [[ "${DEB_MAINT_PARAMS%% *}" == "upgrade" ]]; then
   bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
