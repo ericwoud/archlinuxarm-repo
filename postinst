@@ -9,9 +9,11 @@ else
   linuxpkg="${2#*Image-}"
 fi
 
-if [ -d "/usr/lib/${linuxpkg}" ]; then
+dtbsdir="/usr/lib/${linuxpkg}"
+[ ! -d "${dtbsdir}" ] && dtbsdir="/lib/modules/${unamer}/dtbs"
+if [ -d "${dtbsdir}" ]; then
   mkdir -p "/boot/dtbs/${linuxpkg}"
-  cp -vft  "/boot/dtbs/${linuxpkg}" "/usr/lib/${linuxpkg}/"*"/"*
+  cp -vft  "/boot/dtbs/${linuxpkg}" "${dtbsdir}/"*"/"*
 fi
 
 echo -n "${linuxpkg}" >/lib/modules/${unamer}/pkgbase
