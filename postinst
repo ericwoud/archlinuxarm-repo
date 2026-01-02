@@ -16,7 +16,9 @@ if [ -d "${dtbsdir}" ]; then
   cp -vft  "/boot/dtbs/${linuxpkg}" "${dtbsdir}/"*"/"*
 fi
 
-echo -n "${linuxpkg}" >/lib/modules/${unamer}/pkgbase
+if [ ! -f "/lib/modules/${unamer}/pkgbase" ]; then
+  echo -n "${linuxpkg}" >/lib/modules/${unamer}/pkgbase
+fi
 
 echo ">>> Updating module dependencies for ${unamer}. Please wait ..."
 depmod "${unamer}"
