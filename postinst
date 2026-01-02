@@ -1,7 +1,13 @@
 #!/bin/bash
 
 unamer="${1}"
-linuxpkg="${2#*Image-}"
+if [[ "${2##*.}" == "itb" ]]; then
+  linuxpkg="linux-image-${unamer}" # from altered mkdebian
+  dumpimage -T flat_dt -o /boot/Image-${linuxpkg}.gz "${2}"
+  (cd /boot; gunzip Image-${linuxpkg}.gz)
+else
+  linuxpkg="${2#*Image-}"
+fi
 
 echo -n "${linuxpkg}" >/lib/modules/${unamer}/pkgbase
 
