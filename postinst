@@ -9,6 +9,11 @@ else
   linuxpkg="${2#*Image-}"
 fi
 
+if [ -d "/usr/lib/${linuxpkg}" ]; then
+  mkdir -p "/boot/dtbs/${linuxpkg}"
+  cp -vft  "/boot/dtbs/${linuxpkg}" "/usr/lib/${linuxpkg}/"*"/"*
+fi
+
 echo -n "${linuxpkg}" >/lib/modules/${unamer}/pkgbase
 
 echo ">>> Updating module dependencies for ${unamer}. Please wait ..."
