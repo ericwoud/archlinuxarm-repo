@@ -7,9 +7,9 @@ else
   linuxpkg="${2#*Image-}"
 fi
 
-bpir-toolbox --remove-dtb --for-linux="${linuxpkg}"
+bpir-toolbox --remove-dtb --pkgbase="${linuxpkg}"
 
-bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
+bpir-toolbox --clean-boot --pkgbase="${linuxpkg}"
 
 rm -vf /lib/modules/${unamer}/pkgbase
 
