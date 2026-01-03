@@ -23,6 +23,6 @@ fi
 echo ">>> Updating module dependencies for ${unamer}. Please wait ..."
 depmod "${unamer}"
 
-bpir-toolbox --write2dtb --write2fip --for-linux="${linuxpkg}"
+bpir-toolbox --write2dtb --write2fip --pkgbase="${linuxpkg}"
 
 exit 0
