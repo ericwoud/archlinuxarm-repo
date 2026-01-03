@@ -8,7 +8,7 @@ else
 fi
 
 if [[ "${DEB_MAINT_PARAMS%% *}" == "upgrade" ]]; then
-  bpir-toolbox --clean-boot --for-linux="${linuxpkg}"
+  bpir-toolbox --clean-boot --pkgbase="${linuxpkg}"
 fi
 
 exit 0
