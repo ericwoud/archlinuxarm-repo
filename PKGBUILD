@@ -82,6 +82,7 @@ prepare() {
       -e '/^#CONFIG_ACS=y/s/^#//' \
       -e '/^#CONFIG_WEP=y/s/^#//' \
       -e '/^#CONFIG_SAE=y/s/^#//' \
+      -e '/^#CONFIG_SAE_PK=y/s/^#//' \
       -e '/^#CONFIG_ELOOP_EPOLL=y/s/^#//' \
       -e '/^#CONFIG_FST=y/s/^#//' \
       -e '/^#CONFIG_FST_TEST=y/s/^#//' \
