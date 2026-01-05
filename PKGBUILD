@@ -35,7 +35,7 @@ pkgver() {
   cd "${srcdir}/ethtool"
   _tag=$(git tag -l --sort -v:refname | head -n1)
   _rev=$(git rev-list --count $_tag..HEAD)
-#  _rev=$(( _rev + $(git -C "${startdir}" rev-list --count HEAD) ))
+  _rev=$(( _rev + $(git -C "${startdir}" rev-list --count HEAD) ))
   _hash=$( git                       rev-parse --short HEAD | tail -c 5)
   _hash+=$(git -C "${srcdir}/libmnl" rev-parse --short HEAD | tail -c 5)
   printf "%s.%s.%s" "$_tag" "$_rev" "$_hash" | sed 's/^hostap_//;s/_/./g'
