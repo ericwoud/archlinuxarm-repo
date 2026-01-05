@@ -98,15 +98,13 @@ prepare() {
 
 pkgver() {
   cd "${srcdir}/hostap"
-
   _tag=$(git tag -l --sort -v:refname | grep -E '^hostap_[0-9_\.]+$' | head -n1)
   _rev=$(git rev-list --count $_tag..HEAD)
   _rev=$(( _rev + $(git -C "${startdir}" rev-list --count HEAD) ))
-  _hash=$(git rev-parse --short HEAD | tail -c 3)
+  _hash=$( git                        rev-parse --short HEAD | tail -c 3)
   _hash+=$(git -C "${srcdir}/hostapd" rev-parse --short HEAD | tail -c 3)
   _hash+=$(git -C "${srcdir}/openssl" rev-parse --short HEAD | tail -c 3)
   _hash+=$(git -C "${srcdir}/libnl"   rev-parse --short HEAD | tail -c 3)
-
   printf "%s.r%s.g%s" "$_tag" "$_rev" "$_hash" | sed 's/^hostap_//;s/_/./g'
 }
 
