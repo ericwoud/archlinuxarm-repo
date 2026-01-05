@@ -22,11 +22,11 @@ pkgname=hostapd-static-git
 pkgver=2.11.1315.df577c18438d
 pkgrel=1
 
-_libnlver=libnl3.12.0
+#_libnlver=libnl3.12.0
 _libnlver=main
-_sslver=openssl-3.6.0
+#_sslver=openssl-3.6.0
 _sslver=master
-_sqlitever=version-3.51.1
+#_sqlitever=version-3.51.1
 _sqlitever=master
 
 pkgdesc="Static build of User space daemon for access point and authentication servers"
@@ -47,7 +47,7 @@ source=("git+https://git.w1.fi/hostap.git"
         "git+https://github.com/openssl/openssl.git#tag=${_sslver}"
 )
 sha512sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
-validpgpkeys=()
+#validpgpkeys=()
 
 # to enable func64 interface in musl for 64-bit file system functions
 # disable exceptions for musl build
