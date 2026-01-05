@@ -19,7 +19,7 @@
 #	/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000ffff9f770000)
 
 pkgname=hostapd-bpir-static-git
-pkgver=2.11.r1307.g3ea5c0df5709e77c61c876198d655a638d
+pkgver=2.11.r1311.gf57c848d
 pkgrel=1
 
 _libnlver=libnl3.12.0
