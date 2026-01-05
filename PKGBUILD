@@ -26,6 +26,7 @@ sha256sums=(SKIP SKIP SKIP)
 
 export CARCH=aarch64
 if [[ "$(uname -m)" == "aarch64" ]]; then
+  makedepends+=(musl)
   export CC="gcc"
   export _hostccmusl="host-cc=musl-gcc"
 else
