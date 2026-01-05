@@ -4,13 +4,6 @@ pkgname=hostapd-static-git
 pkgver=2.11.1315.df577c18438d
 pkgrel=1
 
-#_libnlver=libnl3.12.0
-_libnlver=main
-#_sslver=openssl-3.6.0
-_sslver=master
-#_sqlitever=version-3.51.1
-_sqlitever=master
-
 pkgdesc="Static build of User space daemon for access point and authentication servers"
 arch=('x86_64' 'aarch64')
 url="https://w1.fi/hostapd/"
@@ -24,9 +17,9 @@ options=('!emptydirs' '!lto')
 
 source=("git+https://git.w1.fi/hostap.git"
         "git+https://gitlab.archlinux.org/archlinux/packaging/packages/hostapd.git"
-        "git+https://github.com/thom311/libnl.git#tag=${_libnlver//./_}"
-        "git+https://github.com/sqlite/sqlite.git#tag=${_sqlitever}"
-        "git+https://github.com/openssl/openssl.git#tag=${_sslver}"
+        "git+https://github.com/thom311/libnl.git"
+        "git+https://github.com/sqlite/sqlite.git"
+        "git+https://github.com/openssl/openssl.git"
 )
 sha512sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
