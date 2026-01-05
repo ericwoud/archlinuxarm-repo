@@ -19,7 +19,7 @@
 #	/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000ffff9f770000)
 
 pkgname=hostapd-bpir-static-git
-pkgver=2.11.r1311.gf57c848d
+pkgver=2.11.1315.df577c18438d
 pkgrel=1
 
 _libnlver=libnl3.12.0
@@ -101,11 +101,11 @@ pkgver() {
   _tag=$(git tag -l --sort -v:refname | grep -E '^hostap_[0-9_\.]+$' | head -n1)
   _rev=$(git rev-list --count $_tag..HEAD)
   _rev=$(( _rev + $(git -C "${startdir}" rev-list --count HEAD) ))
-  _hash=$( git                        rev-parse --short HEAD | tail -c 3)
-  _hash+=$(git -C "${srcdir}/hostapd" rev-parse --short HEAD | tail -c 3)
-  _hash+=$(git -C "${srcdir}/openssl" rev-parse --short HEAD | tail -c 3)
-  _hash+=$(git -C "${srcdir}/libnl"   rev-parse --short HEAD | tail -c 3)
-  printf "%s.r%s.g%s" "$_tag" "$_rev" "$_hash" | sed 's/^hostap_//;s/_/./g'
+  _hash=$( git                        rev-parse --short HEAD | tail -c 4)
+  _hash+=$(git -C "${srcdir}/hostapd" rev-parse --short HEAD | tail -c 4)
+  _hash+=$(git -C "${srcdir}/openssl" rev-parse --short HEAD | tail -c 4)
+  _hash+=$(git -C "${srcdir}/libnl"   rev-parse --short HEAD | tail -c 4)
+  printf "%s.%s.%s" "$_tag" "$_rev" "$_hash" | sed 's/^hostap_//;s/_/./g'
 }
 
 build() {
