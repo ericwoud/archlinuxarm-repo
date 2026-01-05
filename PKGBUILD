@@ -10,7 +10,7 @@ _gitbranch="bpir"
 pkgbase=bpir-atf-git
 pkgname=("$pkgbase-fiptool")
 epoch=2
-pkgver=2.13r39.17172.31ca5d76f
+pkgver=2.13r41.17172.31ca5d76f
 pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
@@ -27,10 +27,12 @@ sha256sums=(SKIP SKIP SKIP)
 export CARCH=aarch64
 if [[ "$(uname -m)" == "aarch64" ]]; then
   export CC="gcc"
+  export _hostccmusl="host-cc=musl-gcc"
 else
-  makedepends+=(aarch64-linux-gnu-gcc lib32-glibc)
+  makedepends+=(aarch64-linux-gnu-gcc musl-aarch64) # lib32-glibc
   export _crossc="CROSS_COMPILE=aarch64-linux-gnu-"
   export _hostcc="host-cc=aarch64-linux-gnu-gcc"
+  export _hostccmusl="host-cc=aarch64-linux-musl-gcc"
   export CC="aarch64-linux-gnu-gcc"
 fi
  
@@ -65,7 +67,8 @@ _buildmkimage() {
 _buildfiptool() {
   cd "${srcdir}/${_gitname}/tools/fiptool"
   sed -i '/-Werror/d' ./Makefile
-  make $_hostcc HOSTCCFLAGS+="-D'SHA256(x,y,z)=nop'" LDOPTS="-static"
+  sed -i '/openssl\/sha.h/d' ./fiptool_platform.h
+  make $_hostccmusl STATIC=1 HOSTCCFLAGS+="-D'STATIC=1'"
 }
 
 _use_extended_partlabel() {
