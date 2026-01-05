@@ -47,7 +47,6 @@ source=("git+https://git.w1.fi/hostap.git"
         "git+https://github.com/openssl/openssl.git#tag=${_sslver}"
 )
 sha512sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
-#validpgpkeys=()
 
 # to enable func64 interface in musl for 64-bit file system functions
 # disable exceptions for musl build
