@@ -1,23 +1,5 @@
 # Maintainer: Eric Woudstra <ericwouds@gmail.com>
 
-# ldd /bin/hostapd
-#	linux-vdso.so.1 (0x0000ffffbedca000)
-#	libnl-3.so.200 => /usr/lib/libnl-3.so.200 (0x0000ffffbeb20000)
-#	libnl-genl-3.so.200 => /usr/lib/libnl-genl-3.so.200 (0x0000ffffbeaf0000)
-#	libssl.so.3 => /usr/lib/libssl.so.3 (0x0000ffffbe9c0000)
-#	libcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000ffffbe3c0000)
-#	libm.so.6 => /usr/lib/libm.so.6 (0x0000ffffbe300000)
-#	libsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x0000ffffbe170000)
-#	libc.so.6 => /usr/lib/libc.so.6 (0x0000ffffbdfc0000)
-#	/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000ffffbed80000)
-#	libgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000ffffbdf80000)
-# ldd /bin/ethtool
-#	linux-vdso.so.1 (0x0000ffff9f7ac000)
-#	libm.so.6 => /usr/lib/libm.so.6 (0x0000ffff9f5e0000)
-#	libmnl.so.0 => /usr/lib/libmnl.so.0 (0x0000ffff9f5c0000)
-#	libc.so.6 => /usr/lib/libc.so.6 (0x0000ffff9f410000)
-#	/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000ffff9f770000)
-
 pkgname=hostapd-static-git
 pkgver=2.11.1315.df577c18438d
 pkgrel=1
