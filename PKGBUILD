@@ -18,7 +18,7 @@
 #	libc.so.6 => /usr/lib/libc.so.6 (0x0000ffff9f410000)
 #	/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000ffff9f770000)
 
-pkgname=hostapd-bpir-static-git
+pkgname=hostapd-static-git
 pkgver=2.11.1315.df577c18438d
 pkgrel=1
 
