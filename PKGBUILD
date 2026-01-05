@@ -101,6 +101,7 @@ pkgver() {
 
   _tag=$(git tag -l --sort -v:refname | grep -E '^hostap_[0-9_\.]+$' | head -n1)
   _rev=$(git rev-list --count $_tag..HEAD)
+  _rev=$(( _rev + $(git -C "${startdir}" rev-list --count HEAD) ))
   _hash=$(git rev-parse --short HEAD)
   _hashes=${_hash:-3}
 
