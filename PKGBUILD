@@ -177,9 +177,9 @@ build() {
   rm "${srcdir}"/temp/usr/lib/lib*.la
 
   cd "${srcdir}/hostap"
-  export LDFLAGS+=" -Wl,-rpath=${srcdir}/temp/usr/lib -L${srcdir}/temp/usr/lib -I${srcdir}/temp/usr/include"
-  export CFLAGS+=" -fPIE -Wl,-rpath=${srcdir}/temp/usr/lib -L${srcdir}/temp/usr/lib -I${srcdir}/temp/usr/include"
-  export CXXDFLAGS+=" -Wl,-rpath=${srcdir}/temp/usr/lib -L${srcdir}/temp/usr/lib -I${srcdir}/temp/usr/include"
+  export LDFLAGS+="    -pie -Wl,-rpath=${srcdir}/temp/usr/lib -L${srcdir}/temp/usr/lib -I${srcdir}/temp/usr/include"
+  export CFLAGS+="    -fPIE -Wl,-rpath=${srcdir}/temp/usr/lib -L${srcdir}/temp/usr/lib -I${srcdir}/temp/usr/include"
+  export CXXDFLAGS+=" -fPIE -Wl,-rpath=${srcdir}/temp/usr/lib -L${srcdir}/temp/usr/lib -I${srcdir}/temp/usr/include"
   make -C "hostapd" LIBS="-lsqlite3 -lssl -lcrypto -lnl-3 -lnl-genl-3 -lm -lpthread"
 }
 
