@@ -70,7 +70,6 @@ echo Running: $HOSTAPD -B -P $pidfile $DAEMON_OPTS $outfile
 $HOSTAPD -B -P $pidfile $DAEMON_OPTS $outfile
 
 function addvlan { 
-  echo "Adding $1 $2 $3"
   while [ ! -d /sys/class/net/$1/brport ]; do sleep 0.1; done
   vlanfilt=$(cat /sys/class/net/$2/bridge/vlan_filtering)
   if [ $vlanfilt == 1 ]; then
@@ -80,6 +79,7 @@ function addvlan {
     else
       vlanid=$3
     fi
+    echo "Adding dev $1 to vid $vlanid"
     bridge vlan add dev $1 vid $vlanid pvid untagged
   fi
 };
