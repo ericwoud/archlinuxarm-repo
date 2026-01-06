@@ -1,7 +1,7 @@
 # Maintainer: Eric Woudstra <ericwouds@gmail.com>
 
 pkgname=ethtool-static-git
-pkgver=v6.15.26.c615ea54
+pkgver=6.15.29.c615ea54
 pkgrel=1
 
 pkgdesc="Static build of Utility for controlling network drivers and hardware"
@@ -38,7 +38,7 @@ pkgver() {
   _rev=$(( _rev + $(git -C "${startdir}" rev-list --count HEAD) ))
   _hash=$( git                       rev-parse --short HEAD | tail -c 5)
   _hash+=$(git -C "${srcdir}/libmnl" rev-parse --short HEAD | tail -c 5)
-  printf "%s.%s.%s" "$_tag" "$_rev" "$_hash" | sed 's/^hostap_//;s/_/./g'
+  printf "%s.%s.%s" "$_tag" "$_rev" "$_hash" | sed 's/^v//;s/_/./g'
 }
 
 build() {
