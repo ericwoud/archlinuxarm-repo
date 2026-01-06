@@ -51,7 +51,7 @@ do
       ;;
     bridge=*)
       [[ $bss == "" ]] && bss=$interface
-      execpost[post]="addvlan "$bss" "${line/"bridge="/}" "$bridge_vlan
+      execpost[post]="addvlan $bss ${line/bridge=/} $bridge_vlan"
       ((post++))
       echo $line >>$outfile
       ;;
