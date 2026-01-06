@@ -99,7 +99,7 @@ build() {
   _buildimage bpir4-sdmmc  mt7988_sd_rfb_defconfig       mt7988-sd-rfb
   #               Filename                       Linkname
   ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-emmc.bin"
-  ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-sd.bin"
+  ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-sdmmc.bin"
   ln -srf "bpir3/u-boot-bpir3-emmc.bin"  "bpir3/u-boot-bpir3.bin"
   ln -srf "bpir3m/u-boot-bpir3m.bin"     "bpir3m/u-boot-bpir3m-emmc.bin"
   ln -srf "bpir4/u-boot-bpir4-emmc.bin"  "bpir4/u-boot-bpir4.bin"
