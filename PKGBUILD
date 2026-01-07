@@ -62,7 +62,6 @@ prepare() {
 _buildimage() {
   _target=$1; _def=$2; _devtree=$3
   _maintarget=$(echo ${_target} | cut -d- -f1)
-  rm -f ${_maintarget}/* 2>/dev/null
   echo ^^^ BUILDING $_target ^^^
   cp -vf ./configs/$_def configs/bpir_my_defconfig
   (
@@ -90,7 +89,7 @@ _buildimage() {
 
 build() {
   cd "${srcdir}/u-boot"
-  rm -f u-boot-bpir*.bin
+  rm -f bpir*/u-boot-bpir*.bin
   _buildimage bpir64       mt7622_rfb_defconfig          mt7622-bananapi-bpi-r64
   _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-emmc
   _buildimage bpir3-sdmmc  mt7986a_bpir3_sd_defconfig    mt7986a-bpi-r3-sd
