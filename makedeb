@@ -197,8 +197,10 @@ function repo_update {
 
 function getinfo {
   local p q
-  for p in $(grep  -e "^${1}" pkg/$package/.PKGINFO | cut -d= -f2); do
-    p=$(echo $p | xargs -a <(echo -n "${translation}") sed); q+=($p)
+  for p in $(grep -e "^${1}" pkg/$package/.PKGINFO | cut -d= -f2); do
+    p=$(echo $p | cut -d'<' -f1 | cut -d'>' -f1 | cut -d'=' -f1 | \
+        xargs -a <(echo -n "${translation}") sed)
+    q+=($p)
   done
   echo ${q[*]}
 }
