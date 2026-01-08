@@ -8,9 +8,9 @@ arch=('aarch64')
 pkgver=59.447.69b6dad
 pkgrel=1
 source=("git+https://github.com/ericwoud/buildR64arch.git"
-        'preinst'
-        'postinst'
-        'prerm')
+        'kernel-preinst'
+        'kernel-postinst'
+        'kernel-prerm')
 sha256sums=(SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
@@ -49,9 +49,9 @@ package_build-r64-arch-utils-git() {
   cp -vr hostapd ${pkgdir}/usr/share/buildR64arch/
 
   cd "${startdir}"
-  install -m755 -vTD ./preinst  $pkgdir/etc/kernel/preinst.d/70-$pkgbase
-  install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/70-$pkgbase
-  install -m755 -vTD ./prerm    $pkgdir/etc/kernel/prerm.d/70-$pkgbase
+  install -m755 -vTD ./kernel-preinst  $pkgdir/etc/kernel/preinst.d/70-$pkgbase
+  install -m755 -vTD ./kernel-postinst $pkgdir/etc/kernel/postinst.d/70-$pkgbase
+  install -m755 -vTD ./kernel-prerm    $pkgdir/etc/kernel/prerm.d/70-$pkgbase
 }
 
 _package() {
