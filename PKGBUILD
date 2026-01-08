@@ -8,8 +8,8 @@ pkgdesc='Build customized initrd for BPI Router Boards'
 pkgver=108.2d7c74d
 pkgrel=1
 source=('bpir-initrd'
-        'postinst'
-        'prerm'
+        'kernel-postinst'
+        'kernel-prerm'
         'git+https://github.com/ericwoud/daft-dhcp-client.git'
         'pkgdetails.c::https://salsa.debian.org/installer-team/base-installer/-/raw/master/pkgdetails.c'
         )
@@ -34,8 +34,8 @@ build() {
 package() {
   cd "${startdir}"
   install -m700 -vDt $pkgdir/usr/bin bpir-initrd
-  install -m755 -vTD ./postinst $pkgdir/etc/kernel/postinst.d/30-$pkgname
-  install -m755 -vTD ./prerm    $pkgdir/etc/kernel/prerm.d/30-$pkgname
+  install -m755 -vTD ./kernel-postinst $pkgdir/etc/kernel/postinst.d/30-$pkgname
+  install -m755 -vTD ./kernel-prerm    $pkgdir/etc/kernel/prerm.d/30-$pkgname
 
   cd "$srcdir/daft-dhcp-client"
   install -m755 -vT ./daft-dhcp-client $pkgdir/usr/bin/dhcpc
