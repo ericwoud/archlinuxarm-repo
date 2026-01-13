@@ -29,7 +29,7 @@ package_build-r64-arch-utils-git() {
            btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
            nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
            linux-firmware-other linux-firmware-mediatek
-           openssh dtc mmc-utils-git uboot-tools base dbus-broker-units)
+           openssh dtc mmc-utils-git uboot-tools base dbus-broker-units inetutils)
   install=${pkgname}.install
   cd "${srcdir}/buildR64arch/rootfs/bin"
   install -m755 -vDt $pkgdir/usr/bin bpir-rootfs
