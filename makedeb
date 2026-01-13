@@ -4,6 +4,7 @@ translation="\
 -e 's/\b''dtc''\b/''device-tree-compiler''/' \
 -e 's/\b''openssh''\b/''openssh-server''/' \
 -e 's/\b''mmc-utils-git''\b/''mmc-utils''/' \
+-e 's/\b''inetutils''\b/''hostname''/' \
 -e 's/\b''uboot-tools''\b/''u-boot-tools''/' \
 -e 's/\b''iptables-nft''\b/''iptables''/' \
 -e 's/\b''run-parts''\b/''debianutils''/' \
