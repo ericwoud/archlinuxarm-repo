@@ -1,0 +1,3 @@
+post_install() {
+  [ -f "/tmp/bpir-rootfs/setup" ] && bpir-rootfs --noask
+}
