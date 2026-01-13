@@ -57,6 +57,7 @@ package_build-r64-arch-utils-git() {
 _package() {
   pkgdesc="BuildR64arch $1 packages"
   depends=(build-r64-arch-utils-git linux-$1-git $1-atf-git $1-uboot-git)
+  install=packages-bpir.install
 }
 
 for _target in bpir64 bpir3 bpir3m bpir4; do
