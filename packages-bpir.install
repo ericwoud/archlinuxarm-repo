@@ -1,4 +1,3 @@
 post_install() {
-  echo POSTINSTALL!
   [ -f "/etc/rootcfg/setup" ] && bpir-rootfs --noask
 }
