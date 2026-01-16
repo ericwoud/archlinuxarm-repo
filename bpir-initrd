@@ -115,7 +115,7 @@ echo "Building ${default_image}..."
 
 rm -rf $wdir
 
-mkdir -p      $wdir/{dev,etc,proc,run,sys,usr/lib,usr/bin,usr/local,usr/share,mnt/root,etc/modprobe.d}
+mkdir -p      $wdir/{dev,etc,proc,run,sys,usr/lib,usr/bin,usr/local,usr/share,mnt/root,etc/modprobe.d,etc/rootcfg}
 ln -s usr/bin $wdir/bin
 ln -s usr/bin $wdir/sbin
 ln -s ../bin  $wdir/usr/local/bin
@@ -128,14 +128,10 @@ mkchroot      $wdir ${binaries[*]} ${BINARIES[*]} ${FILES[*]} ${modules[*]}
 
 ln -s /bin/bash $wdir/bin/sh
 
-source /etc/bpir-is-initrd 2>/dev/null
-if [ -z "$target" ]; then
-  rootdev=$(lsblk -pilno name,type,mountpoint | grep -G 'part /$' | head -n1 | cut -d " " -f1)
-  partlabelroot=$(blkid $rootdev -s PARTLABEL -o value)
-  target=$(echo $partlabelroot | cut -d'-' -f1)
-fi
-[ -z "$target" ] && exit 1
-echo "target=$target" > $wdir/etc/bpir-is-initrd
+cp -f /etc/rootcfg/target  $wdir/etc/rootcfg/target
+cp -f /etc/rootcfg/ddrsize $wdir/etc/rootcfg/ddrsize
+echo -n "initrd"         > $wdir/etc/rootcfg/device
+touch                      $wdir/etc/bpir-is-initrd
 
 cp -rf /usr/share/debootstrap/ "${wdir}/usr/share"
 
