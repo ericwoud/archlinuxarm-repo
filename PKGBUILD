@@ -156,14 +156,6 @@ _package() {
   install -m600 -vT arch/$KARCH/boot/Image.gz ${pkgdir}/boot/Image-${pkgbase}.gz
   install -Dt "${pkgdir}/boot/dtbs/${pkgbase}" -m600 arch/$KARCH/boot/dts/mediatek/mt7*.dtb*
 
-  # make room for external modules
-  local _extramodules="extramodules-${_basekernel}${_kernelname}"
-  ln -s "../${_extramodules}" "${pkgdir}/usr/lib/modules/${_kernver}/extramodules"
-
-  # add real version for building modules and running depmod from install
-  echo "${_kernver}" |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/lib/modules/${_extramodules}/version"
-
   # remove build and source links
   rm -f "${pkgdir}"/usr/lib/modules/${_kernver}/{source,build}
 
@@ -172,13 +164,6 @@ _package() {
 
   # add vmlinux
   install -Dt "${pkgdir}/usr/lib/modules/${_kernver}/build" -m644 vmlinux
-
-  # sed expression for following substitutions
-  local _subst="
-    s|%PKGBASE%|${pkgbase}|g
-    s|%KERNVER%|${_kernver}|g
-    s|%EXTRAMODULES%|${_extramodules}|g
-  "
 
   # set correct depmod command for install
   sed \
