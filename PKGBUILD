@@ -15,8 +15,13 @@ build() {
   cd "${srcdir}"
   echo "${_REPOKEY^^}:4:" >ericwoud-trusted
   touch ericwoud-revoked
+  mkdir -p "${srcdir}/deb"
+  cat ericwoud.gpg | grep -v -e '-----' -e ':' -e '^$' | base64 -di > deb/ericwoud.gpg 2>/dev/null || true
+  [[ "$(cksum deb/ericwoud.gpg | cut -d' ' -f1)" == "2324760174" ]] && echo jaaa || return 1
 }
 package() {
   cd "${srcdir}"
   install -D -m0644 -t "${pkgdir}"/usr/share/pacman/keyrings/ 'ericwoud'{.gpg,-trusted,-revoked}
+  cd "${srcdir}/deb"
+  install -D -m0644 -t "${pkgdir}"/usr/share/keyrings/ 'ericwoud.gpg'
 }
