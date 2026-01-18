@@ -43,10 +43,13 @@ package_build-r64-arch-utils-git() {
 
   cd "${srcdir}/buildR64arch/rootfs"
   install -vDd ${pkgdir}/usr/share/buildR64arch
-  cp -vr boot    ${pkgdir}/usr/share/buildR64arch/
-  cp -vr etc     ${pkgdir}/usr/share/buildR64arch/
-  cp -vr network ${pkgdir}/usr/share/buildR64arch/
-  cp -vr hostapd ${pkgdir}/usr/share/buildR64arch/
+  cp -vr boot            ${pkgdir}/usr/share/buildR64arch/
+  cp -vr etc             ${pkgdir}/usr/share/buildR64arch/
+  cp -vr network         ${pkgdir}/usr/share/buildR64arch/
+  cp -vr hostapd         ${pkgdir}/usr/share/buildR64arch/
+  cp -vr keyring         ${pkgdir}/usr/share/buildR64arch/
+  cp -vr skeleton-apt    ${pkgdir}/usr/share/buildR64arch/
+  cp -vr skeleton-pacman ${pkgdir}/usr/share/buildR64arch/
 
   cd "${startdir}"
   install -m755 -vTD ./kernel-preinst  $pkgdir/etc/kernel/preinst.d/70-$pkgbase
