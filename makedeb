@@ -1,6 +1,7 @@
 #!/bin/bash
 
 translation="\
+-e 's/\b''pacman''\b/''apt''/' \
 -e 's/\b''dtc''\b/''device-tree-compiler''/' \
 -e 's/\b''openssh''\b/''openssh-server''/' \
 -e 's/\b''mmc-utils-git''\b/''mmc-utils''/' \
