@@ -1,8 +1,6 @@
 post_upgrade() {
   mkdir -p "/etc/systemd/networkd.conf.d"
-  if [ ! -L "/etc/systemd/networkd.conf.d/networkd.conf" ]; then
-    ln -srT ../network/networkd.conf /etc/systemd/networkd.conf.d/networkd.conf
-  fi
+  ln -srf --target-directory=/etc/systemd/networkd.conf.d ../network/networkd.conf
   # Old script has set these as ignore, restore this to normal:
   if [ -f "/etc/pacman.conf" ]; then
     sed -i -e '/^IgnorePkg/s/bpir-atf-git//g' -e '/^IgnorePkg/s/bpir-uboot-git//g' /etc/pacman.conf
