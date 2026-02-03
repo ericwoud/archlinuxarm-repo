@@ -3,6 +3,7 @@
 unamer="${1}"
 
 # When the kernel package has itb, extract Image.gz and Image from it
+# Extract the name of linuxpkg differently
 if [[ "${2##*.}" == "itb" ]]; then
   linuxpkg="linux-image-${unamer}" # from altered mkdebian
   dumpimage -T flat_dt -o /boot/Image-${linuxpkg}.gz "${2}"
