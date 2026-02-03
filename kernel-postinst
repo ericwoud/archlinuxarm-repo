@@ -1,6 +1,8 @@
 #!/bin/bash
 
 unamer="${1}"
+
+# When the kernel package has itb, extract Image.gz and Image from it
 if [[ "${2##*.}" == "itb" ]]; then
   linuxpkg="linux-image-${unamer}" # from altered mkdebian
   dumpimage -T flat_dt -o /boot/Image-${linuxpkg}.gz "${2}"
@@ -9,6 +11,8 @@ else
   linuxpkg="${2#*Image-}"
 fi
 
+# When the kernel package has dtbs at /lib/modules/$(uname -r)/dtbs/
+# Copy them to "/boot/dtbs/${linuxpkg}/" where we expect them
 dtbsdir="/usr/lib/${linuxpkg}"
 [ ! -d "${dtbsdir}" ] && dtbsdir="/lib/modules/${unamer}/dtbs"
 if [ -d "${dtbsdir}" ]; then
