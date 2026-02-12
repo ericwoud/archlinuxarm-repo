@@ -8,13 +8,13 @@
 # board/<CONFIG_SYS_VENDOR>/<CONFIG_SYS_BOARD>
 
 pkgbase=bpir-uboot-git
-_pkgver=2025.10
-pkgver=2025.10r78.101557.e50b1e87150
+_pkgver=2026.01
+pkgver=2026.01r79.103050.127a42c7257
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
 url='https://github.com/u-boot/u-boot'
-_openwrtver=v24.10.4
+_openwrtver=v24.10.5
 _openwrturl="https://github.com/openwrt/openwrt/raw/refs/tags/${_openwrtver}/package/boot/uboot-mediatek/patches"
 license=(GPL3)
 depends=()
@@ -94,14 +94,17 @@ build() {
   _buildimage bpir3-emmc   mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-emmc
   _buildimage bpir3-sdmmc  mt7986a_bpir3_sd_defconfig    mt7986a-bpi-r3-sd
   _buildimage bpir3m       mt7986a_bpir3_emmc_defconfig  mt7986a-bpi-r3-mini
+  _buildimage bpir4l-emmc  mt7987_emmc_rfb_defconfig     mt7987a-emmc-rfb
+  _buildimage bpir4l-sdmmc mt7987_sd_rfb_defconfig       mt7987a-sd-rfb
   _buildimage bpir4-emmc   mt7988_rfb_defconfig          mt7988-rfb
   _buildimage bpir4-sdmmc  mt7988_sd_rfb_defconfig       mt7988-sd-rfb
-  #               Filename                       Linkname
-  ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-emmc.bin"
-  ln -srf "bpir64/u-boot-bpir64.bin"     "bpir64/u-boot-bpir64-sdmmc.bin"
-  ln -srf "bpir3/u-boot-bpir3-emmc.bin"  "bpir3/u-boot-bpir3.bin"
-  ln -srf "bpir3m/u-boot-bpir3m.bin"     "bpir3m/u-boot-bpir3m-emmc.bin"
-  ln -srf "bpir4/u-boot-bpir4-emmc.bin"  "bpir4/u-boot-bpir4.bin"
+  #               Filename                        Linkname
+  ln -srf "bpir64/u-boot-bpir64.bin"      "bpir64/u-boot-bpir64-emmc.bin"
+  ln -srf "bpir64/u-boot-bpir64.bin"      "bpir64/u-boot-bpir64-sdmmc.bin"
+  ln -srf "bpir3/u-boot-bpir3-emmc.bin"   "bpir3/u-boot-bpir3.bin"
+  ln -srf "bpir3m/u-boot-bpir3m.bin"      "bpir3m/u-boot-bpir3m-emmc.bin"
+  ln -srf "bpir4l/u-boot-bpir4l-emmc.bin" "bpir4l/u-boot-bpir4l.bin"
+  ln -srf "bpir4/u-boot-bpir4-emmc.bin"   "bpir4/u-boot-bpir4.bin"
 }
 
 _package() {
@@ -119,7 +122,7 @@ _package() {
   fi
 }
 
-for _target in bpir64 bpir3 bpir3m bpir4; do
+for _target in bpir64 bpir3 bpir3m bpir4l bpir4; do
   eval "package_${_target}-uboot-git() { _package ${_target} ; }"
   _packages+=(${_target}-uboot-git)
   pkgname+=(${_target}-uboot-git)

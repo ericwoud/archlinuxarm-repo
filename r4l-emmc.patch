@@ -1,0 +1,27 @@
+From 3351289252bcfc9827af17eec0aa0783829fe099 Mon Sep 17 00:00:00 2001
+From: Frank Wunderlich <frank-w@public-files.de>
+Date: Sun, 5 Oct 2025 20:38:19 +0200
+Subject: [PATCH] arm: dts: fix emmc with buswidth 4 and lower speed
+
+sdmmc cd pin (20) on bpi r4lite is also used as dat5 for emmc
+---
+ arch/arm/dts/mt7987a-bpi-r4lite-emmc.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm/dts/mt7987a-emmc-rfb.dts b/arch/arm/dts/mt7987a-emmc-rfb.dts
+index f59e5bd97bf..dbbc89bbd29 100644
+--- a/arch/arm/dts/mt7987a-emmc-rfb.dts
++++ b/arch/arm/dts/mt7987a-emmc-rfb.dts
+@@ -35,3 +35,12 @@
+ 		};
+ 	};
+ };
++
++&mmc0 {
++	bus-width = <4>;
++
++	/delete-property/ mmc-hs200-1_8v;
++	/delete-property/ mmc-hs400-1_8v;
++	/delete-property/ hs400-ds-delay;
++	max-frequency = <52000000>;
++};

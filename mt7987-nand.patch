@@ -1,0 +1,68 @@
+diff --git a/arch/arm/dts/mt7987a-emmc-rfb-u-boot.dtsi b/arch/arm/dts/mt7987a-emmc-rfb-u-boot.dtsi
+index dc3f70aad64..9809371b51e 100644
+--- a/arch/arm/dts/mt7987a-emmc-rfb-u-boot.dtsi
++++ b/arch/arm/dts/mt7987a-emmc-rfb-u-boot.dtsi
+@@ -57,4 +57,29 @@
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
+ 	};
++
++	/delete-node/ spi_nand@0;
++	spi_nand@0 {
++		compatible = "spi-nand";
++		reg = <0>;
++		spi-max-frequency = <52000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			partition@0 {
++				label = "bl2";
++				reg = <0x0 0x200000>;
++			};
++
++			partition@200000 {
++				label = "ubi";
++				reg = <0x200000 0x7e00000>;
++			};
++		};
++	};
+ };
+diff --git a/arch/arm/dts/mt7987a-sd-rfb-u-boot.dtsi b/arch/arm/dts/mt7987a-sd-rfb-u-boot.dtsi
+index cf1114e7d99..711575fa063 100644
+--- a/arch/arm/dts/mt7987a-sd-rfb-u-boot.dtsi
++++ b/arch/arm/dts/mt7987a-sd-rfb-u-boot.dtsi
+@@ -55,4 +55,29 @@
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
+ 	};
++
++	/delete-node/ spi_nand@0;
++	spi_nand@0 {
++		compatible = "spi-nand";
++		reg = <0>;
++		spi-max-frequency = <52000000>;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <4>;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			partition@0 {
++				label = "bl2";
++				reg = <0x0 0x200000>;
++			};
++
++			partition@200000 {
++				label = "ubi";
++				reg = <0x200000 0x7e00000>;
++			};
++		};
++	};
+ };
