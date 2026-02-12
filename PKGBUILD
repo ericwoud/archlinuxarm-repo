@@ -10,7 +10,7 @@ _gitbranch="bpir"
 pkgbase=bpir-atf-git
 pkgname=("$pkgbase-fiptool")
 epoch=2
-pkgver=2.13r41.17172.31ca5d76f
+pkgver=2.13r44.17173.82065297c
 pkgrel=1
 _ubootpkgver=2023.01
 url='https://github.com/mtk-openwrt/arm-trusted-firmware.git'
@@ -132,12 +132,10 @@ build() {
   _buildimage mt7988 bpir4  emmc      nostretch - DRAM_USE_COMB=1
   _buildimage mt7988 bpir4  spim-nand nostretch - DRAM_USE_COMB=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
   _buildimage mt7988 bpir4  ram       nostretch - DRAM_USE_COMB=1 RAM_BOOT_UART_DL=1
-
-#  _buildimage mt7987 bpir4l sdmmc     nostretch -
-#  _buildimage mt7987 bpir4l emmc      nostretch -
-#  _buildimage mt7987 bpir4l spim-nand nostretch - SPIM_CTRL=2     UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
-#  _buildimage mt7987 bpir4l ram       nostretch -                 RAM_BOOT_UART_DL=1
-  
+  _buildimage mt7987 bpir4l sdmmc     nostretch -
+  _buildimage mt7987 bpir4l emmc      nostretch -
+  _buildimage mt7987 bpir4l spim-nand nostretch - SPIM_CTRL=2     UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
+  _buildimage mt7987 bpir4l ram       nostretch -                 RAM_BOOT_UART_DL=1
   _buildimage mt7988 bpir4  sdmmc     nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
   _buildimage mt7988 bpir4  emmc      nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
   _buildimage mt7988 bpir4  spim-nand nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
@@ -152,9 +150,15 @@ _package() {
     cd $(dirname "${_file}")
     install -vDt "$pkgdir/usr/share/bpir-atf/" -m644 $(basename "${_file}")
   ) done
+  if [[ "$1" == "bpir4" ]]; then
+    provides=('bpir4p4e-atf-git' 'bpir4p8x-atf-git')
+    cd "$pkgdir/usr/share/bpir-atf/"
+    for _f in *-atf.bin; do                  ln -srf "${_f}" "${_f/bpir4/bpir4p4e}"; done
+    for _f in *-8gb.bin; do _ff=${_f/-8gb/}; ln -srf "${_f}" "${_ff/bpir4/bpir4p8x}"; done
+  fi
 }
 
-for _target in bpir64 bpir3 bpir3m bpir4; do
+for _target in bpir64 bpir3 bpir3m bpir4l bpir4; do
   eval "package_${_target}-atf-git() { _package ${_target} ; }"
   _packages+=(${_target}-atf-git)
   pkgname+=(${_target}-atf-git)
