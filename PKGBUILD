@@ -132,6 +132,12 @@ build() {
   _buildimage mt7988 bpir4  emmc      nostretch - DRAM_USE_COMB=1
   _buildimage mt7988 bpir4  spim-nand nostretch - DRAM_USE_COMB=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
   _buildimage mt7988 bpir4  ram       nostretch - DRAM_USE_COMB=1 RAM_BOOT_UART_DL=1
+
+#  _buildimage mt7987 bpir4l sdmmc     nostretch -
+#  _buildimage mt7987 bpir4l emmc      nostretch -
+#  _buildimage mt7987 bpir4l spim-nand nostretch - SPIM_CTRL=2     UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
+#  _buildimage mt7987 bpir4l ram       nostretch -                 RAM_BOOT_UART_DL=1
+  
   _buildimage mt7988 bpir4  sdmmc     nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
   _buildimage mt7988 bpir4  emmc      nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1
   _buildimage mt7988 bpir4  spim-nand nostretch 8 DRAM_USE_COMB=1 DDR4_4BG_MODE=1 UBI=1 OVERRIDE_UBI_START_ADDR=0x200000
