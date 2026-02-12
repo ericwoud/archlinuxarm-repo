@@ -1,0 +1,12 @@
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 7c8cf3a5a1d..da013aff9d6 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -1125,6 +1125,7 @@ dtb-$(CONFIG_ARCH_MEDIATEK) += \
+ 	mt7981-sd-rfb.dtb \
+ 	mt7986a-bpi-r3-sd.dtb \
+ 	mt7986a-bpi-r3-emmc.dtb \
++	mt7986a-bpi-r3-mini.dtb \
+ 	mt7986a-rfb.dtb \
+ 	mt7986b-rfb.dtb \
+ 	mt7986a-sd-rfb.dtb \
