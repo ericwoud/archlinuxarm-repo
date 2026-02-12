@@ -9,7 +9,7 @@
 
 pkgbase=bpir-uboot-git
 _pkgver=2025.10
-pkgver=2025.10r73.101557.e50b1e87150
+pkgver=2025.10r78.101557.e50b1e87150
 pkgrel=1
 pkgdesc='U-Boot for BPI Router Boards'
 arch=('aarch64' 'x86_64')
@@ -111,6 +111,12 @@ _package() {
   _pd="$pkgdir/usr/share/bpir-uboot"
   mkdir -p "${_pd}"
   cp -vdf *.bin "${_pd}"
+  if [[ "$1" == "bpir4" ]]; then
+    provides=('bpir4p4e-uboot-git' 'bpir4p8x-uboot-git')
+    cd "$_pd"; _ff="$(echo *.bin)"
+    for _f in $_ff; do ln -srf "${_f}" "${_f/bpir4/bpir4p4e}"; done
+    for _f in $_ff; do ln -srf "${_f}" "${_f/bpir4/bpir4p8x}"; done
+  fi
 }
 
 for _target in bpir64 bpir3 bpir3m bpir4; do
