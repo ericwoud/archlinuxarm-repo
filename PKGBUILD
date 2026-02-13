@@ -63,7 +63,7 @@ _package() {
   install=packages-bpir.install
 }
 
-for _target in bpir64 bpir3 bpir3m bpir4; do
+for _target in bpir64 bpir3 bpir3m bpir4 bpir4m bpir4l bpir4p4e bpir4p8x; do
   eval "package_packages-${_target}() { _package ${_target} ; }"
   pkgname+=(packages-${_target})
 done
