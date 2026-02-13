@@ -33,7 +33,7 @@ pkgbase=linux-${_target}-git
 _srcname=linux-${_target}
 _kernelname=${pkgbase#linux}
 _desc="AArch64 kernel for BPI-R64/R3/R4"
-pkgver=6.9.3.bpi.1.f8d8d2c01
+pkgver=6.18.9.bpir4.217.4af7689a7
 pkgrel=1
 arch=('aarch64' 'x86_64')
 url="http://www.kernel.org/"
@@ -131,10 +131,14 @@ _package() {
   provides=("linux=${pkgver}" "WIREGUARD-MODULE")
   install="linux-bpir-git.install"
   if [[ "$_target" == "bpir" ]]; then
-    replaces=('linux-bpir64-git'
-              'linux-bpir3-git'
-              'linux-bpir3m-git')
-    provides+=(${replaces[@]})
+    provides+=('linux-bpir64-git'
+               'linux-bpir3-git'
+               'linux-bpir3m-git')
+  elif [[ "$_target" == "bpir4" ]]; then
+    provides+=('linux-bpir4m-git'
+               'linux-bpir4l-git'
+               'linux-bpir4p4e-git'
+               'linux-bpir4p8x-git')
   fi
 
   cd ${_srcname}
@@ -176,10 +180,14 @@ _package-headers() {
   pkgdesc="Header files and scripts for building modules for linux kernel - ${_desc}"
   provides=("linux-headers=${pkgver}")
   if [[ "$_target" == "bpir" ]]; then
-    replaces=('linux-bpir64-git-headers'
-              'linux-bpir3-git-headers'
-              'linux-bpir3m-git-headers')
-    provides+=(${replaces[@]})
+    provides+=('linux-bpir64-git-headers'
+               'linux-bpir3-git-headers'
+               'linux-bpir3m-git-headers')
+  elif [[ "$_target" == "bpir4" ]]; then
+    provides+=('linux-bpir4m-git-headers'
+               'linux-bpir4l-git-headers'
+               'linux-bpir4p4e-git-headers'
+               'linux-bpir4p8x-git-headers')
   fi
 
   cd ${_srcname}
