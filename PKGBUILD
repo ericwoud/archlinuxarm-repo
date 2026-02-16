@@ -54,10 +54,9 @@ cd "${srcdir}"/"ncurses-snapshots"
   ./configure \
     --prefix="${srcdir}"/temp/usr \
     --enable-static --disable-shared \
-    --mandir="${srcdir}/temp/usr/share/man" \
+    --mandir="/usr/share/man" \
     --enable-pc-files \
     --enable-widec \
-    --with-pkg-config-libdir="${srcdir}/temp/usr/lib/pkgconfig" \
     --with-versioned-syms \
     --with-xterm-kbs=del \
     --without-ada \
