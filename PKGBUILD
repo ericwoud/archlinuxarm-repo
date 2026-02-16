@@ -24,7 +24,7 @@ pkgver() {
 
 package_build-r64-arch-utils-git() {
   pkgdesc='Utilities for BPI Router boards installed with buildR64arch'
-  depends=(bpir-atf-git-fiptool initramfs sudo bash-static-git
+  depends=(bpir-atf-git-fiptool initramfs sudo
            hostapd wireless-regdb iptables-nft iproute2 nftables f2fs-tools dosfstools
            btrfs-progs patch sudo evtest parted binutils cpio mtd-utils diffutils
            nano screen i2c-tools ethtool iperf3 curl wget debootstrap usbutils
