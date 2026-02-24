@@ -12,7 +12,7 @@ source=("git+https://github.com/ericwoud/buildR64arch.git"
         'kernel-postinst'
         'kernel-prerm'
         'kill-serial-getty.conf')
-sha256sums=(SKIP SKIP SKIP SKIP)
+sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
 
