@@ -10,7 +10,8 @@ pkgrel=1
 source=("git+https://github.com/ericwoud/buildR64arch.git"
         'kernel-preinst'
         'kernel-postinst'
-        'kernel-prerm')
+        'kernel-prerm'
+        'kill-serial-getty.conf')
 sha256sums=(SKIP SKIP SKIP SKIP)
 
 export CARCH=aarch64
@@ -55,6 +56,7 @@ package_build-r64-arch-utils-git() {
   install -m755 -vTD ./kernel-preinst  $pkgdir/etc/kernel/preinst.d/70-$pkgbase
   install -m755 -vTD ./kernel-postinst $pkgdir/etc/kernel/postinst.d/70-$pkgbase
   install -m755 -vTD ./kernel-prerm    $pkgdir/etc/kernel/prerm.d/70-$pkgbase
+  install -m644 -vDt $pkgdir/etc/systemd/system/serial-getty@.service.d kill-serial-getty.conf
 }
 
 _package() {
