@@ -16,6 +16,7 @@ source=('bpir-initrd'
 sha256sums=(SKIP SKIP SKIP SKIP SKIP)
 depends=('cpio' 'which' curl wget debootstrap)
 provides=('initramfs')
+install=${pkgname}.install
 export CARCH=aarch64
 
 pkgver() {
