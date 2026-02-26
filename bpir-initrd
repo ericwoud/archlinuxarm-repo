@@ -72,7 +72,7 @@ for module in ${MODULES[*]}; do
   [ -n "${modfile}" ] && modules+=("${modfile}")
 done
 
-if [[ ! ${modules[@]} ]] && [ -n $modulesonly ] && [ -f "$default_image" ] ; then
+if [[ ! ${modules[@]} ]] && [ -n "$modulesonly" ] && [ -f "$default_image" ] ; then
   echo "$(basename $0): No modules inside $(basename $default_image), skip rebuilding"
   exit 0
 fi
