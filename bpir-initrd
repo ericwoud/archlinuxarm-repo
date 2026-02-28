@@ -6,6 +6,7 @@ function usage {
 	  -p --preset [PRESET]       specify preset
 	  -P --allpresets            build all presets
 	  -m --modulesonly           build only when image holds modules
+	  -v --verbose               show more info (list of files)
 	EOF
   exit 1
 }
@@ -16,6 +17,7 @@ while [ "${1:-}" != '' ]; do
          '--preset'=*)      preset="${1#*=}"   ;;
   '-P' | '--allpresets')    allpresets=1       ;;
   '-m' | '--modulesonly')   modulesonly=1      ;;
+  '-v' | '--verbose')       verbose=1          ;;
   *) usage ;;
   esac
   shift
@@ -244,7 +246,7 @@ for line in $outp; do eval "${line}"; done
 echo "Requesting lease of $YourIP."
 
 outp=$(dhcpc -i $intf -r $YourIP)
-if [[ $? != 0 ]]; then 
+if [[ $? != 0 ]]; then
   echo "DHCP error on second call!"
   exit
 fi
@@ -273,7 +275,9 @@ cat /etc/resolv.conf
 EOT
 chmod +x "$wdir/bin/bpir-dhcpc"
 
-(cd $wdir; ls -AR)
+if [ -n "$verbose" ]; then
+  (cd $wdir; ls -AR)
+fi
 
 echo -ne "\nCompressing ${default_image}, size "
 
