@@ -12,14 +12,22 @@ run_hook() {
     echo "Booting EMMC!"
     export root=${root/"-sdmmc-"/"-emmc-"}
     export root=${root/"-nvme-"/"-emmc-"}
+    export root=${root/"-sata-"/"-emmc-"}
   elif [[ "$char" == "s" ]]; then
     echo "Booting SDMMC!"
     export root=${root/"-emmc-"/"-sdmmc-"}
     export root=${root/"-nvme-"/"-sdmmc-"}
+    export root=${root/"-sata-"/"-sdmmc-"}
   elif [[ "$char" == "n" ]]; then
     echo "Booting NVME!"
     export root=${root/"-emmc-"/"-nvme-"}
     export root=${root/"-sdmmc-"/"-nvme-"}
+    export root=${root/"-sata-"/"-nvme-"}
+  elif [[ "$char" == "s" ]]; then
+    echo "Booting SATA!"
+    export root=${root/"-emmc-"/"-sata-"}
+    export root=${root/"-sdmmc-"/"-sata-"}
+    export root=${root/"-nvme-"/"-sata-"}
   elif [[ "$char" == "x" ]]; then
     echo "Entering shell."
     echo "Enter 'exit' to continue booting."
