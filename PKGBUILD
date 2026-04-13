@@ -18,7 +18,7 @@ fi
 if [[ "$TARGET" == "bpir4" ]]; then
   _gitroot="https://github.com/frank-w/BPI-Router-Linux.git"
   _target="bpir4"
-  _gitbranch="6.18-main"
+  _gitbranch="6.19-main"
 elif [[ "$TARGET" == "bpirnn" ]]; then
   _gitroot="https://github.com/ericwoud/linux.git"
   _target="bpirnn"
